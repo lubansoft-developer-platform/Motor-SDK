@@ -1,0 +1,181 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>Motor</title>
+    <link rel="stylesheet" href="./motor-sdk/Motor.css">
+    <script>
+    //    window.MOTOR_BASE_URL = "relativeBaseUrl";
+    // window.CESIUM_BASE_URL = "111"
+    </script>
+    <script src="./motor-sdk/Motor.js"></script>
+</head>
+
+<body style="margin: 0px">
+    <div style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;" id="cesiumContainer"></div>
+    <div style="color: #eee;font-family: sans-serif;font-size: 9pt;margin: 5px;padding: 2px 5px;position: absolute;" id="toolbar">
+        <table>
+            <tbody id = "toolbarTBody">
+                <tr>
+                    <td><button id="button1" onclick="onClick1();">取消图片标注</td>
+                    <!-- <td><button id="button2">功能2</td>
+                    <td><button id="button3">功能3</td> -->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <script>
+        // 1. 设置静态路径
+        Motor.setBaseUrl("motor-sdk")
+        // 2. 创建Viewer对象
+        function InitViewer() {
+            const viewer = new Motor.Viewer({
+            container: 'cesiumContainer',
+            baseUrl: 'https://open.lubansoft.com/api',
+            appId: 'c046953e2b6e4948a13c69b38f9534fb',
+            secret: '089b1b1e0cc2d94b1f6d513cd0b49552',
+            })
+            return viewer
+        }
+        let viewer = undefined
+        let currentProject = undefined
+        let modImgList = []
+        
+        const openProj = async (projId) => {
+        viewer = InitViewer()
+        // 3. 初始化
+        await viewer.Init()
+        // 4. 查询工程
+        currentProject = await viewer.queryProject(projId)
+        // 5. 打开工程
+        await currentProject.open()
+        console.log(100, currentProject.viewPosition)
+        // 6. 定位视角
+        // 定位（飞向） 到工程
+        // viewer.camera.setViewToProject(currentProject) 
+        // 定位到工程保存的视角
+        if(currentProject.viewPosition){
+            viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+        }else{
+            viewer.camera.setViewToProject(currentProject)
+        }
+        // 7. 注册事件 （鼠标点选事件）
+        const inputListener = new Motor.InputMap(viewer)
+        inputListener.setInput(Motor.InputType.LEFT_CLICK, async (windPt2) => {
+            // 8. 根据二维坐标pick到场景的模型对象
+            const pickInfo = viewer.pick(windPt2)
+            console.log(200, pickInfo)
+            // 9. 如果点选在空白处 返回undefind， 取消所有的选中， 否则选中点选的构件
+            if(pickInfo){
+                if(pickInfo.model.type === Motor.ModelType.BIM){
+                pickInfo.model.select(pickInfo.id)
+                }else{
+                    pickInfo.model.select()
+                }
+            }else{
+                currentProject.deselect()
+            }
+
+            // 10. 根据构件id查询自定义id
+            if(pickInfo){
+                if(pickInfo.model.type === Motor.ModelType.BIM){
+                    const customId = await pickInfo.model.getElementCustomId(pickInfo.id)
+                    console.log(300, customId)
+                }else{
+                    // 11. 获取模型的自定义id
+                    const customModId = await pickInfo.model.getCustomId()
+                    console.log(400, customModId)
+                }
+            }
+            
+        })
+
+        // 12. 注册事件：点选插入标注 可以直接写在上面的方法里，这里为了清晰展示 单独创建一个对象实现
+        const inputListener2 = new Motor.InputMap(viewer)
+        inputListener2.setInput(Motor.InputType.LEFT_CLICK,async (windPt2) => {
+            // 13. 点选模型，获取当前模型上点击的这个点的信息
+            const pickPosition = await viewer.pickPosition(windPt2)
+            if(pickPosition){
+                console.log(500, pickPosition)
+                const markCollection = new Motor.MarkCollectionEditor(viewer,currentProject)
+                const modelImg = await markCollection.create({
+                    id:'img1',
+                    position:{
+                        cartesian:Motor.Vector3.toArray(pickPosition)
+                    },
+                    // 绘制图片
+                    billboard:{
+                        image:'./airport.png',
+                        verticalOrigin: 'BOTTOM',
+                        horizontalOrigin: 'CENTER',
+                        // 表示左移 0个单位， 上移动 30 个单位
+                        pixelOffset:{
+                            cartesian2:[0,-30]
+                        },
+                        disableDepthTestDistance: Number.POSITIVE_INFINITY
+                    },
+                    // 绘制文字
+                    label: {
+                        text: "hello world!",
+                        font: "36px 微软雅黑",
+                        scale:0.5,
+                        style: "FILL_AND_OUTLINE",//文字样式
+                        fillColor: {
+                            rgba: [255, 255, 255, 255]
+                        },
+                        outlineColor: {
+                            rgba: [0, 0, 0, 255]
+                        },
+                        outlineWidth: 2,
+                        showBackground: true,
+                        backgroundColor: {
+                            rgba: [255, 0, 0, 200]
+                        },
+                        verticalOrigin: 'CENTER', //垂直原点
+                        horizontalOrigin: 'CENTER',//水平原点
+                        pixelOffset:{
+                            cartesian2:[0,-90]//左移10个像素，上移30个像素
+                        },
+                        disableDepthTestDistance: Number.POSITIVE_INFINITY//标注始终在最前
+                    },
+                    // 绘制一个点
+                    point: {
+                        pixelSize: 5, //点的像素大小
+                        color: {
+                            rgba: [255, 0, 0, 255]
+                        },
+                        outlineWidth: 2,
+                        outlineColor: {
+                            rgba: [255, 255, 0, 255]
+                        },
+                        disableDepthTestDistance: Number.POSITIVE_INFINITY
+                    }
+                })
+                modImgList.push(modelImg)
+                console.log(600,modelImg)
+            }
+        })
+
+
+
+        
+    }
+        openProj('fd83afa5e05a4abdb9c9884d482d7a22')
+
+        // 14 删除标注
+        function onClick1(){
+            const markCollection = new Motor.MarkCollectionEditor(viewer,currentProject)
+            modImgList.forEach(element => {
+                console.log(700,element)
+                markCollection.remove(element)
+            });
+        }
+    </script>
+</body>
+
+</html>
