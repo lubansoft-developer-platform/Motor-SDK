@@ -1,0 +1,43 @@
+{
+	"attribution": "",
+	"available": [[{
+				"endX": 1,
+				"endY": 0,
+				"startX": 0,
+				"startY": 0
+			}
+		], [{
+				"endX": 4,
+				"endY": 2,
+				"startX": 0,
+				"startY": 0
+			}
+		], [{
+				"endX": 8,
+				"endY": 4,
+				"startX": 0,
+				"startY": 0
+			}
+		], [{
+				"endX": 16,
+				"endY": 8,
+				"startX": 0,
+				"startY": 0
+			}
+		], [{
+				"endX": 32,
+				"endY": 16,
+				"startX": 0,
+				"startY": 0
+			}
+		]],
+		"bounds": [-180, -90, 180, 90],
+		"description": "materdeal",
+		"format": "quantized-mesh-1.0",
+		"name": "default-earth",
+		"projection": "EPSG:4326",
+		"schema": "tms",
+		"tilejson": "2.1.0",
+		"tiles": ["{z}/{x}/{y}.terrain?v={version}"],
+		"version": "1.1.0"
+	}
