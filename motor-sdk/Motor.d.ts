@@ -65,7 +65,7 @@ declare module 'motor' {
     export { default as DirectionalLight } from 'motor/Viewer/DirectionalLight';
     export { default as EarthControl } from 'motor/Viewer/EarthControl';
     export { default as FreeControl, FreeControlOptions } from 'motor/Viewer/FreeControl';
-    export { default as InputMap } from 'motor/Viewer/InputMap';
+    export { default as InputMap, PitchPosition } from 'motor/Viewer/InputMap';
     export { default as InputModifier } from 'motor/Viewer/InputModifier';
     export { default as InputType } from 'motor/Viewer/InputType';
     export { default as ManipulatorControl, ManipulatorControlOptions } from 'motor/Viewer/ManipulatorControl';
@@ -361,6 +361,7 @@ declare module 'motor/Core/ModImgTilesProvider' {
         imageryProvider?: Cesium.ImageryProvider | Cesium.BingMapsImageryProvider;
         imageryLayer?: Cesium.ImageryLayer;
         limitMapBox?: Box;
+        maximumLevel?: number;
         static classType(): string;
         static cast(mod: Mod | undefined): ModImgTilesProvider | undefined;
         type(): string;
@@ -1192,7 +1193,6 @@ declare module 'motor/Util/Box' {
     import * as Cesium from "cesium";
     export type BoxNumberAry = [number, number, number, number, number, number];
     class Box extends Cesium.AxisAlignedBoundingBox {
-        constructor(minimum?: Cesium.Cartesian3, maximum?: Cesium.Cartesian3, center?: Cesium.Cartesian3);
         static fromArray(ary: BoxNumberAry): Box;
         static toArray(box: Box): BoxNumberAry;
     }
@@ -1577,6 +1577,9 @@ declare module 'motor/Viewer/Camera' {
         get upWC(): Cesium.Cartesian3;
         get right(): Cesium.Cartesian3;
         get rightWC(): Cesium.Cartesian3;
+        get cameraMoveStart(): Cesium.Event;
+        get cameraMoveEnd(): Cesium.Event;
+        get cameraChanged(): Cesium.Event;
         project(position: Vector3, result?: Vector3): Vector3;
         unProject(position: Vector3, result?: Vector3): Vector3;
         rotateLeft(angle: number): void;
@@ -1652,8 +1655,9 @@ declare module 'motor/Viewer/Control' {
     import MotorObj from "motor/Util/MotorObj";
     import Viewer from "motor/Viewer/Viewer";
     import Camera from "motor/Viewer/Camera";
+    import { PitchPosition } from "motor/Viewer/InputMap";
     import Vector2 from "motor/Util/Vector2";
-    export type ControlEventCallback = ((result: Vector2 | number | string) => void);
+    export type ControlEventCallback = ((result: Vector2 | number | string | PitchPosition | undefined) => void);
     export interface ControlEvent {
         onMiddleUp?: ControlEventCallback;
         onMiddleDown?: ControlEventCallback;
@@ -1667,20 +1671,24 @@ declare module 'motor/Viewer/Control' {
         onMiddleClick?: ControlEventCallback;
         onLeftDoubleClick?: ControlEventCallback;
         onMouseMove?: ControlEventCallback;
+        onPitchDown?: ControlEventCallback;
+        onPitchUp?: ControlEventCallback;
+        onPitchMove?: ControlEventCallback;
         onKeyDown?: ControlEventCallback;
         onKeyUp?: ControlEventCallback;
     }
     export enum ControlApplyType {
         LEFT_MOUSE_BTN = 0,
         RIGHT_MOUSE_BTN = 1,
-        MIDDLE_MOUSE_BTN = 2
+        MIDDLE_MOUSE_BTN = 2,
+        PINCH_BTN = 3
     }
     class Control extends MotorObj {
         viewer: Viewer;
         protected camera: Camera;
         constructor(viewer: Viewer);
         register(): void;
-        setApplyType(apply: ControlApplyType, downAction: (windowPosition: Vector2 | number) => void, upAction: (windowPosition: Vector2 | number) => void): void;
+        setApplyType(apply: ControlApplyType, downAction: (windowPosition: Vector2 | number | PitchPosition | undefined) => void, upAction: (windowPosition: Vector2 | number | PitchPosition | undefined) => void): void;
         keyDownCallback(evt: KeyboardEvent): void;
         keyUpCallback(evt: KeyboardEvent): void;
         protected destroyForward(): void;
@@ -1717,6 +1725,7 @@ declare module 'motor/Viewer/FreeControl' {
     import Vector2 from "motor/Util/Vector2";
     import Viewer from "motor/Viewer/Viewer";
     import Control, { ControlApplyType } from "motor/Viewer/Control";
+    import { PitchPosition } from "motor/Viewer/InputMap";
     export interface FreeControlOptions {
         maximumPitch?: number;
         minimumPitch?: number;
@@ -1733,6 +1742,9 @@ declare module 'motor/Viewer/FreeControl' {
         constructor(viewer: Viewer, options?: FreeControlOptions);
         setPanRotateApplyType(panningApplyType: ControlApplyType, rotatingApplyType: ControlApplyType): void;
         get target(): Vector3;
+        onPitchDown(pitchPos: PitchPosition): void;
+        onPitchUp(): void;
+        onPitchMove(pitchPos: PitchPosition): void;
         onPanDown(windowPosition: Vector2): void;
         onPanUp(): void;
         onRotateDown(windowPosition: Vector2): void;
@@ -1753,10 +1765,14 @@ declare module 'motor/Viewer/InputMap' {
     import InputModifier from "motor/Viewer/InputModifier";
     import Vector2 from "motor/Util/Vector2";
     import Viewer from "motor/Viewer/Viewer";
+    export interface PitchPosition {
+        position1: Vector2;
+        position2: Vector2;
+    }
     class InputMap extends MotorObj {
         handler: Cesium.ScreenSpaceEventHandler;
         constructor(viewer: Viewer);
-        setInput(type: InputType, action: (windowPosition: Vector2 | number) => void, modifier?: InputModifier): void;
+        setInput(type: InputType, action: (windowPosition: Vector2 | number | PitchPosition | undefined) => void, modifier?: InputModifier): void;
         removeInput(type: InputType, modifier?: InputModifier): void;
         destroyForward(): void;
     }
@@ -46226,22 +46242,23 @@ declare module "cesium/Source/Extension/Source/Worker/EmWrapperManager" { import
 
 declare module 'Motor' {
     export { default as Camera } from 'Motor/Camera';
-    export { default as Cartographic } from 'Motor/Cartographic';
-    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, } from 'Motor/Core';
+    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, } from 'Motor/Core';
     export { default as InputMap } from 'Motor/InputMap';
     export { default as Model } from 'Motor/Model';
     export { default as Project } from 'Motor/Project';
     export { default as Viewer } from 'Motor/Viewer';
+    export { default as GeoAlgorithm } from 'Motor/geo/GeoAlgorithm';
     export { default as AnimationPlayer, AnimationPlayerOptions, PlayAnimationOptions, ModelAnimationLoop, } from 'Motor/plugins/AnimationPlayer';
     export { default as ClippingControl } from 'Motor/plugins/ClippingPlaneEditor';
     export { default as MarkCollectionEditor } from 'Motor/plugins/MarkCollectionEditor';
+    export { default as MarkGifLabelEdtior } from 'Motor/plugins/MarkGifLabelEdtior';
     export { MeasureTwoPoint, MeasureMultiplePoint, MeasureThreePointAngle, } from 'Motor/plugins/MeasureEditor';
     export { default as ModelEditor, MeshModelOption } from 'Motor/plugins/ModelEditor';
     export { default as RoamEditor } from 'Motor/plugins/RoamEditor';
     export { default as selector, ModConstructor, SelectModeType, SelectedModType, SelectorEventMap, } from 'Motor/plugins/Selector';
     export { default as VideoProjectionEditor, ModelVideo, } from 'Motor/plugins/VideoProjectionEditor';
     export { default as WaterEditor } from 'Motor/plugins/WaterEditor';
-    export { ModelType, Element, ExtraPropInterface, PickObject, } from 'Motor/typedefine';
+    export { ModelType, Element, ExtraPropInterface, PickObject, CustomIdObject, } from 'Motor/typedefine';
     export { gHighLightColor, gIsolateColor, gBlockColor, } from 'Motor/until/MotorContext';
     export { computeArea } from 'Motor/until/UtilTool';
 }
@@ -46256,19 +46273,10 @@ declare module 'Motor/Camera' {
     }
 }
 
-declare module 'Motor/Cartographic' {
-    export default class Cartographic {
-        longitude: number;
-        latitude: number;
-        height: number;
-        constructor(longitude?: number, latitude?: number, height?: number);
-    }
-}
-
 declare module 'Motor/Core' {
     import * as MotorCore from 'motor-ts/src/motor';
     export default MotorCore;
-    export { InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, } from 'motor-ts/src/motor';
+    export { InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, } from 'motor-ts/src/motor';
 }
 
 declare module 'Motor/InputMap' {
@@ -46280,7 +46288,7 @@ declare module 'Motor/InputMap' {
 }
 
 declare module 'Motor/Model' {
-    import { ModelType, Element } from 'Motor/typedefine';
+    import { ModelType, Element, CustomIdObject } from 'Motor/typedefine';
     import MotorCore from 'Motor/Core';
     export default class Model {
         constructor(mod?: MotorCore.Mod);
@@ -46288,13 +46296,14 @@ declare module 'Motor/Model' {
         get type(): ModelType | undefined;
         get id(): string | undefined;
         queryElementByBimIds(bimids: string[]): Promise<Element[]>;
-        queryElementsByCustomId(keyWord: string, likeQuery?: boolean): Promise<string[]>;
+        queryElementsByCustomId(keyWord: string, likeQuery?: boolean): Promise<CustomIdObject[]>;
         getElementCustomId(elementId: string): Promise<string>;
         queryElement(): Promise<string[]>;
         queryElement(id: string): Promise<Element | undefined>;
         queryElement(ids: string[]): Promise<Element[]>;
         queryElement(dirs: string[][]): Promise<Element[]>;
         get children(): Model[];
+        removed(): boolean;
         queyElementsByKeywords(keyWord: string): Promise<string[]>;
         getBimDirTree(): Promise<MotorCore.DirTree | undefined>;
         get extraProperties(): object | undefined;
@@ -46346,7 +46355,7 @@ declare module 'Motor/Model' {
 
 declare module 'Motor/Project' {
     import Model from 'Motor/Model';
-    import { ModelType, Element } from 'Motor/typedefine';
+    import { ModelType, Element, CustomIdObject } from 'Motor/typedefine';
     import MotorCore from 'Motor/Core';
     export default class Project {
         constructor(proj: MotorCore.Proj);
@@ -46357,6 +46366,7 @@ declare module 'Motor/Project' {
         get viewPosition(): MotorCore.ViewPosition | undefined;
         get center(): MotorCore.Vector3 | undefined;
         get proj4(): string | undefined;
+        getWorldBox(): MotorCore.Box | undefined;
         toProjectionPosition(wordPosition: MotorCore.Vector3): MotorCore.Vector3 | undefined;
         fromProjectionPosition(projectionPosition: MotorCore.Vector3): MotorCore.Vector3 | undefined;
         queryModel(): Promise<Model[]>;
@@ -46368,7 +46378,7 @@ declare module 'Motor/Project' {
         queryElement(id: string): Promise<Element | undefined>;
         queryElement(ids: string[]): Promise<Element[]>;
         queryElement(dirs: string[][]): Promise<Element[]>;
-        queryElementsByCustomId(keyWord: string, likeQuery?: boolean): Promise<string[]>;
+        queryElementsByCustomId(keyWord: string, likeQuery?: boolean): Promise<CustomIdObject[]>;
         getElmentBoundingBox(id: string): Promise<MotorCore.Box | undefined>;
         select(): void;
         select(id: string): void;
@@ -46409,6 +46419,10 @@ declare module 'Motor/Project' {
         blink(color: MotorCore.Color, interval: number, comps: Element[]): (() => void) | undefined;
         fadeIn(ids: string[], time: number): Promise<void>;
         fadeOut(ids: string[], time: number): Promise<void>;
+        geoToWorld(longitude: number, latitude: number, height: number): MotorCore.Vector3;
+        worldToGeo(position: MotorCore.Vector3): MotorCore.Vector3;
+        worldToProjection(position: MotorCore.Vector3): MotorCore.Vector3;
+        projectionToWorld(position: MotorCore.Vector3): MotorCore.Vector3;
     }
 }
 
@@ -46441,6 +46455,8 @@ declare module 'Motor/Viewer' {
         enableSnap(): void;
         disableSnap(): void;
         getSnapPoint(): MotorCore.Vector3 | undefined;
+        enableClampZoom(): void;
+        disableClampZoom(): void;
         get maximumPitch(): number | undefined;
         set maximumPitch(value: number | undefined);
         get minimumPitch(): number | undefined;
@@ -46450,6 +46466,22 @@ declare module 'Motor/Viewer' {
         get minimumZoomDistance(): number | undefined;
         set minimumZoomDistance(value: number | undefined);
         pickPositionAryByRayForPhysical(startPt: MotorCore.Vector3, direction: MotorCore.Vector3, ptAryRet: MotorCore.Vector3[]): Promise<void>;
+    }
+}
+
+declare module 'Motor/geo/GeoAlgorithm' {
+    import MotorCore from 'Motor/Core';
+    export default class GeoAlgorithm {
+        static distance(left: MotorCore.Vector3, right: MotorCore.Vector3): number;
+        static normalize(vec: MotorCore.Vector3, result: MotorCore.Vector3): MotorCore.Vector3;
+        static dot(left: MotorCore.Vector3, right: MotorCore.Vector3): number;
+        static cross(left: MotorCore.Vector3, right: MotorCore.Vector3, result: MotorCore.Vector3): MotorCore.Vector3;
+        static add(left: MotorCore.Vector3, right: MotorCore.Vector3, result: MotorCore.Vector3): MotorCore.Vector3;
+        static subtract(left: MotorCore.Vector3, right: MotorCore.Vector3, result: MotorCore.Vector3): MotorCore.Vector3;
+        static negate(vec: MotorCore.Vector3, result: MotorCore.Vector3): MotorCore.Vector3;
+        static midpoint(left: MotorCore.Vector3, right: MotorCore.Vector3, result: MotorCore.Vector3): MotorCore.Vector3;
+        static angleBetween(left: MotorCore.Vector3, right: MotorCore.Vector3): number;
+        static generateBoxByPt(basePt: MotorCore.Vector3, length: number, width: number, height: number): MotorCore.Box;
     }
 }
 
@@ -46517,6 +46549,21 @@ declare module 'Motor/plugins/MarkCollectionEditor' {
         get viewer(): Viewer;
         get project(): Project;
         create(option: MotorCore.CZMLSchema): Promise<Model>;
+        update(model: Model, option: MotorCore.CZMLSchema): Promise<void>;
+        remove(model: Model): Promise<void>;
+    }
+}
+
+declare module 'Motor/plugins/MarkGifLabelEdtior' {
+    import Viewer from 'Motor/Viewer';
+    import Project from 'Motor/Project';
+    import Model from 'Motor/Model';
+    import MotorCore from 'Motor/Core';
+    export default class MarkGifLabelEdtior {
+        constructor(viewer: Viewer, project: Project);
+        get viewer(): Viewer;
+        get project(): Project;
+        create(option: MotorCore.ModSpriteOptions): Promise<Model>;
         remove(model: Model): Promise<void>;
     }
 }
@@ -46616,6 +46663,7 @@ declare module 'Motor/plugins/ModelEditor' {
         get project(): Project;
         constructor(viewer: Viewer, project: Project);
         createMeshModel(modOption: MeshModelOption): Promise<Model>;
+        createTileset(url: string, zoomTo?: boolean): Promise<Model>;
         remove(model: Model): Promise<void>;
     }
 }
@@ -46736,7 +46784,7 @@ declare module 'Motor/plugins/WaterEditor' {
 declare module 'Motor/typedefine' {
     import Model from 'Motor/Model';
     import MotorCore from 'Motor/Core';
-    export { ModelType, Element, ExtraPropInterface, PickObject, };
+    export { ModelType, Element, ExtraPropInterface, PickObject, CustomIdObject, };
     interface ExtraPropInterface {
         modConstructorViewerOptions?: any;
         viewerOptions?: any;
@@ -46757,13 +46805,13 @@ declare module 'Motor/typedefine' {
         GLOBEFOLDER = 10
     }
     interface Element {
-        id: string;
+        model: Model;
         name: string;
         projectId: string;
-        model?: Model;
+        box: MotorCore.Box;
+        id?: string;
         dir?: string[];
         bimId?: string;
-        box: MotorCore.Box;
         properties?: unknown;
         bimProperties?: unknown;
     }
@@ -46773,6 +46821,11 @@ declare module 'Motor/typedefine' {
         dir?: string[];
         bimId?: string;
         box?: MotorCore.Box;
+    }
+    interface CustomIdObject {
+        projId: string;
+        modelId: string;
+        elementId?: string;
     }
 }
 

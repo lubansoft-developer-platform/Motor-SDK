@@ -110,6 +110,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#queryElementByBimIds" class="tsd-kind-icon">query<wbr>Element<wbr>ByBim<wbr>Ids</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#queryElementsByCustomId" class="tsd-kind-icon">query<wbr>Elements<wbr>ByCustom<wbr>Id</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#queyElementsByKeywords" class="tsd-kind-icon">quey<wbr>Elements<wbr>ByKeywords</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#removed" class="tsd-kind-icon">removed</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#resetColor" class="tsd-kind-icon">reset<wbr>Color</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#rotate" class="tsd-kind-icon">rotate</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#scale" class="tsd-kind-icon">scale</a></li>
@@ -687,7 +688,7 @@
 					<a name="queryElementsByCustomId" class="tsd-anchor"></a>
 					<h3>query<wbr>Elements<wbr>ByCustom<wbr>Id</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">query<wbr>Elements<wbr>ByCustom<wbr>Id<span class="tsd-signature-symbol">(</span>keyWord<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, likeQuery<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">query<wbr>Elements<wbr>ByCustom<wbr>Id<span class="tsd-signature-symbol">(</span>keyWord<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, likeQuery<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/CustomIdObject.html" class="tsd-signature-type" data-tsd-kind="Interface">CustomIdObject</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -708,7 +709,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/CustomIdObject.html" class="tsd-signature-type" data-tsd-kind="Interface">CustomIdObject</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<ul>
 								<li>返回构件id信息列表</li>
 							</ul>
@@ -743,6 +744,25 @@
 							<ul>
 								<li>构件id信息列表</li>
 							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="removed" class="tsd-anchor"></a>
+					<h3>removed</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">removed<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>判断此模型在外部已经删除了</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1218,6 +1238,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="Model.html#queyElementsByKeywords" class="tsd-kind-icon">quey<wbr>Elements<wbr>ByKeywords</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="Model.html#removed" class="tsd-kind-icon">removed</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="Model.html#resetColor" class="tsd-kind-icon">reset<wbr>Color</a>

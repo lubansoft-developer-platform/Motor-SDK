@@ -113,9 +113,12 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#fadeIn" class="tsd-kind-icon">fade<wbr>In</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#fadeOut" class="tsd-kind-icon">fade<wbr>Out</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#fromProjectionPosition" class="tsd-kind-icon">from<wbr>Projection<wbr>Position</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#geoToWorld" class="tsd-kind-icon">geo<wbr>ToWorld</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#getElmentBoundingBox" class="tsd-kind-icon">get<wbr>Elment<wbr>Bounding<wbr>Box</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#getWorldBox" class="tsd-kind-icon">get<wbr>World<wbr>Box</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#isolate" class="tsd-kind-icon">isolate</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#open" class="tsd-kind-icon">open</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#projectionToWorld" class="tsd-kind-icon">projection<wbr>ToWorld</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#queryElement" class="tsd-kind-icon">query<wbr>Element</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#queryElementByBimIds" class="tsd-kind-icon">query<wbr>Element<wbr>ByBim<wbr>Ids</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#queryElementsByCustomId" class="tsd-kind-icon">query<wbr>Elements<wbr>ByCustom<wbr>Id</a></li>
@@ -125,6 +128,8 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#setColor" class="tsd-kind-icon">set<wbr>Color</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#setVisibility" class="tsd-kind-icon">set<wbr>Visibility</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#toProjectionPosition" class="tsd-kind-icon">to<wbr>Projection<wbr>Position</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#worldToGeo" class="tsd-kind-icon">world<wbr>ToGeo</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Project.html#worldToProjection" class="tsd-kind-icon">world<wbr>ToProjection</a></li>
 							</ul>
 						</section>
 					</div>
@@ -516,6 +521,47 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="geoToWorld" class="tsd-anchor"></a>
+					<h3>geo<wbr>ToWorld</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">geo<wbr>ToWorld<span class="tsd-signature-symbol">(</span>longitude<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, latitude<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>wgs84 (gps) 经纬度坐标转当前世界坐标系点</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>longitude: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>经度</p>
+									</div>
+								</li>
+								<li>
+									<h5>latitude: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>纬度</p>
+									</div>
+								</li>
+								<li>
+									<h5>height: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>海拔</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4>
+							<p>世界坐标系中点</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="getElmentBoundingBox" class="tsd-anchor"></a>
 					<h3>get<wbr>Elment<wbr>Bounding<wbr>Box</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -538,6 +584,20 @@
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Box.html" class="tsd-signature-type" data-tsd-kind="Class">Box</a><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>AABB包围盒</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getWorldBox" class="tsd-anchor"></a>
+					<h3>get<wbr>World<wbr>Box</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>World<wbr>Box<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Box.html" class="tsd-signature-type" data-tsd-kind="Class">Box</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Box.html" class="tsd-signature-type" data-tsd-kind="Class">Box</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -608,6 +668,35 @@
 							<aside class="tsd-sources">
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="projectionToWorld" class="tsd-anchor"></a>
+					<h3>projection<wbr>ToWorld</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">projection<wbr>ToWorld<span class="tsd-signature-symbol">(</span>position<span class="tsd-signature-symbol">: </span><a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>投影坐标系位置点转当前世界坐标系位置点</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>position: <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>投影坐标系 工程绝对点</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4>
+							<p>当前世界坐标系位置点</p>
 						</li>
 					</ul>
 				</section>
@@ -727,7 +816,7 @@
 					<a name="queryElementsByCustomId" class="tsd-anchor"></a>
 					<h3>query<wbr>Elements<wbr>ByCustom<wbr>Id</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">query<wbr>Elements<wbr>ByCustom<wbr>Id<span class="tsd-signature-symbol">(</span>keyWord<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, likeQuery<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">query<wbr>Elements<wbr>ByCustom<wbr>Id<span class="tsd-signature-symbol">(</span>keyWord<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, likeQuery<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/CustomIdObject.html" class="tsd-signature-type" data-tsd-kind="Interface">CustomIdObject</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -748,7 +837,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/CustomIdObject.html" class="tsd-signature-type" data-tsd-kind="Interface">CustomIdObject</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<ul>
 								<li>返回构件id信息列表</li>
 							</ul>
@@ -1114,6 +1203,64 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="worldToGeo" class="tsd-anchor"></a>
+					<h3>world<wbr>ToGeo</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">world<wbr>ToGeo<span class="tsd-signature-symbol">(</span>position<span class="tsd-signature-symbol">: </span><a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>当前世界坐标系点转wgs84（gps）经纬度</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>position: <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>世界坐标系点</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4>
+							<p>Vector3 中 x表示经度 y表示纬度 z表示海拔</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="worldToProjection" class="tsd-anchor"></a>
+					<h3>world<wbr>ToProjection</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">world<wbr>ToProjection<span class="tsd-signature-symbol">(</span>position<span class="tsd-signature-symbol">: </span><a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>当前世界坐标系点转投影坐标系绝对位置点</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>position: <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>世界坐标系点</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4>
+							<p>投影坐标系（工程坐标系）绝对位置点</p>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -1174,13 +1321,22 @@
 								<a href="Project.html#fromProjectionPosition" class="tsd-kind-icon">from<wbr>Projection<wbr>Position</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="Project.html#geoToWorld" class="tsd-kind-icon">geo<wbr>ToWorld</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="Project.html#getElmentBoundingBox" class="tsd-kind-icon">get<wbr>Elment<wbr>Bounding<wbr>Box</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="Project.html#getWorldBox" class="tsd-kind-icon">get<wbr>World<wbr>Box</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="Project.html#isolate" class="tsd-kind-icon">isolate</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="Project.html#open" class="tsd-kind-icon">open</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="Project.html#projectionToWorld" class="tsd-kind-icon">projection<wbr>ToWorld</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="Project.html#queryElement" class="tsd-kind-icon">query<wbr>Element</a>
@@ -1208,6 +1364,12 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="Project.html#toProjectionPosition" class="tsd-kind-icon">to<wbr>Projection<wbr>Position</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="Project.html#worldToGeo" class="tsd-kind-icon">world<wbr>ToGeo</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="Project.html#worldToProjection" class="tsd-kind-icon">world<wbr>ToProjection</a>
 							</li>
 						</ul>
 					</li>
