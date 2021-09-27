@@ -46350,6 +46350,7 @@ declare module 'Motor/Model' {
         get brightness(): number;
         set contrast(value: number);
         get contrast(): number;
+        set maximumLevel(value: number);
     }
 }
 
