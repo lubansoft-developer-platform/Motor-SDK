@@ -157,10 +157,10 @@ declare module 'motor/Core/Mod' {
         getViewer(): Viewer;
         getEffect(): RenderEffect;
         getColor(): Color | undefined;
-        setColor(value: Color, isHighlight: boolean, oneBatch?: OneBatch): void;
-        setVisibility(value: boolean, oneBatch?: OneBatch): void;
+        setColor(value: Color, isHighlight: boolean, oneBatch?: OneBatch, forceDeal?: boolean): void;
+        setVisibility(value: boolean, oneBatch?: OneBatch, forceDeal?: boolean): void;
         getVisibility(): boolean;
-        resetDefaultColor(isHighlight: boolean, oneBatch?: OneBatch): void;
+        resetDefaultColor(isHighlight: boolean, oneBatch?: OneBatch, forceDeal?: boolean): void;
         setSelect(value: boolean): void;
         refreshStyle(): void;
         drawMod(): Promise<void>;
@@ -206,9 +206,9 @@ declare module 'motor/Core/Mod' {
         protected saveOpt(options: ModOptions): void;
         protected loadForward(_properties: object): void;
         protected saveForward(_properties: object): void;
-        protected setColorForward(_value: Color, _isHighlight: boolean, _oneBatch?: OneBatch): void;
-        protected setVisibilityForward(_value: boolean, _oneBatch?: OneBatch): void;
-        protected resetDefaultColorForward(_isHighlight: boolean, _oneBatch?: OneBatch): void;
+        protected setColorForward(_value: Color, _isHighlight: boolean, _oneBatch?: OneBatch, _forceDeal?: boolean): void;
+        protected setVisibilityForward(_value: boolean, _oneBatch?: OneBatch, _forceDeal?: boolean): void;
+        protected resetDefaultColorForward(_isHighlight: boolean, _oneBatch?: OneBatch, _forceDeal?: boolean): void;
         protected setSelectForward(_value: boolean): void;
         protected initedRenderForward(): Promise<unknown>;
         abstract type(): string;
@@ -237,8 +237,8 @@ declare module 'motor/Core/Mod3DTilesProvider' {
         metaType(): string;
         set modProjectId(id: string | undefined);
         get modProjectId(): string | undefined;
-        protected setColorForward(color: Color, isHighlight: boolean, _oneBatch?: OneBatch): void;
-        protected resetDefaultColorForward(isHighlight: boolean, _oneBatch?: OneBatch): void;
+        protected setColorForward(color: Color, isHighlight: boolean, _oneBatch?: OneBatch, _forceDeal?: boolean): void;
+        protected resetDefaultColorForward(isHighlight: boolean, _oneBatch?: OneBatch, _forceDeal?: boolean): void;
         protected loadForward(properties: object): void;
         protected saveForward(properties: object): void;
         protected initedRenderForward(): Promise<void>;
@@ -422,9 +422,9 @@ declare module 'motor/Core/ModLBTilesProvider' {
         static classType(): string;
         static cast(mod: Mod | undefined): ModLBTilesProvider | undefined;
         type(): string;
-        protected setColorForward(color: Color, isHighlight: boolean, oneBatch?: OneBatch): void;
-        protected resetDefaultColorForward(isHighlight: boolean, oneBatch?: OneBatch): void;
-        protected setVisibilityForward(value: boolean, oneBatch?: OneBatch): void;
+        protected setColorForward(color: Color, isHighlight: boolean, oneBatch?: OneBatch, _forceDeal?: boolean): void;
+        protected resetDefaultColorForward(isHighlight: boolean, oneBatch?: OneBatch, _forceDeal?: boolean): void;
+        protected setVisibilityForward(value: boolean, oneBatch?: OneBatch, _forceDeal?: boolean): void;
         protected initedRenderForward(): Promise<void>;
         protected getWorldBoxForward(): Box | undefined;
         protected drawModForward(): Promise<Cesium.Cesium3DTileset>;
@@ -583,9 +583,9 @@ declare module 'motor/Core/ModProjProxy' {
         getCompIndexesByDirs(dirAry: string[]): Promise<number[]>;
         getCompIndexesByBimPropertiesLike(name: string): Promise<number[]>;
         getInnerMod(): Mod | undefined;
-        protected setColorForward(color: Color, isHighlight: boolean, oneBatch?: OneBatch): void;
-        protected resetDefaultColorForward(isHighlight: boolean, oneBatch?: OneBatch): void;
-        protected setVisibilityForward(value: boolean, oneBatch?: OneBatch): void;
+        protected setColorForward(color: Color, isHighlight: boolean, oneBatch?: OneBatch, forceDeal?: boolean): void;
+        protected resetDefaultColorForward(isHighlight: boolean, oneBatch?: OneBatch, forceDeal?: boolean): void;
+        protected setVisibilityForward(value: boolean, oneBatch?: OneBatch, forceDeal?: boolean): void;
         protected setSelectForward(value: boolean): void;
         protected initedRenderForward(): Promise<void>;
         protected getWorldBoxForward(): Box | undefined;
@@ -664,6 +664,7 @@ declare module 'motor/Core/ModTerTilesProvider' {
 declare module 'motor/Core/ModVideoProjection' {
     import Box from "motor/Util/Box";
     import Vector3 from "motor/Util/Vector3";
+    import { OneBatch } from "motor/Viewer/Viewer";
     import Mod, { ModOptions } from "motor/Core/Mod";
     export interface VideoProjectionParams {
         videoUrl: string;
@@ -688,7 +689,7 @@ declare module 'motor/Core/ModVideoProjection' {
         get debugMode(): boolean;
         setVideoUrl(url: string, container: HTMLElement): void;
         cloneForward(modOptions: ModOptions): Mod;
-        protected setVisibilityForward(value: boolean): void;
+        protected setVisibilityForward(value: boolean, _oneBatch?: OneBatch, _forceDeal?: boolean): void;
         protected drawModForward(): Promise<unknown>;
         protected playVideo(): Promise<unknown>;
         protected projectionVideo(): void;
@@ -1681,13 +1682,14 @@ declare module 'motor/Viewer/Control' {
         LEFT_MOUSE_BTN = 0,
         RIGHT_MOUSE_BTN = 1,
         MIDDLE_MOUSE_BTN = 2,
-        PINCH_BTN = 3
+        NONE_BTN = 3
     }
     class Control extends MotorObj {
         viewer: Viewer;
         protected camera: Camera;
         constructor(viewer: Viewer);
         register(): void;
+        removeApplyType(apply: ControlApplyType): void;
         setApplyType(apply: ControlApplyType, downAction: (windowPosition: Vector2 | number | PitchPosition | undefined) => void, upAction: (windowPosition: Vector2 | number | PitchPosition | undefined) => void): void;
         keyDownCallback(evt: KeyboardEvent): void;
         keyUpCallback(evt: KeyboardEvent): void;
@@ -46259,7 +46261,7 @@ declare module 'Motor' {
     export { default as VideoProjectionEditor, ModelVideo, } from 'Motor/plugins/VideoProjectionEditor';
     export { default as WaterEditor } from 'Motor/plugins/WaterEditor';
     export { ModelType, Element, ExtraPropInterface, PickObject, CustomIdObject, } from 'Motor/typedefine';
-    export { gHighLightColor, gIsolateColor, gBlockColor, } from 'Motor/until/MotorContext';
+    export { gHighLightColor, gIsolateColor, gBlockColor, gIsolateStatus, gGlobalConfig, } from 'Motor/until/MotorContext';
     export { computeArea } from 'Motor/until/UtilTool';
 }
 
@@ -46291,10 +46293,11 @@ declare module 'Motor/Model' {
     import { ModelType, Element, CustomIdObject } from 'Motor/typedefine';
     import MotorCore from 'Motor/Core';
     export default class Model {
-        constructor(mod?: MotorCore.Mod);
-        get mod(): MotorCore.Mod | undefined;
+        constructor(mod: MotorCore.Mod);
+        get mod(): MotorCore.Mod;
         get type(): ModelType | undefined;
-        get id(): string | undefined;
+        get id(): string;
+        get name(): string | undefined;
         queryElementByBimIds(bimids: string[]): Promise<Element[]>;
         queryElementsByCustomId(keyWord: string, likeQuery?: boolean): Promise<CustomIdObject[]>;
         getElementCustomId(elementId: string): Promise<string>;
@@ -46371,7 +46374,7 @@ declare module 'Motor/Project' {
         toProjectionPosition(wordPosition: MotorCore.Vector3): MotorCore.Vector3 | undefined;
         fromProjectionPosition(projectionPosition: MotorCore.Vector3): MotorCore.Vector3 | undefined;
         queryModel(): Promise<Model[]>;
-        queryModel(id: string): Promise<Model>;
+        queryModel(id: string): Promise<Model | undefined>;
         queryModel(ids: string[]): Promise<Model[]>;
         queryModel(typs: ModelType[]): Promise<Model[]>;
         queryElementByBimIds(bimids: string[]): Promise<Element[]>;
@@ -46483,6 +46486,8 @@ declare module 'Motor/geo/GeoAlgorithm' {
         static midpoint(left: MotorCore.Vector3, right: MotorCore.Vector3, result: MotorCore.Vector3): MotorCore.Vector3;
         static angleBetween(left: MotorCore.Vector3, right: MotorCore.Vector3): number;
         static generateBoxByPt(basePt: MotorCore.Vector3, length: number, width: number, height: number): MotorCore.Box;
+        static addBox(leftBox: MotorCore.Box, rightBox: MotorCore.Box): MotorCore.Box;
+        static addPointToBox(box: MotorCore.Box, pointList: MotorCore.Vector3[]): MotorCore.Box;
     }
 }
 
@@ -46832,10 +46837,21 @@ declare module 'Motor/typedefine' {
 
 declare module 'Motor/until/MotorContext' {
     import MotorCore from 'Motor/Core';
+    import Project from 'Motor/Project';
     const gHighLightColor: MotorCore.Color;
     const gIsolateColor: MotorCore.Color;
     const gBlockColor: MotorCore.Color;
-    export { gHighLightColor, gIsolateColor, gBlockColor };
+    interface IsolateStatus {
+        status: boolean;
+        currentProject?: Project;
+        element?: any;
+    }
+    const gIsolateStatus: IsolateStatus;
+    interface GlobalObject {
+        forceDeal: boolean;
+    }
+    const gGlobalConfig: GlobalObject;
+    export { gHighLightColor, gIsolateColor, gBlockColor, gIsolateStatus, gGlobalConfig, };
 }
 
 declare module 'Motor/until/UtilTool' {
