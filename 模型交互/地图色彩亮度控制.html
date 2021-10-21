@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../motor-sdk/Motor.css">
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+<body>
+  <div id="cesiumContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+  <div id="toolbar">
+    <span class="description">
+        地图控制
+    </span>
+    <span class="buttons">
+        <label for="alphaControl">透明度:</label><input id="alphaControl" type="range" value="1" step="0.1" min="0" max="2"/>
+        <label for="lightControl">亮度:</label><input id="lightControl" type="range" value="1" step="0.1" min="0" max="2"/>
+        <label for="contrastControl">对比度:</label><input id="contrastControl" type="range" value="1" step="0.1" min="0" max="2"/>
+        <button id="ok" onclick="onClickOk()">确定</button>
+    </span>
+</div>
+
+</body>
+<style>
+  html,body,#cesiumContainer{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  #toolbar{
+    position: absolute;
+    background-color:#00000080;
+    height: 20px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 0;
+    width: calc(100% - 60px);
+}
+.description{
+    position:relative;
+    left:0;
+    color: white;
+    font-size: 14px;
+}
+.buttons{
+    position:absolute;
+    right:0;
+    margin-right: 10px;
+    padding-left:10px;
+}
+.buttons button{
+    background-color: transparent;
+    color: white;
+    border: 1px solid #ffffffcc;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 18px;
+    margin: 0 5;
+}
+.buttons input{
+    color: white;
+    height: 10px;
+}
+.buttons label{
+    color: white;
+    font-size: 14px;
+}
+</style>
+<script>
+    async function onClickOk(){
+      let alphaControl = document.getElementById("alphaControl");
+      let lightControl = document.getElementById("lightControl");
+      let contrastControl = document.getElementById("contrastControl");
+      let alphaControlValue = parseFloat(alphaControl.value);
+      let lightControlValue = parseFloat(lightControl.value);
+      let contrastControlValue = parseFloat(contrastControl.value);
+      // console.log(5000,alphaControl.value,alphaControlValue,lightControl.value,lightControlValue,contrastControl.value,contrastControlValue )
+      const modelList = await currentProject.queryModel([Motor.ModelType.DOM])
+      for (let index = 0; index < modelList.length; index++) {
+        const element = modelList[index]
+        element.alpha = alphaControlValue;
+        element.brightness = lightControlValue
+        element.contrast = contrastControlValue
+      }
+    }
+
+  let viewer = undefined
+  Motor.setBaseUrl('../motor-sdk')
+  let currentProject = undefined
+  function InitViewer() {
+      viewer = new Motor.Viewer({
+        container: 'cesiumContainer',
+        baseUrl: 'https://open.lubansoft.com/api',
+        appId: 'd0b3c61c6639434e84900b1fd8d391cb',
+        secret: '459dc8b77a63a0c009aec27f818febf6',
+      })
+      return viewer
+    }
+    const openProj = async (projId) => {
+      const viewer = InitViewer()
+      await viewer.Init()
+      currentProject = await viewer.queryProject(projId)
+      await currentProject.open()
+      if(currentProject.viewPosition){
+        viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+      }else{
+        viewer.camera.setViewToProject(currentProject)
+      }
+    }
+    openProj('cd35af5eaed64d6a88619d55584e8311')
+</script>
+</html>

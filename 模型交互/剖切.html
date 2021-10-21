@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../motor-sdk/Motor.css">
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+<body>
+  <div id="cesiumContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+  <div id="toolbar">
+    <span class="description">
+        剖切
+    </span>
+    <span class="buttons">
+        <button id="x" onclick="onClickXPlane()">X平面</button>
+        <button id="y" onclick="onClickYPlane()">Y平面</button>
+        <button id="z" onclick="onClickZPlane()">Z平面</button>
+        <button id="xyz" onclick="onClickXYZPlane()">盒子</button>
+        <button id="toggle" onclick="onClickShow()">切面显隐</button>
+        <label for="rotateSpeed">旋转速度:</label><input id="rotateSpeed" type="range" value="1" step="0.1" min="0.1" max="2"/>
+        <label for="axisLength">旋转轴大小:</label><input id="axisLength" type="range" value="50" step="10" min="10" max="500"/>
+    </span>
+</div>
+
+</body>
+<style>
+  html,body,#cesiumContainer{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  #toolbar{
+    position: absolute;
+    background-color:#00000080;
+    height: 20px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 0;
+    width: calc(100% - 60px);
+}
+.description{
+    position:relative;
+    left:0;
+    color: white;
+    font-size: 14px;
+}
+.buttons{
+    position:absolute;
+    right:0;
+    margin-right: 10px;
+    padding-left:10px;
+}
+.buttons button{
+    background-color: transparent;
+    color: white;
+    border: 1px solid #ffffffcc;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 18px;
+    margin: 0 5;
+}
+.buttons input{
+    color: white;
+    height: 10px;
+}
+.buttons label{
+    color: white;
+    font-size: 14px;
+}
+</style>
+<script>
+  let showPlane = true
+    function onClickXPlane(){
+        if(clippingEditor){
+          showPlane = true
+            clippingEditor.addClippingPlane(Motor.ClippingPlaneType.X)
+        }
+    }
+    function onClickYPlane(){
+      if(clippingEditor){
+          showPlane = true
+            clippingEditor.addClippingPlane(Motor.ClippingPlaneType.Y)
+        }
+    }
+    function onClickZPlane(){
+      if(clippingEditor){
+          showPlane = true
+            clippingEditor.addClippingPlane(Motor.ClippingPlaneType.Z)
+        }
+    }
+    function onClickXYZPlane(){
+      if(clippingEditor){
+          showPlane = true
+            clippingEditor.addClippingPlane(Motor.ClippingPlaneType.XYZ)
+        }
+    }
+    function onClickShow(){
+      if(clippingEditor){
+        clippingEditor.setPlanesVisibility(!showPlane)
+        showPlane = !showPlane
+      }
+    }
+
+  let viewer = undefined
+  let clippingEditor = undefined
+  Motor.setBaseUrl('../motor-sdk')
+  let currentProject = undefined
+  function InitViewer() {
+      viewer = new Motor.Viewer({
+        container: 'cesiumContainer',
+        baseUrl: 'https://open.lubansoft.com/api',
+        appId: 'd0b3c61c6639434e84900b1fd8d391cb',
+        secret: '459dc8b77a63a0c009aec27f818febf6',
+      })
+      return viewer
+    }
+    const openProj = async (projId) => {
+      const viewer = InitViewer()
+      await viewer.Init()
+      currentProject = await viewer.queryProject(projId)
+      await currentProject.open()
+      if(currentProject.viewPosition){
+        viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+      }else{
+        viewer.camera.setViewToProject(currentProject)
+      }
+      const projectBox = currentProject.getWorldBox()
+
+      const center = projectBox?.center
+      const max = projectBox?.maximum
+      const min = projectBox?.minimum
+      console.log(2000, max,min)
+      if (min && max && center) {
+        const minPoint = Motor.Vector3.negate(min, new Motor.Vector3())
+        const distenceVec = Motor.Vector3.add(max, minPoint, new Motor.Vector3())
+        const dis = Motor.Vector3.multiplyByScalar(
+        Motor.Vector3.abs(distenceVec, new Motor.Vector3()),
+        1.5,
+        new Motor.Vector3(),
+        ) //包围盒
+        const offset = new Motor.Vector3(
+        dis.x === 0 ? 1 : dis.x,
+        dis.y === 0 ? 1 : dis.y,
+        dis.z === 0 ? 1 : dis.z,
+        )
+        if(!clippingEditor){
+            clippingEditor = new Motor.ClippingControl(viewer, center, offset)
+        }
+    }
+}
+    openProj('cd35af5eaed64d6a88619d55584e8311')
+</script>
+</html>

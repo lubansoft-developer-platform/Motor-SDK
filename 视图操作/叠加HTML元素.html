@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../motor-sdk/Motor.css">
+  <style type="text/css">
+    .task {
+        position: absolute;
+        top:10px;
+        left:10px;
+        width:180px;
+        overflow: hidden;
+        cursor: pointer;
+        perspective: 800px;
+        transform-style: preserve-3d;
+    }
+    .abstract, .details {
+        width: 100%;
+        padding: 10px 20px;
+        position: relative;
+        color: white;
+        background: rgb(0, 0, 0);
+    }
+    .task:hover .abstract, .task:hover .details {
+        background: rgba(50, 50, 50, 1);
+    }
+    .abstract {
+        transition: 0.3s ease all;
+    }
+    .details {
+        max-height: 0;
+        padding: 10px 12px;
+        overflow: hidden;
+        visibility: hidden;
+        transform: rotateX(-180deg);
+        transform-origin: top center;
+        backface-visibility: hidden;
+        transition: 0.3s transform ease;
+    }
+    .details:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 10%;
+        right: 10%;
+        height: 1px;
+        background: grey;
+    }
+    .task:hover .details {
+        max-height: none;
+        overflow: visible;
+        visibility: visible;
+        transform: rotateX(0deg);
+    }
+    .details__inner {
+        padding: 10px;
+    }
+    .details__inner div{
+        padding-top:5px;
+    }
+  </style>
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+<body>
+  <div id="cesiumContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+  <div id="infobox" class="task" style="display:none;">
+    <div class="abstract">
+        <div style="font-size:26px;font-weight:bold;">机械设备</div>
+    </div>
+    <div class="details">
+        <div class="details__inner">
+            <div>风机箱</div>
+            <div>单台-卧式</div>
+            <div>2000-12000</div>
+        </div>
+    </div>
+</div>
+
+</body>
+<style>
+  html,body,#cesiumContainer{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+</style>
+<script>
+  Motor.setBaseUrl('../motor-sdk')
+  let currentProject = undefined
+  let viewer = undefined
+  let selectModel = undefined
+  let selectElement = undefined
+  let selectBox = undefined
+
+  let infobox = document.getElementById("infobox");
+
+  function InitViewer() {
+      viewer = new Motor.Viewer({
+        container: 'cesiumContainer',
+        baseUrl: 'https://open.lubansoft.com/api',
+        appId: 'd0b3c61c6639434e84900b1fd8d391cb',
+        secret: '459dc8b77a63a0c009aec27f818febf6',
+      })
+      return viewer
+    }
+    const openProj = async (projId) => {
+      const viewer = InitViewer()
+      await viewer.Init()
+      currentProject = await viewer.queryProject(projId)
+      await currentProject.open()
+      let projBox = Motor.GeoAlgorithm.generateBoxByPt(new Motor.Vector3(31.125, 162.6535, -4.035), 50,50,50)
+      viewer.camera.setViewToBox(projBox)
+
+      let currentPosition = undefined
+
+      const inputMap = new Motor.InputMap(viewer)
+      inputMap.setInput(
+            Motor.InputType.LEFT_CLICK,
+            async (windowPosition) => {
+               currentPosition = await viewer.pickPosition(windowPosition)
+               if(currentPosition){
+                   let screenPt =  viewer.camera.getWorldScreenPt(currentPosition)
+                   infobox.setAttribute('style','display:block;')
+                   infobox.style.top = screenPt.y + "px";
+                   infobox.style.left = screenPt.x + "px";
+               }
+            },
+        )
+
+        viewer.camera.cameraChanged.addEventListener(()=>{
+            if(currentPosition){
+                let screenPt =  viewer.camera.getWorldScreenPt(currentPosition)
+                infobox.setAttribute('style','display:block;')
+                infobox.style.top = screenPt.y + "px";
+                infobox.style.left = screenPt.x + "px";
+            }
+        })
+    }
+    openProj('cd35af5eaed64d6a88619d55584e8311')
+</script>
+</html>

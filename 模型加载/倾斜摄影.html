@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../motor-sdk/Motor.css">
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+<body>
+  <div id="cesiumContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+  <div id="toolbar">
+    <span class="description">
+        倾斜摄影
+    </span>
+    <span class="buttons">
+        <button id="loadPG" onclick="onClickPG()">加载倾斜摄影</button>
+        <button id="visible" onclick="onClickVisible()">显隐</button>
+        <button id="remove" onclick="onClickRemove()">删除</button>
+    </span>
+</div>
+
+</body>
+<style>
+  html,body,#cesiumContainer{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  #toolbar{
+    position: absolute;
+    background-color:#00000080;
+    height: 20px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 0;
+    width: calc(100% - 60px);
+}
+.description{
+    position:relative;
+    left:0;
+    color: white;
+    font-size: 14px;
+}
+.buttons{
+    position:absolute;
+    right:0;
+    margin-right: 10px;
+    padding-left:10px;
+}
+.buttons button{
+    background-color: transparent;
+    color: white;
+    border: 1px solid #ffffffcc;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 18px;
+    margin: 0 5;
+}
+.buttons input{
+    color: white;
+    height: 10px;
+}
+.buttons label{
+    color: white;
+    font-size: 14px;
+}
+</style>
+<script>
+    const serverUrl = 'https://open.lubansoft.com/api'
+    const appId = '605986c057b942cdb0af77e279f4b2a9'
+    const secret = '1397e0ccbcb8058489ece2ca5479f69e'
+    const projectId = '0384fb5e324f47b59b79ae35d86c2609'
+    let createModelDomDem = undefined
+    let modPGModel = undefined
+    let bShowPG = true
+    async function onClickPG(){
+      if(!modPGModel){
+        if(!createModelDomDem){
+          createModelDomDem = new Motor.ModelEditor(viewer, currentProject)
+        }
+        
+        modPGModel = await createModelDomDem.createTileset(
+          'https://lbdp.lubansoft.com/code-box/motor-data/photography/tileset.json',
+        )
+      }
+    }
+    async function onClickVisible(){
+      if(modPGModel){
+        modPGModel.setVisibility(!bShowPG)
+        bShowPG = !bShowPG
+      }
+    }
+    async function onClickRemove(){
+      if(modPGModel){
+        createModelDomDem.remove(modPGModel)
+        modPGModel = undefined
+      }
+    }
+
+  let viewer = undefined
+  Motor.setBaseUrl('../motor-sdk')
+  let currentProject = undefined
+  function InitViewer() {
+      viewer = new Motor.Viewer({
+        container: 'cesiumContainer',
+        baseUrl: serverUrl,
+        appId: appId,
+        secret: secret,
+      })
+      return viewer
+    }
+    const openProj = async (projId) => {
+      const viewer = InitViewer()
+      await viewer.Init()
+      currentProject = await viewer.queryProject(projId)
+      await currentProject.open()
+      if(currentProject.viewPosition){
+        viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+      }else{
+        viewer.camera.setViewToProject(currentProject)
+      }
+    }
+    openProj(projectId)
+</script>
+</html>

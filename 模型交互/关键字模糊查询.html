@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../motor-sdk/Motor.css">
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+<body>
+  <div id="cesiumContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+  <div id="toolbar">
+    <span class="description">
+        输入搜索内容进行模糊查询
+    </span>
+</div>
+<div id="searchbox">
+    <input type="search" placeholder="输入查询内容" id="searchInput" />
+    <input type="button" value="查询" id="searchButton">
+    <ul id="searchList">
+    </ul>
+    <div style="padding:5px;text-align: center;">
+        <span class="arrow" id="leftarrow">上一页</span>
+        <input id="pageNumber" type="text" style="width: 40px;margin-right:5px;" value=1 />页/共<span id="totalPage">0</span>页
+        <span class="arrow" id="rightarrow">下一页</span>
+    </div>
+    </div>
+    <div id="infoboxContainer">
+        <div id="infobox"></div>
+    </div>
+
+</body>
+<style>
+  html,body,#cesiumContainer{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  #toolbar{
+    position: absolute;
+    background-color:#00000080;
+    height: 20px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 0;
+    width: calc(100% - 60px);
+}
+.description{
+    position:relative;
+    left:0;
+    color: white;
+    font-size: 14px;
+}
+.buttons{
+    position:absolute;
+    right:0;
+    margin-right: 10px;
+    padding-left:10px;
+}
+#searchbox{
+    position: absolute;
+    background-color:#00000080;
+    top: 40px;
+    color:#e0e0e0;
+    padding:10px 10px;
+    line-height: 22px;
+    font-size:14px;
+    margin: 10;
+    width:400px;
+    height:280px;
+}
+#searchInput{
+    width:320px;
+    height:23px;
+}
+#searchButton{
+    width:50px;
+    padding: 0;
+    background-color: transparent;
+    color: white;
+    border: 1px solid #ffffffcc;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 18px;
+    margin-left: 17px;
+}
+#searchList{
+    width: 382px;
+    height:200px;
+    overflow-y:auto;
+    padding: 5px;
+    margin-bottom: 5px;
+    list-style:none;
+    margin: 10px 0;
+}
+#infoboxContainer{
+    position: absolute;
+    top: 350px;
+    padding: 10px;
+    margin: 10px;
+    width: 400px;
+    background-color: #00000080;
+    color:#e0e0e0;
+    line-height: 22px;
+    font-size:14px;
+    display:none;
+}
+#infobox{
+    overflow-y:auto;
+    width: 382px;
+    height:200px;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+.arrow{
+    padding: 0 0.5rem;
+    cursor:pointer;
+}
+</style>
+<script>
+    let loadingElement = document.getElementById('loading');
+    let searchList = document.getElementById('searchList');
+    let searchInput = document.getElementById('searchInput');
+    let searchButton = document.getElementById('searchButton');
+    let infobox = document.getElementById('infobox');
+    let totalPage = document.getElementById('totalPage');
+    let leftarrow = document.getElementById('leftarrow');
+    let rightarrow = document.getElementById('rightarrow');
+    let infoboxContainer = document.getElementById('infoboxContainer');
+    let totalPageNumber=0;
+
+    let pageSize = 1000,project;
+    const appid = 'd0b3c61c6639434e84900b1fd8d391cb';
+    const secret = '459dc8b77a63a0c009aec27f818febf6';
+
+    const projectId = "cd35af5eaed64d6a88619d55584e8311";
+    searchButton.onclick=findByBIMProperties;
+    async function findByBIMProperties(){
+        let value = searchInput.value;
+        let modelList = await currentProject.queryModel()
+        let resultAll = [];
+        for(let i = 0; i<modelList.length; ++i){
+            let modelItem = modelList[i]
+            if(modelItem.removed()){
+                continue;
+            }
+            let resultItem = await modelItem.queyElementsByKeywords(value)
+            console.log(1000, resultItem)
+            resultAll.push(...resultItem)
+        }
+        console.log(resultAll);
+        let count = resultAll.length;
+        pageNumber.setAttribute('max',Math.floor(count/pageSize)+1);
+        totalPageNumber = Math.floor(count/pageSize)+1;
+        totalPage.innerHTML= totalPageNumber;
+        // let list = resultAll;
+        searchList.innerHTML = "";
+        infobox.innerHTML = "";
+        for(let i = 0; i < resultAll.length; ++i){
+            let li = document.createElement('li');
+            li.setAttribute('style','cursor:pointer;');
+
+            li.onclick=function(){
+                // project.clearIsolation();
+                currentProject.setColor(new Motor.Color(1,1,1,0.1))
+                currentProject.setColor(new Motor.Color(1,0,0),componentId)
+                // project.isolateComponents([component]);
+                // viewer.flyTo(component);
+                // infoboxContainer.setAttribute('style','display:block;');
+            }
+            li.innerHTML = resultAll[i];
+            searchList.appendChild(li);
+        }
+}
+
+    
+
+  let viewer = undefined
+  Motor.setBaseUrl('../motor-sdk')
+  let currentProject = undefined
+  function InitViewer() {
+      viewer = new Motor.Viewer({
+        container: 'cesiumContainer',
+        baseUrl: 'https://open.lubansoft.com/api',
+        appId: appid,
+        secret: secret,
+      })
+      return viewer
+    }
+    const openProj = async (projId) => {
+      const viewer = InitViewer()
+      await viewer.Init()
+      currentProject = await viewer.queryProject(projId)
+      await currentProject.open()
+      if(currentProject.viewPosition){
+        viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+      }else{
+        viewer.camera.setViewToProject(currentProject)
+      }
+    }
+    openProj(projectId)
+</script>
+</html>

@@ -60,7 +60,7 @@ declare module 'motor' {
     export { default as AvatarControl } from 'motor/Viewer/AvatarControl';
     export { default as BloomState, BloomStateOptions } from 'motor/Viewer/BloomState';
     export { default as Camera, ViewPosition } from 'motor/Viewer/Camera';
-    export { default as ClippingControl, ClippingPlaneType } from 'motor/Viewer/ClippingControl';
+    export { default as ClippingControl, ClippingPlaneType, ClippingPlaneTypes } from 'motor/Viewer/ClippingControl';
     export { default as Control, ControlEventCallback, ControlEvent, ControlApplyType } from 'motor/Viewer/Control';
     export { default as DirectionalLight } from 'motor/Viewer/DirectionalLight';
     export { default as EarthControl } from 'motor/Viewer/EarthControl';
@@ -1628,15 +1628,25 @@ declare module 'motor/Viewer/ClippingControl' {
         Z = "Z",
         XYZ = "XYZ"
     }
+    enum ClippingPlaneTypes {
+        X = "X",
+        NegativeX = "-X",
+        Y = "Y",
+        NegativeY = "-Y",
+        Z = "Z",
+        NegativeZ = "-Z"
+    }
     class ClippingControl extends Control {
         dragEnd: Cesium.Event;
         dragStart: Cesium.Event;
+        moveRate: number;
         constructor(viewer: Viewer, center: Vector3, dimensions: Vector3);
         addClippingPlaneByPlane(normal: Vector3, point: Vector3): void;
         addClippingPlane(type: ClippingPlaneType): void;
         set center(value: Vector3);
         set dimensions(value: Vector3);
         setPlanesVisibility(value: boolean): void;
+        setPlaneVisibility(planeType: ClippingPlaneTypes, value: boolean): void;
         onMouseMove(movement: Vector2): void;
         onLeftDown(movement: Vector2): void;
         onLeftUp(movement: Vector2): void;
@@ -1648,7 +1658,7 @@ declare module 'motor/Viewer/ClippingControl' {
         get outlineColor(): Color;
         protected destroyForward(): void;
     }
-    export { ClippingPlaneType };
+    export { ClippingPlaneType, ClippingPlaneTypes };
     export default ClippingControl;
 }
 
@@ -1830,6 +1840,7 @@ declare module 'motor/Viewer/ManipulatorControl' {
         updateEnd: Cesium.Event;
         dragEnd: Cesium.Event;
         dragStart: Cesium.Event;
+        moveRate: number;
         constructor(viewer: Viewer, options?: ManipulatorControlOptions);
         setVisibility(value: boolean): void;
         setBaseTransform(baseTransform: Matrix4): void;
@@ -26299,6 +26310,10 @@ export class ClippingPlaneEditor {
      * 控制clippingPlane的显隐
      */
     setPlanesVisibility(value: boolean): void;
+    /**
+     * 控制单个平面的显隐
+     */
+    setPlaneVisibility(plane: string, value: boolean): void;
     mouseMove(movement: Cartesian2): void;
     mouseUp(movement: Cartesian2): void;
     destroy(): boolean;
@@ -46354,6 +46369,7 @@ declare module 'Motor/Model' {
         set contrast(value: number);
         get contrast(): number;
         set maximumLevel(value: number);
+        setGlobeMapRange(range: number): Promise<void>;
     }
 }
 
@@ -46670,6 +46686,8 @@ declare module 'Motor/plugins/ModelEditor' {
         constructor(viewer: Viewer, project: Project);
         createMeshModel(modOption: MeshModelOption): Promise<Model>;
         createTileset(url: string, zoomTo?: boolean): Promise<Model>;
+        createDOMMap(url: string, zoomTo?: boolean): Promise<Model | undefined>;
+        createDEMMap(url: string, zoomTo?: boolean): Promise<Model | undefined>;
         remove(model: Model): Promise<void>;
     }
 }

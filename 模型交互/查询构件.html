@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../motor-sdk/Motor.css">
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+<body>
+  <div id="cesiumContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+  <div style="color: #eee;font-family: sans-serif;font-size: 9pt;margin: 5px;padding: 2px 5px;position: absolute;" id="toolbar">
+    <table>
+        <tbody id = "toolbarTBody">
+            <tr>
+                <td><button id="button1" onclick="onClick1()">根据bim模型中构件id查询构件</td>
+                <td><button id="button2" onclick="onClick2()">查询非bim构件</td>
+                <td><button id="button3" onclick="onClick3()">查询模型</td>
+                <td><button id="button4" onclick="onClick4()">根据bim id查询构件</td>
+                <td><button id="button5" onclick="onClick5()">根据自定义id查询构件</td>
+                <td><button id="button6" onclick="onClick6()">根据自定义id模糊查询构件</td>
+                <td><button id="button7" onclick="onClick7()">还原</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+<style>
+  html,body,#cesiumContainer{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+</style>
+<script>
+    async function onClick1(){
+        //7b337a69cad241098f28bbebec21365a_3656
+        //7b337a69cad241098f28bbebec21365a_3879
+        let elementList = await currentProject.queryElement(['7b337a69cad241098f28bbebec21365a_3656','7b337a69cad241098f28bbebec21365a_3879'])
+        console.log(1000, elementList)
+        currentProject.setColor(new Motor.Color(1,0,0), elementList)
+
+    }
+    async function onClick2(){
+        //6de7ed2a1ad547b4ae10f11ee383a3ba
+        //f410a9be684f4975b594519f0d844746
+        let modelList = await currentProject.queryModel(['6de7ed2a1ad547b4ae10f11ee383a3ba','f410a9be684f4975b594519f0d844746'])
+        modelList.forEach(element => {
+            element.setColor(new Motor.Color(1,0,0))
+        });
+    }
+    //7b337a69cad241098f28bbebec21365a
+    async function onClick3(){
+        let mode = await currentProject.queryModel('7b337a69cad241098f28bbebec21365a')
+        mode.setColor(new Motor.Color(1,0,0))
+    }
+    async function onClick4(){
+        //32d653bd-5782-4762-878c-a3d384548178-000819eb
+        //32d653bd-5782-4762-878c-a3d384548178-000856f1
+        let compList = await currentProject.queryElementByBimIds(['32d653bd-5782-4762-878c-a3d384548178-000819eb','32d653bd-5782-4762-878c-a3d384548178-000856f1'])
+        currentProject.setColor(new Motor.Color(1,0,0), compList)
+    }
+
+    async function onClick5(){
+        // 小型车-沪A12345
+        // 座椅-BH001
+        // 屋顶001
+        // 屋顶002
+        let keyWorlds = ['小型车-沪A12345','座椅-BH001','屋顶001','屋顶002']
+        let compList = []
+        for (let index = 0; index < keyWorlds.length; index++) {
+            const element = keyWorlds[index];
+            const retItem = await currentProject.queryElementsByCustomId(element)
+            compList.push(...retItem)
+        }
+        for (let index = 0; index < compList.length; index++) {
+            const element = compList[index];
+            if(element.elementId){
+                currentProject.setColor(new Motor.Color(1,0,0), element.elementId)
+            }else{
+                currentProject.setColor(new Motor.Color(1,0,0), element.modelId)
+            }
+        }
+    }
+    async function onClick6(){
+        // 小型车-沪A12345
+        // 座椅-BH001
+        // 屋顶001
+        // 屋顶002
+        let keyWorlds = ['小型车','座椅','屋顶','屋顶']
+        let compList = []
+        for (let index = 0; index < keyWorlds.length; index++) {
+            const element = keyWorlds[index];
+            const retItem = await currentProject.queryElementsByCustomId(element,true)
+            compList.push(...retItem)
+        }
+        for (let index = 0; index < compList.length; index++) {
+            const element = compList[index];
+            if(element.elementId){
+                currentProject.setColor(new Motor.Color(1,0,0), element.elementId)
+            }else{
+                currentProject.setColor(new Motor.Color(1,0,0), element.modelId)
+            }
+        }
+    }
+
+    function onClick7(){
+        currentProject.resetColor()
+    }
+
+  let viewer = undefined
+  Motor.setBaseUrl('../motor-sdk')
+  let currentProject = undefined
+  function InitViewer() {
+      viewer = new Motor.Viewer({
+        container: 'cesiumContainer',
+        baseUrl: 'https://open.lubansoft.com/api',
+        appId: 'd0b3c61c6639434e84900b1fd8d391cb',
+        secret: '459dc8b77a63a0c009aec27f818febf6',
+      })
+      return viewer
+    }
+    const openProj = async (projId) => {
+      const viewer = InitViewer()
+      await viewer.Init()
+      currentProject = await viewer.queryProject(projId)
+      await currentProject.open()
+      if(currentProject.viewPosition){
+        viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+      }else{
+        viewer.camera.setViewToProject(currentProject)
+      }
+    }
+    openProj('cd35af5eaed64d6a88619d55584e8311')
+</script>
+</html>
