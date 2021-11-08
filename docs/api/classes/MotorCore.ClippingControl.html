@@ -99,6 +99,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="MotorCore.ClippingControl.html#dragEnd" class="tsd-kind-icon">drag<wbr>End</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="MotorCore.ClippingControl.html#dragStart" class="tsd-kind-icon">drag<wbr>Start</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="MotorCore.ClippingControl.html#moveRate" class="tsd-kind-icon">move<wbr>Rate</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ClippingControl.html#viewer" class="tsd-kind-icon">viewer</a></li>
 							</ul>
 						</section>
@@ -125,7 +126,10 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="MotorCore.ClippingControl.html#onLeftUp" class="tsd-kind-icon">on<wbr>Left<wbr>Up</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="MotorCore.ClippingControl.html#onMouseMove" class="tsd-kind-icon">on<wbr>Mouse<wbr>Move</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ClippingControl.html#register" class="tsd-kind-icon">register</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ClippingControl.html#removeApplyType" class="tsd-kind-icon">remove<wbr>Apply<wbr>Type</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="MotorCore.ClippingControl.html#resetManipulatorParams" class="tsd-kind-icon">reset<wbr>Manipulator<wbr>Params</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ClippingControl.html#setApplyType" class="tsd-kind-icon">set<wbr>Apply<wbr>Type</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="MotorCore.ClippingControl.html#setPlaneVisibility" class="tsd-kind-icon">set<wbr>Plane<wbr>Visibility</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="MotorCore.ClippingControl.html#setPlanesVisibility" class="tsd-kind-icon">set<wbr>Planes<wbr>Visibility</a></li>
 							</ul>
 						</section>
@@ -138,7 +142,7 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Clipping<wbr>Control<span class="tsd-signature-symbol">(</span>viewer<span class="tsd-signature-symbol">: </span><a href="MotorCore.Viewer.html" class="tsd-signature-type" data-tsd-kind="Class">Viewer</a>, center<span class="tsd-signature-symbol">: </span><a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, dimensions<span class="tsd-signature-symbol">: </span><a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="MotorCore.ClippingControl.html" class="tsd-signature-type" data-tsd-kind="Class">ClippingControl</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Clipping<wbr>Control<span class="tsd-signature-symbol">(</span>viewer<span class="tsd-signature-symbol">: </span><a href="MotorCore.Viewer.html" class="tsd-signature-type" data-tsd-kind="Class">Viewer</a>, center<span class="tsd-signature-symbol">: </span><a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, dimensions<span class="tsd-signature-symbol">: </span><a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, clippingType<span class="tsd-signature-symbol">?: </span><a href="../enums/MotorCore.ClippingTypes.html" class="tsd-signature-type" data-tsd-kind="Enumeration">ClippingTypes</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="MotorCore.ClippingControl.html" class="tsd-signature-type" data-tsd-kind="Class">ClippingControl</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -155,6 +159,9 @@
 								</li>
 								<li>
 									<h5>dimensions: <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> clippingType: <a href="../enums/MotorCore.ClippingTypes.html" class="tsd-signature-type" data-tsd-kind="Enumeration">ClippingTypes</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="MotorCore.ClippingControl.html" class="tsd-signature-type" data-tsd-kind="Class">ClippingControl</a></h4>
@@ -175,6 +182,13 @@
 					<a name="dragStart" class="tsd-anchor"></a>
 					<h3>drag<wbr>Start</h3>
 					<div class="tsd-signature tsd-kind-icon">drag<wbr>Start<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Event</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="moveRate" class="tsd-anchor"></a>
+					<h3>move<wbr>Rate</h3>
+					<div class="tsd-signature tsd-kind-icon">move<wbr>Rate<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 1</span></div>
 					<aside class="tsd-sources">
 					</aside>
 				</section>
@@ -501,10 +515,51 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="removeApplyType" class="tsd-anchor"></a>
+					<h3>remove<wbr>Apply<wbr>Type</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Apply<wbr>Type<span class="tsd-signature-symbol">(</span>apply<span class="tsd-signature-symbol">: </span><a href="../enums/MotorCore.ControlApplyType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">ControlApplyType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="MotorCore.Control.html">Control</a>.<a href="MotorCore.Control.html#removeApplyType">removeApplyType</a></p>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>apply: <a href="../enums/MotorCore.ControlApplyType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">ControlApplyType</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="resetManipulatorParams" class="tsd-anchor"></a>
+					<h3>reset<wbr>Manipulator<wbr>Params</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">reset<wbr>Manipulator<wbr>Params<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/MotorCore.ManipulatorControlOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">ManipulatorControlOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>options: <a href="../interfaces/MotorCore.ManipulatorControlOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">ManipulatorControlOptions</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="setApplyType" class="tsd-anchor"></a>
 					<h3>set<wbr>Apply<wbr>Type</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Apply<wbr>Type<span class="tsd-signature-symbol">(</span>apply<span class="tsd-signature-symbol">: </span><a href="../enums/MotorCore.ControlApplyType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">ControlApplyType</a>, downAction<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>windowPosition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span>, upAction<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>windowPosition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Apply<wbr>Type<span class="tsd-signature-symbol">(</span>apply<span class="tsd-signature-symbol">: </span><a href="../enums/MotorCore.ControlApplyType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">ControlApplyType</a>, downAction<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>windowPosition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/MotorCore.PitchPosition.html" class="tsd-signature-type" data-tsd-kind="Interface">PitchPosition</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span>, upAction<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>windowPosition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/MotorCore.PitchPosition.html" class="tsd-signature-type" data-tsd-kind="Interface">PitchPosition</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -517,18 +572,18 @@
 									<h5>apply: <a href="../enums/MotorCore.ControlApplyType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">ControlApplyType</a></h5>
 								</li>
 								<li>
-									<h5>downAction: <span class="tsd-signature-symbol">(</span>windowPosition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+									<h5>downAction: <span class="tsd-signature-symbol">(</span>windowPosition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/MotorCore.PitchPosition.html" class="tsd-signature-type" data-tsd-kind="Interface">PitchPosition</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-signature">
 											<ul class="tsd-signatures tsd-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>windowPosition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>windowPosition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/MotorCore.PitchPosition.html" class="tsd-signature-type" data-tsd-kind="Interface">PitchPosition</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
 													<h4 class="tsd-parameters-title">Parameters</h4>
 													<ul class="tsd-parameters">
 														<li>
-															<h5>windowPosition: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a></h5>
+															<h5>windowPosition: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/MotorCore.PitchPosition.html" class="tsd-signature-type" data-tsd-kind="Interface">PitchPosition</a></h5>
 														</li>
 													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -538,18 +593,18 @@
 									</ul>
 								</li>
 								<li>
-									<h5>upAction: <span class="tsd-signature-symbol">(</span>windowPosition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+									<h5>upAction: <span class="tsd-signature-symbol">(</span>windowPosition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/MotorCore.PitchPosition.html" class="tsd-signature-type" data-tsd-kind="Interface">PitchPosition</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-signature">
 											<ul class="tsd-signatures tsd-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>windowPosition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>windowPosition<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/MotorCore.PitchPosition.html" class="tsd-signature-type" data-tsd-kind="Interface">PitchPosition</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
 													<h4 class="tsd-parameters-title">Parameters</h4>
 													<ul class="tsd-parameters">
 														<li>
-															<h5>windowPosition: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a></h5>
+															<h5>windowPosition: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/MotorCore.PitchPosition.html" class="tsd-signature-type" data-tsd-kind="Interface">PitchPosition</a></h5>
 														</li>
 													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -557,6 +612,29 @@
 											</ul>
 										</li>
 									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setPlaneVisibility" class="tsd-anchor"></a>
+					<h3>set<wbr>Plane<wbr>Visibility</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Plane<wbr>Visibility<span class="tsd-signature-symbol">(</span>planeType<span class="tsd-signature-symbol">: </span><a href="../enums/MotorCore.ClippingPlaneTypes.html" class="tsd-signature-type" data-tsd-kind="Enumeration">ClippingPlaneTypes</a>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>planeType: <a href="../enums/MotorCore.ClippingPlaneTypes.html" class="tsd-signature-type" data-tsd-kind="Enumeration">ClippingPlaneTypes</a></h5>
+								</li>
+								<li>
+									<h5>value: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -612,6 +690,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="MotorCore.ClippingControl.html#dragStart" class="tsd-kind-icon">drag<wbr>Start</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="MotorCore.ClippingControl.html#moveRate" class="tsd-kind-icon">move<wbr>Rate</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="MotorCore.ClippingControl.html#viewer" class="tsd-kind-icon">viewer</a>
 							</li>
@@ -661,7 +742,16 @@
 								<a href="MotorCore.ClippingControl.html#register" class="tsd-kind-icon">register</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="MotorCore.ClippingControl.html#removeApplyType" class="tsd-kind-icon">remove<wbr>Apply<wbr>Type</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="MotorCore.ClippingControl.html#resetManipulatorParams" class="tsd-kind-icon">reset<wbr>Manipulator<wbr>Params</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="MotorCore.ClippingControl.html#setApplyType" class="tsd-kind-icon">set<wbr>Apply<wbr>Type</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="MotorCore.ClippingControl.html#setPlaneVisibility" class="tsd-kind-icon">set<wbr>Plane<wbr>Visibility</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="MotorCore.ClippingControl.html#setPlanesVisibility" class="tsd-kind-icon">set<wbr>Planes<wbr>Visibility</a>

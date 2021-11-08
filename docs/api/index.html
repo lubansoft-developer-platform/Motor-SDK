@@ -102,7 +102,6 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-class"><a href="classes/AnimationPlayer.html" class="tsd-kind-icon">Animation<wbr>Player</a></li>
 								<li class="tsd-kind-class"><a href="classes/Camera.html" class="tsd-kind-icon">Camera</a></li>
-								<li class="tsd-kind-class"><a href="classes/Cartographic.html" class="tsd-kind-icon">Cartographic</a></li>
 								<li class="tsd-kind-class"><a href="classes/ClippingControl.html" class="tsd-kind-icon">Clipping<wbr>Control</a></li>
 								<li class="tsd-kind-class"><a href="classes/GeoAlgorithm.html" class="tsd-kind-icon">Geo<wbr>Algorithm</a></li>
 								<li class="tsd-kind-class"><a href="classes/InputMap.html" class="tsd-kind-icon">Input<wbr>Map</a></li>
@@ -126,11 +125,13 @@
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-interface"><a href="interfaces/AnimationPlayerOptions.html" class="tsd-kind-icon">Animation<wbr>Player<wbr>Options</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/CustomIdObject.html" class="tsd-kind-icon">Custom<wbr>IdObject</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/Element.html" class="tsd-kind-icon">Element</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/ExtraPropInterface.html" class="tsd-kind-icon">Extra<wbr>Prop<wbr>Interface</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/MeshModelOption.html" class="tsd-kind-icon">Mesh<wbr>Model<wbr>Option</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/PickObject.html" class="tsd-kind-icon">Pick<wbr>Object</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/PlayAnimationOptions.html" class="tsd-kind-icon">Play<wbr>Animation<wbr>Options</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/ProjectOpenOption.html" class="tsd-kind-icon">Project<wbr>Open<wbr>Option</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -145,8 +146,10 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-variable"><a href="index.html#SelectorEventMap" class="tsd-kind-icon">Selector<wbr>Event<wbr>Map</a></li>
 								<li class="tsd-kind-variable"><a href="index.html#gBlockColor" class="tsd-kind-icon">g<wbr>Block<wbr>Color</a></li>
+								<li class="tsd-kind-variable"><a href="index.html#gGlobalConfig" class="tsd-kind-icon">g<wbr>Global<wbr>Config</a></li>
 								<li class="tsd-kind-variable"><a href="index.html#gHighLightColor" class="tsd-kind-icon">g<wbr>High<wbr>Light<wbr>Color</a></li>
 								<li class="tsd-kind-variable"><a href="index.html#gIsolateColor" class="tsd-kind-icon">g<wbr>Isolate<wbr>Color</a></li>
+								<li class="tsd-kind-variable"><a href="index.html#gIsolateStatus" class="tsd-kind-icon">g<wbr>Isolate<wbr>Status</a></li>
 								<li class="tsd-kind-variable"><a href="index.html#selector" class="tsd-kind-icon">selector</a></li>
 							</ul>
 						</section>
@@ -315,6 +318,13 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable">
+					<a name="gGlobalConfig" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> g<wbr>Global<wbr>Config</h3>
+					<div class="tsd-signature tsd-kind-icon">g<wbr>Global<wbr>Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">GlobalObject</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="gHighLightColor" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> g<wbr>High<wbr>Light<wbr>Color</h3>
 					<div class="tsd-signature tsd-kind-icon">g<wbr>High<wbr>Light<wbr>Color<span class="tsd-signature-symbol">:</span> <a href="classes/MotorCore.Color.html" class="tsd-signature-type" data-tsd-kind="Class">Color</a><span class="tsd-signature-symbol"> = ...</span></div>
@@ -337,6 +347,13 @@
 							<p>默认隔离色</p>
 						</div>
 					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable">
+					<a name="gIsolateStatus" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> g<wbr>Isolate<wbr>Status</h3>
+					<div class="tsd-signature tsd-kind-icon">g<wbr>Isolate<wbr>Status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IsolateStatus</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<aside class="tsd-sources">
+					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable">
 					<a name="selector" class="tsd-anchor"></a>
@@ -456,9 +473,6 @@
 						<a href="classes/Camera.html" class="tsd-kind-icon">Camera</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/Cartographic.html" class="tsd-kind-icon">Cartographic</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="classes/ClippingControl.html" class="tsd-kind-icon">Clipping<wbr>Control</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -513,6 +527,9 @@
 						<a href="interfaces/AnimationPlayerOptions.html" class="tsd-kind-icon">Animation<wbr>Player<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/CustomIdObject.html" class="tsd-kind-icon">Custom<wbr>IdObject</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/Element.html" class="tsd-kind-icon">Element</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -527,6 +544,9 @@
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/PlayAnimationOptions.html" class="tsd-kind-icon">Play<wbr>Animation<wbr>Options</a>
 					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ProjectOpenOption.html" class="tsd-kind-icon">Project<wbr>Open<wbr>Option</a>
+					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="index.html#SelectModeType" class="tsd-kind-icon">Select<wbr>Mode<wbr>Type</a>
 					</li>
@@ -540,10 +560,16 @@
 						<a href="index.html#gBlockColor" class="tsd-kind-icon">g<wbr>Block<wbr>Color</a>
 					</li>
 					<li class=" tsd-kind-variable">
+						<a href="index.html#gGlobalConfig" class="tsd-kind-icon">g<wbr>Global<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-variable">
 						<a href="index.html#gHighLightColor" class="tsd-kind-icon">g<wbr>High<wbr>Light<wbr>Color</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="index.html#gIsolateColor" class="tsd-kind-icon">g<wbr>Isolate<wbr>Color</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="index.html#gIsolateStatus" class="tsd-kind-icon">g<wbr>Isolate<wbr>Status</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="index.html#selector" class="tsd-kind-icon">selector</a>

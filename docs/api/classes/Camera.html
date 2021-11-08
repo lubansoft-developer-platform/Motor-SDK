@@ -83,6 +83,9 @@
 						<section class="tsd-index-section ">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#cameraChanged" class="tsd-kind-icon">camera<wbr>Changed</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#cameraMoveEnd" class="tsd-kind-icon">camera<wbr>Move<wbr>End</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#cameraMoveStart" class="tsd-kind-icon">camera<wbr>Move<wbr>Start</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#direction" class="tsd-kind-icon">direction</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#directionWC" class="tsd-kind-icon">directionWC</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#position" class="tsd-kind-icon">position</a></li>
@@ -134,6 +137,48 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<a name="cameraChanged" class="tsd-anchor"></a>
+					<h3>camera<wbr>Changed</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> cameraChanged<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Event</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Event</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<a name="cameraMoveEnd" class="tsd-anchor"></a>
+					<h3>camera<wbr>Move<wbr>End</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> cameraMoveEnd<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Event</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Event</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<a name="cameraMoveStart" class="tsd-anchor"></a>
+					<h3>camera<wbr>Move<wbr>Start</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> cameraMoveStart<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Event</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Event</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
 					<a name="direction" class="tsd-anchor"></a>
 					<h3>direction</h3>
@@ -1067,19 +1112,32 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>project: <span class="tsd-signature-type">unknown</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>工程</p>
+									</div>
 								</li>
 								<li>
 									<h5>phi: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 45</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>phi角 角度制 （朝向角）</p>
+									</div>
 								</li>
 								<li>
 									<h5>theta: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = -45</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>theta角 角度制（俯仰角）</p>
+									</div>
 								</li>
 								<li>
 									<h5>durationTime: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>飞行时间</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> completeFunc: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
 									<div class="tsd-comment tsd-typography">
+										<p>完成后的回调</p>
 									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-signature">
@@ -1183,6 +1241,15 @@
 					<li class="current tsd-kind-class">
 						<a href="Camera.html" class="tsd-kind-icon">Camera</a>
 						<ul>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+								<a href="Camera.html#cameraChanged" class="tsd-kind-icon">camera<wbr>Changed</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+								<a href="Camera.html#cameraMoveEnd" class="tsd-kind-icon">camera<wbr>Move<wbr>End</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+								<a href="Camera.html#cameraMoveStart" class="tsd-kind-icon">camera<wbr>Move<wbr>Start</a>
+							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
 								<a href="Camera.html#direction" class="tsd-kind-icon">direction</a>
 							</li>
