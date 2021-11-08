@@ -9,48 +9,54 @@
   <title></title>
 </head>
 <body>
-  <div id="cesiumContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  <div id="motorContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
   </div>
-  <div style="color: #eee;font-family: sans-serif;font-size: 9pt;margin: 5px;padding: 2px 5px;position: absolute;" id="toolbar">
-    <table>
-        <tbody id = "toolbarTBody">
-            <tr>
-                <td><button id="button1" onclick="onClickSetColor()">设置颜色</td>
-                <td><button id="button2" onclick="onClickSetDefaultColor()">还原颜色</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+  <pre id="infobox"></pre>
 
 </body>
 <style>
-  html,body,#cesiumContainer{
+  html,body,#motorContainer{
     width: 100%;
     height: 100%;
     padding: 0;
     margin: 0;
   }
+  #infobox{
+    position: absolute;
+    background-color:#00000080;
+    top: 0;
+    color:#e0e0e0;
+    padding:10px 10px;
+    line-height: 22px;
+    font-size:14px;
+    margin: 10;
+    width:400px;
+    display:none;
+    overflow-y:scroll;
+    height:500px;
+}
 </style>
 <script>
-    function onClickSetColor(){
-        //7b337a69cad241098f28bbebec21365a_3656
-        //7b337a69cad241098f28bbebec21365a_3879
-        currentProject.setColor(new Motor.Color(1,0,0), ['7b337a69cad241098f28bbebec21365a_3656','7b337a69cad241098f28bbebec21365a_3879'])
+    // 正式外网 
+    const appid = 'd0b3c61c6639434e84900b1fd8d391cb';
+    const secret = '459dc8b77a63a0c009aec27f818febf6';
+    const projectId = "cd35af5eaed64d6a88619d55584e8311";
+    const serverUrl = 'https://open.lubansoft.com/api';
 
-    }
-    function onClickSetDefaultColor(){
-        currentProject.resetColor(['7b337a69cad241098f28bbebec21365a_3656','7b337a69cad241098f28bbebec21365a_3879'])
-    }
+
+    let currentSelectedModel = undefined
+
+    let infobox = document.getElementById("infobox");
 
   let viewer = undefined
   Motor.setBaseUrl('../motor-sdk')
   let currentProject = undefined
   function InitViewer() {
       viewer = new Motor.Viewer({
-        container: 'cesiumContainer',
-        baseUrl: 'https://open.lubansoft.com/api',
-        appId: 'd0b3c61c6639434e84900b1fd8d391cb',
-        secret: '459dc8b77a63a0c009aec27f818febf6',
+        container: 'motorContainer',
+        baseUrl: serverUrl,
+        appId: appid,
+        secret: secret,
       })
       return viewer
     }
@@ -64,7 +70,31 @@
       }else{
         viewer.camera.setViewToProject(currentProject)
       }
+
+      const inputMap = new Motor.InputMap(viewer)
+      inputMap.setInput(Motor.InputType.LEFT_CLICK, async (winPt2) => {
+        if(currentSelectedModel){
+            currentSelectedModel.deselect()
+        }
+        const pickObj = viewer.pick(winPt2)
+        if(pickObj?.id && pickObj.model){
+          const elementObj = await pickObj.model.queryElement(pickObj.id)
+          if(elementObj?.bimProperties){
+            // console.log(8000, elementObj);
+            //setProperties(elementObj?.bimProperties)
+            // infobox.innerHTML = JSON.stringify(elementObj?.bimProperties, null, 2)
+            infobox.innerHTML = '结构路径: '+JSON.stringify(elementObj?.dir)+'\n'+JSON.stringify(elementObj?.bimProperties,null,2)
+            infobox.setAttribute("style","display:block;")
+          }
+          pickObj.model.select(pickObj.id)
+          currentSelectedModel = pickObj.model
+        }else{
+          pickObj.model.select()
+          currentSelectedModel = pickObj.model
+          alert('当前构件非BIM构件')
+        }
+      })
     }
-    openProj('cd35af5eaed64d6a88619d55584e8311')
+    openProj(projectId)
 </script>
 </html>

@@ -32,7 +32,7 @@ declare module 'motor' {
     export { default as SysMgr } from 'motor/Core/SysMgr';
     export { default as Template } from 'motor/Core/Template';
     export { default as TemplateMgr } from 'motor/Core/TemplateMgr';
-    export { default as CZMLSchema, arcType, FixedLengthArray, ColorSchema, BillBoardSchema, LabelSchema, PolylineSchema, PolylineMaterialSchema, SolidColorMaterialSchema, PolylineGlowMaterialSchema, PolylineOutlineMaterialSchema, PolylineArrowMaterialSchema, StripeMaterialSchema, PolylineDashMaterialSchema, StripeOrientationSchema, PositionSchema, PointSchema, PlaneMaterialSchema, PlaneSchema, ModelSchema } from 'motor/Interface/CZMLSchema';
+    export { default as CZMLSchema, arcType, FixedLengthArray, ColorSchema, BillBoardSchema, LabelSchema, PolylineSchema, ColorObj, ImageMaterialSchema, GridMaterialSchema, CheckerboardMaterialSchema, Material, ShadowModeValue, ShadowMode, ClassificationType, PositionListOfLists, PolygonSchema, PolylineMaterialSchema, SolidColorMaterialSchema, PolylineGlowMaterialSchema, PolylineOutlineMaterialSchema, PolylineArrowMaterialSchema, StripeMaterialSchema, PolylineDashMaterialSchema, StripeOrientationSchema, PositionSchema, PointSchema, PlaneMaterialSchema, PlaneSchema, ModelSchema } from 'motor/Interface/CZMLSchema';
     export { default as AdsorbMode } from 'motor/Util/AdsorbMode';
     export { default as Box, BoxNumberAry } from 'motor/Util/Box';
     export { default as BoxEmitter } from 'motor/Util/BoxEmitter';
@@ -60,7 +60,7 @@ declare module 'motor' {
     export { default as AvatarControl } from 'motor/Viewer/AvatarControl';
     export { default as BloomState, BloomStateOptions } from 'motor/Viewer/BloomState';
     export { default as Camera, ViewPosition } from 'motor/Viewer/Camera';
-    export { default as ClippingControl, ClippingPlaneType, ClippingPlaneTypes } from 'motor/Viewer/ClippingControl';
+    export { default as ClippingControl, ClippingTypes, ClippingPlaneType, ClippingPlaneTypes } from 'motor/Viewer/ClippingControl';
     export { default as Control, ControlEventCallback, ControlEvent, ControlApplyType } from 'motor/Viewer/Control';
     export { default as DirectionalLight } from 'motor/Viewer/DirectionalLight';
     export { default as EarthControl } from 'motor/Viewer/EarthControl';
@@ -598,6 +598,7 @@ declare module 'motor/Core/ModProjProxy' {
 }
 
 declare module 'motor/Core/ModSprite' {
+    import { FixedLengthArray } from "motor/Interface/CZMLSchema";
     import Box from "motor/Util/Box";
     import Vector2 from "motor/Util/Vector2";
     import Vector3 from "motor/Util/Vector3";
@@ -606,11 +607,13 @@ declare module 'motor/Core/ModSprite' {
         text: string;
         textFont?: string;
         offset?: Vector2;
-        scale?: Vector2;
+        scale?: number;
+        nearFarScalar?: FixedLengthArray<number, 4>;
     }
     interface ImageOptions {
         url: string;
-        scale?: Vector2;
+        scale?: number;
+        nearFarScalar?: FixedLengthArray<number, 4>;
     }
     export interface SpriteOptions {
         label?: LabelOptions;
@@ -1026,6 +1029,7 @@ declare module 'motor/Core/TemplateMgr' {
 }
 
 declare module 'motor/Interface/CZMLSchema' {
+    import Vector2 from "motor/Util/Vector2";
     export enum arcType {
         NONE = "NONE",
         GEODESIC = "GEODESIC",
@@ -1036,28 +1040,29 @@ declare module 'motor/Interface/CZMLSchema' {
         length: L;
     }
     export interface ColorSchema {
-        rgba: FixedLengthArray<number, 4>;
+        rgba?: FixedLengthArray<number, 4>;
+        rgbaf?: FixedLengthArray<number, 4>;
     }
     export interface BillBoardSchema {
         image?: string;
         show?: boolean;
         scale?: number;
-        pixelOffset?: FixedLengthArray<number, 2>;
-        eyeOffset?: FixedLengthArray<number, 3>;
+        pixelOffset?: unknown;
+        eyeOffset?: unknown;
         horizontalOrigin?: string;
         verticalOrigin?: string;
         heightReference?: string;
         color?: ColorSchema;
         rotation?: number;
-        alignedAxis?: FixedLengthArray<number, 3>;
+        alignedAxis?: unknown;
         sizeInMeters?: boolean;
         width?: number;
         height?: number;
-        scaleByDistance?: FixedLengthArray<number, 4>;
-        translucencyByDistance?: FixedLengthArray<number, 4>;
-        pixelOffsetScaleByDistance?: FixedLengthArray<number, 4>;
-        imageSubRegion?: FixedLengthArray<number, 4>;
-        distanceDisplayCondition?: FixedLengthArray<number, 2>;
+        scaleByDistance?: unknown;
+        translucencyByDistance?: unknown;
+        pixelOffsetScaleByDistance?: unknown;
+        imageSubRegion?: unknown;
+        distanceDisplayCondition?: unknown;
         disableDepthTestDistance?: number;
     }
     export interface LabelSchema {
@@ -1068,19 +1073,19 @@ declare module 'motor/Interface/CZMLSchema' {
         scale?: number;
         showBackground?: boolean;
         backgroundColor?: ColorSchema;
-        backgroundPadding?: FixedLengthArray<number, 2>;
-        pixelOffset?: FixedLengthArray<number, 2>;
-        eyeOffset?: FixedLengthArray<number, 3>;
+        backgroundPadding?: unknown;
+        pixelOffset?: unknown;
+        eyeOffset?: unknown;
         horizontalOrigin?: string;
         verticalOrigin?: string;
         heightReference?: string;
         fillColor?: ColorSchema;
         outlineColor?: ColorSchema;
         outlineWidth?: number;
-        scaleByDistance?: FixedLengthArray<number, 4>;
-        translucencyByDistance?: FixedLengthArray<number, 4>;
-        pixelOffsetScaleByDistance?: FixedLengthArray<number, 4>;
-        distanceDisplayCondition?: FixedLengthArray<number, 2>;
+        scaleByDistance?: unknown;
+        translucencyByDistance?: unknown;
+        pixelOffsetScaleByDistance?: unknown;
+        distanceDisplayCondition?: unknown;
         disableDepthTestDistance?: number;
     }
     export interface PolylineSchema {
@@ -1093,6 +1098,78 @@ declare module 'motor/Interface/CZMLSchema' {
         followSurface?: boolean;
         granularity?: number;
         show?: boolean;
+    }
+    export interface ColorObj {
+        color?: ColorSchema;
+    }
+    export interface ImageMaterialSchema {
+        image: string;
+        repeat?: Vector2;
+        color?: ColorSchema;
+        transparent?: boolean;
+    }
+    export interface GridMaterialSchema {
+        color?: ColorSchema;
+        cellAlpha?: number;
+        lineCount?: Vector2;
+        lineThickness?: Vector2;
+        lineOffset?: Vector2;
+    }
+    export interface CheckerboardMaterialSchema {
+        evenColor?: ColorSchema;
+        oddColor?: ColorSchema;
+        repeat?: Vector2;
+    }
+    export interface Material {
+        solidColor?: ColorObj;
+        image?: ImageMaterialSchema;
+        grid?: GridMaterialSchema;
+        stripe?: StripeMaterialSchema;
+        checkerboard?: CheckerboardMaterialSchema;
+    }
+    export enum ShadowModeValue {
+        DISABLED = 0,
+        ENABLED = 1,
+        CAST_ONLY = 2,
+        RECEIVE_ONLY = 3
+    }
+    export interface ShadowMode {
+        shadowMode?: ShadowModeValue;
+        reference?: string;
+    }
+    export enum ClassificationType {
+        TERRAIN = 0,
+        CESIUM_3D_TILE = 1,
+        BOTH = 2
+    }
+    export interface PositionListOfLists {
+        cartesian?: number[];
+        cartographicRadians?: number[];
+        cartographicDegrees?: number[];
+        references?: string;
+    }
+    export interface PolygonSchema {
+        show?: boolean;
+        positions?: PositionSchema;
+        holes?: PositionListOfLists;
+        arcType?: arcType;
+        height?: number;
+        heightReference?: string;
+        extrudedHeight?: number;
+        extrudedHeightReference?: string;
+        stRotation?: number;
+        granularity?: number;
+        material?: Material;
+        outline?: boolean;
+        outlineColor?: ColorSchema;
+        outlineWidth?: number;
+        perPositionHeight?: boolean;
+        closeTop?: boolean;
+        closeBottom?: boolean;
+        shadows?: ShadowMode;
+        distanceDisplayCondition?: FixedLengthArray<number, 2>;
+        classificationType?: ClassificationType;
+        zIndex?: number;
     }
     export interface PolylineMaterialSchema {
         solidColor?: SolidColorMaterialSchema;
@@ -1152,6 +1229,7 @@ declare module 'motor/Interface/CZMLSchema' {
         billboard?: BillBoardSchema;
         label?: LabelSchema;
         polyline?: PolylineSchema;
+        polygon?: PolygonSchema;
         point?: PointSchema;
         plane?: PlaneSchema;
         name?: string;
@@ -1177,6 +1255,20 @@ declare module 'motor/Interface/CZMLSchema' {
     }
     export interface ModelSchema {
         gltf?: string;
+        scale?: number;
+        minimumPixelSize?: number;
+        maximumScale?: number;
+        incrementallyLoadTextures?: boolean;
+        runAnimations?: boolean;
+        shadows?: unknown;
+        heightReference?: unknown;
+        silhouetteColor?: ColorSchema;
+        silhouetteSize?: number;
+        color?: ColorSchema;
+        colorBlendMode?: unknown;
+        colorBlendAmount?: number;
+        distanceDisplayCondition?: unknown;
+        nodeTransformations?: unknown;
     }
     export default CZMLSchema;
 }
@@ -1620,6 +1712,7 @@ declare module 'motor/Viewer/ClippingControl' {
     import Viewer from "motor/Viewer/Viewer";
     import Control from "motor/Viewer/Control";
     import Vector2 from "motor/Util/Vector2";
+    import { ManipulatorControlOptions } from "motor/Viewer/ManipulatorControl";
     import Vector3 from "motor/Util/Vector3";
     import Color from "motor/Util/Color";
     enum ClippingPlaneType {
@@ -1636,13 +1729,19 @@ declare module 'motor/Viewer/ClippingControl' {
         Z = "Z",
         NegativeZ = "-Z"
     }
+    export enum ClippingTypes {
+        CESIUM_3D_TILE = 1,
+        TERRAIN = 2,
+        BOTH = 3
+    }
     class ClippingControl extends Control {
         dragEnd: Cesium.Event;
         dragStart: Cesium.Event;
         moveRate: number;
-        constructor(viewer: Viewer, center: Vector3, dimensions: Vector3);
+        constructor(viewer: Viewer, center: Vector3, dimensions: Vector3, clippingType?: ClippingTypes);
         addClippingPlaneByPlane(normal: Vector3, point: Vector3): void;
         addClippingPlane(type: ClippingPlaneType): void;
+        resetManipulatorParams(options: ManipulatorControlOptions): void;
         set center(value: Vector3);
         set dimensions(value: Vector3);
         setPlanesVisibility(value: boolean): void;
@@ -1832,7 +1931,7 @@ declare module 'motor/Viewer/ManipulatorControl' {
         pixelSize?: number;
         pixelRadius?: number;
         startMode?: ManipulatorType;
-        modelMatrix: Matrix4;
+        modelMatrix?: Matrix4;
     }
     class ManipulatorControl extends Control {
         options: ManipulatorControlOptions;
@@ -14147,6 +14246,14 @@ export class Plane {
      */
     static projectPointOntoPlane(plane: Plane, point: Cartesian3, result?: Cartesian3): Cartesian3;
     /**
+     * Projects a point onto the plane.
+     * @param plane - The plane to project the point onto
+     * @param points - The point to project onto the plane
+     * @param [result] - The result point.  If undefined, a new Cartesian3 will be created.
+     * @returns The modified result parameter or a new Cartesian3 instance if one was not provided.
+     */
+    static projectPointsOntoPlane(plane: Plane, points: Cartesian3[], result?: Cartesian3[]): Cartesian3;
+    /**
      * Transforms the plane by the given transformation matrix.
      * @param plane - The plane.
      * @param transform - The transformation matrix.
@@ -26292,7 +26399,7 @@ export type exportKmlModelCallback = (model: ModelGraphics, time: JulianDate, ex
  * 剪裁面编辑器
  */
 export class ClippingPlaneEditor {
-    constructor(viewer: any);
+    constructor(viewer: any, clippingType: number);
     /**
      * 添加剖切面，比如X,Y,Z,XYZ
      * @param type - "X","Y","Z","XYZ"(剖切盒)
@@ -26317,6 +26424,7 @@ export class ClippingPlaneEditor {
     mouseMove(movement: Cartesian2): void;
     mouseUp(movement: Cartesian2): void;
     destroy(): boolean;
+    clippingType: number;
     modelMatrix: Matrix4;
     matrix: Matrix4;
     translate: Cartesian3;
@@ -32787,6 +32895,7 @@ export class ClippingPlane {
  * @param [options.unionClippingRegions = false] - If true, a region will be clipped if it is on the outside of any plane in the collection. Otherwise, a region will only be clipped if it is on the outside of every plane.
  * @param [options.edgeColor = Color.WHITE] - The color applied to highlight the edge along which an object is clipped.
  * @param [options.edgeWidth = 0.0] - The width, in pixels, of the highlight applied to the edge along which an object is clipped.
+ * @param [options.clippingType = 3] - which to clipping
  */
 export class ClippingPlaneCollection {
     constructor(options?: {
@@ -32796,6 +32905,7 @@ export class ClippingPlaneCollection {
         unionClippingRegions?: boolean;
         edgeColor?: Color;
         edgeWidth?: number;
+        clippingType?: number;
     });
     /**
      * The 4x4 transformation matrix specifying an additional transform relative to the clipping planes
@@ -46275,7 +46385,7 @@ declare module 'Motor' {
     export { default as selector, ModConstructor, SelectModeType, SelectedModType, SelectorEventMap, } from 'Motor/plugins/Selector';
     export { default as VideoProjectionEditor, ModelVideo, } from 'Motor/plugins/VideoProjectionEditor';
     export { default as WaterEditor } from 'Motor/plugins/WaterEditor';
-    export { ModelType, Element, ExtraPropInterface, PickObject, CustomIdObject, } from 'Motor/typedefine';
+    export { ModelType, Element, ExtraPropInterface, PickObject, CustomIdObject, ProjectOpenOption, } from 'Motor/typedefine';
     export { gHighLightColor, gIsolateColor, gBlockColor, gIsolateStatus, gGlobalConfig, } from 'Motor/until/MotorContext';
     export { computeArea } from 'Motor/until/UtilTool';
 }
@@ -46313,6 +46423,8 @@ declare module 'Motor/Model' {
         get type(): ModelType | undefined;
         get id(): string;
         get name(): string | undefined;
+        drawModel(): Promise<void>;
+        unDrawModel(): Promise<void>;
         queryElementByBimIds(bimids: string[]): Promise<Element[]>;
         queryElementsByCustomId(keyWord: string, likeQuery?: boolean): Promise<CustomIdObject[]>;
         getElementCustomId(elementId: string): Promise<string>;
@@ -46370,18 +46482,19 @@ declare module 'Motor/Model' {
         get contrast(): number;
         set maximumLevel(value: number);
         setGlobeMapRange(range: number): Promise<void>;
+        getProperties(): any;
     }
 }
 
 declare module 'Motor/Project' {
     import Model from 'Motor/Model';
-    import { ModelType, Element, CustomIdObject } from 'Motor/typedefine';
+    import { ModelType, Element, CustomIdObject, ProjectOpenOption } from 'Motor/typedefine';
     import MotorCore from 'Motor/Core';
     export default class Project {
         constructor(proj: MotorCore.Proj);
         get id(): string;
         get name(): string | undefined;
-        open(): Promise<void>;
+        open(openOption?: ProjectOpenOption): Promise<void>;
         get project(): MotorCore.Proj;
         get viewPosition(): MotorCore.ViewPosition | undefined;
         get center(): MotorCore.Vector3 | undefined;
@@ -46400,6 +46513,7 @@ declare module 'Motor/Project' {
         queryElement(dirs: string[][]): Promise<Element[]>;
         queryElementsByCustomId(keyWord: string, likeQuery?: boolean): Promise<CustomIdObject[]>;
         getElmentBoundingBox(id: string): Promise<MotorCore.Box | undefined>;
+        getObjCustomId(id: string): Promise<string>;
         select(): void;
         select(id: string): void;
         select(ids: string[]): void;
@@ -46546,7 +46660,7 @@ declare module 'Motor/plugins/ClippingPlaneEditor' {
     import MotorCore from 'Motor/Core';
     import Viewer from 'Motor/Viewer';
     export default class ClippingControl extends MotorCore.ClippingControl {
-        constructor(viewer: Viewer, center: MotorCore.Vector3, dimensions: MotorCore.Vector3);
+        constructor(viewer: Viewer, center: MotorCore.Vector3, dimensions: MotorCore.Vector3, clippingType?: MotorCore.ClippingTypes);
         addClippingPlaneByPlane(normal: MotorCore.Vector3, point: MotorCore.Vector3): void;
         addClippingPlane(type: MotorCore.ClippingPlaneType): void;
         set center(value: MotorCore.Vector3);
@@ -46558,6 +46672,8 @@ declare module 'Motor/plugins/ClippingPlaneEditor' {
         get selectColor(): MotorCore.Color;
         set outlineColor(color: MotorCore.Color);
         get outlineColor(): MotorCore.Color;
+        set rotateSpeed(speed: number);
+        set axisLength(length: number);
     }
 }
 
@@ -46684,6 +46800,8 @@ declare module 'Motor/plugins/ModelEditor' {
         get viewer(): Viewer;
         get project(): Project;
         constructor(viewer: Viewer, project: Project);
+        createGifModle(modOption: MotorCore.ModSpriteOptions): Promise<Model | undefined>;
+        updateGifModel(modelGif: Model, modOption: MotorCore.ModSpriteOptions): Promise<void>;
         createMeshModel(modOption: MeshModelOption): Promise<Model>;
         createTileset(url: string, zoomTo?: boolean): Promise<Model>;
         createDOMMap(url: string, zoomTo?: boolean): Promise<Model | undefined>;
@@ -46707,6 +46825,26 @@ declare module 'Motor/plugins/RoamEditor' {
         get moveSpeed(): number;
         setModelController(model: Model, firstPersonControlOffset?: MotorCore.Vector3): void;
         enable(enable: boolean): void;
+        onMoveStart(): import("cesium").Event;
+        onMoveEnd(): import("cesium").Event;
+        onLookStart(): import("cesium").Event;
+        onLookEnd(): import("cesium").Event;
+        onMoveForwardStart(): import("cesium").Event;
+        onMoveBackwardStart(): import("cesium").Event;
+        onMoveRightStart(): import("cesium").Event;
+        onMoveLeftStart(): import("cesium").Event;
+        onLookLeftStart(): import("cesium").Event;
+        onLookRightStart(): import("cesium").Event;
+        onMoveForwardEnd(): import("cesium").Event;
+        onMoveBackwardEnd(): import("cesium").Event;
+        onMoveLeftEnd(): import("cesium").Event;
+        onMoveRightEnd(): import("cesium").Event;
+        onLookLeftEnd(): import("cesium").Event;
+        onLookRightEnd(): import("cesium").Event;
+        onMoveUpStart(): import("cesium").Event;
+        onMoveUpEnd(): import("cesium").Event;
+        onMoveDownStart(): import("cesium").Event;
+        onMoveDownEnd(): import("cesium").Event;
     }
 }
 
@@ -46808,12 +46946,16 @@ declare module 'Motor/plugins/WaterEditor' {
 declare module 'Motor/typedefine' {
     import Model from 'Motor/Model';
     import MotorCore from 'Motor/Core';
-    export { ModelType, Element, ExtraPropInterface, PickObject, CustomIdObject, };
+    export { ModelType, Element, ExtraPropInterface, PickObject, CustomIdObject, ProjectOpenOption, };
     interface ExtraPropInterface {
         modConstructorViewerOptions?: any;
         viewerOptions?: any;
         manipulatorBasePoint?: any;
         [key: string]: any;
+    }
+    interface ProjectOpenOption {
+        isDrawAllModel: boolean;
+        drawingModelList: string[];
     }
     enum ModelType {
         FOLDER = 0,
@@ -46826,7 +46968,8 @@ declare module 'Motor/typedefine' {
         WATER = 7,
         HOLE = 8,
         PGPLAN = 9,
-        GLOBEFOLDER = 10
+        GLOBEFOLDER = 10,
+        CZML = 11
     }
     interface Element {
         model: Model;

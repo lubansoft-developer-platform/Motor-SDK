@@ -1,6 +1,6 @@
 {
   "name": "Motor",
-  "version": "0.0.1",
+  "version": "3.0.0",
   "main": "Motor.js",
   "license": "UNLICENSED",
   "types": "Motor.d.ts"
