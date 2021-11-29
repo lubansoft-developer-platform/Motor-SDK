@@ -820,6 +820,7 @@ declare module 'motor/Core/NetMgr' {
         loginUrl(baseUrl: string): Promise<void>;
         loginToken(baseUrl: string, token: string): Promise<void>;
         isLoginUrl(): boolean;
+        resDownLoadUrl(): Promise<void>;
         verifyView(token?: string): Promise<boolean>;
         projProjId(id: string): Promise<ProjOptions>;
         projUpate(projOptAry: ProjOptions[]): Promise<number[]>;
@@ -46369,7 +46370,7 @@ declare module "cesium/Source/Extension/Source/Worker/EmWrapperManager" { import
 
 declare module 'Motor' {
     export { default as Camera } from 'Motor/Camera';
-    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, } from 'Motor/Core';
+    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, } from 'Motor/Core';
     export { default as InputMap } from 'Motor/InputMap';
     export { default as Model } from 'Motor/Model';
     export { default as Project } from 'Motor/Project';
@@ -46403,7 +46404,7 @@ declare module 'Motor/Camera' {
 declare module 'Motor/Core' {
     import * as MotorCore from 'motor-ts/src/motor';
     export default MotorCore;
-    export { InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, } from 'motor-ts/src/motor';
+    export { InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, } from 'motor-ts/src/motor';
 }
 
 declare module 'Motor/InputMap' {
@@ -46451,11 +46452,11 @@ declare module 'Motor/Model' {
         deselect(ids: string[]): void;
         deselect(dirs: string[][]): void;
         deselect(comps: Element[]): void;
-        setVisibility(show: boolean): void;
-        setVisibility(show: boolean, id: string): void;
-        setVisibility(show: boolean, ids: string[]): void;
-        setVisibility(show: boolean, dirs: string[][]): void;
-        setVisibility(show: boolean, comps: Element[]): void;
+        setVisibility(show: boolean): Promise<void>;
+        setVisibility(show: boolean, id: string): Promise<void>;
+        setVisibility(show: boolean, ids: string[]): Promise<void>;
+        setVisibility(show: boolean, dirs: string[][]): Promise<void>;
+        setVisibility(show: boolean, comps: Element[]): Promise<void>;
         setColor(color: MotorCore.Color): void;
         setColor(color: MotorCore.Color, id: string): void;
         setColor(color: MotorCore.Color, ids: string[]): void;
@@ -46483,6 +46484,9 @@ declare module 'Motor/Model' {
         set maximumLevel(value: number);
         setGlobeMapRange(range: number): Promise<void>;
         getProperties(): any;
+        getAllLeafNodeDirByDir(treeNode: MotorCore.DirTree, dirPath: string[]): string[][];
+        getTreeNodeByDirPath(treeNode: MotorCore.DirTree, dirPathAry: string[]): MotorCore.DirTree | undefined;
+        getTreeNodeByDirPathLoop(treeNode: MotorCore.DirTree, dirPathAry: string[]): MotorCore.DirTree | undefined;
     }
 }
 
@@ -46823,6 +46827,10 @@ declare module 'Motor/plugins/RoamEditor' {
         get enableGravity(): boolean;
         set moveSpeed(speed: number);
         get moveSpeed(): number;
+        set lookingSpeed(speed: number);
+        get lookingSpeed(): number;
+        set gravitationalAcceleration(value: number);
+        get gravitationalAcceleration(): number;
         setModelController(model: Model, firstPersonControlOffset?: MotorCore.Vector3): void;
         enable(enable: boolean): void;
         onMoveStart(): import("cesium").Event;
