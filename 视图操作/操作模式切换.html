@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../motor-sdk/Motor.css">
+  
   <script src="../motor-sdk/Motor.js"></script>
   <title></title>
 </head>
@@ -12,11 +12,11 @@
   <div id="motorContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
   </div>
   <div id="toolbar">
-    <span class="buttons">
-      <button id="button1" onclick="onClick1()">左键拖拽平移</button>
-      <button id="button2" onclick="onClick2()">右键拖拽平移</button>
-      <button id="button3" onclick="onClick3()">中键拖拽旋转</button>
-      <button id="button4" onclick="onClick4()">左键拖拽旋转</button>
+    <span class="buttons"> 
+      <button id="button1" onclick="onClickLeft_Right()">左键拖拽平移</button>
+      <button id="button2" onclick="onClickRight_Middle()">右键拖拽平移</button>
+      <button id="button3" onclick="onClickMiddle_Right()">中键拖拽旋转</button>
+      <button id="button4" onclick="onClickLeft_Middle()">左键拖拽旋转</button>
     </span>
   </div>
 
@@ -74,18 +74,19 @@
     const projectId = 'cd35af5eaed64d6a88619d55584e8311'
     const serverUrl = 'https://open.lubansoft.com/api';
 
-    function onClick1(){
+    function onClickLeft_Right(){
         viewer.setPanRotateApplyType(Motor.ControlApplyType.LEFT_MOUSE_BTN, Motor.ControlApplyType.RIGHT_MOUSE_BTN)
     }
-    function onClick1(){
-        viewer.setPanRotateApplyType(Motor.ControlApplyType.RIGHT_MOUSE_BTN, Motor.ControlApplyType.RIGHT_MOUSE_BTN)
+    function onClickRight_Middle(){
+        viewer.setPanRotateApplyType(Motor.ControlApplyType.RIGHT_MOUSE_BTN, Motor.ControlApplyType.LEFT_MOUSE_BTN)
     }
-    function onClick3(){
-        viewer.setPanRotateApplyType(Motor.ControlApplyType.MIDDLE_MOUSE_BTN, Motor.ControlApplyType.MIDDLE_MOUSE_BTN)
+    function onClickMiddle_Right(){
+        viewer.setPanRotateApplyType(Motor.ControlApplyType.RIGHT_MOUSE_BTN, Motor.ControlApplyType.MIDDLE_MOUSE_BTN)
+    }
+    function onClickLeft_Middle(){
+        viewer.setPanRotateApplyType(Motor.ControlApplyType.MIDDLE_MOUSE_BTN, Motor.ControlApplyType.RIGHT_MOUSE_BTN)
 
-    }
-    function onClick4(){
-        viewer.setPanRotateApplyType(Motor.ControlApplyType.MIDDLE_MOUSE_BTN, Motor.ControlApplyType.LEFT_MOUSE_BTN)
+        // viewer.setPanRotateApplyType(Motor.ControlApplyType.LEFT_MOUSE_BTN, Motor.ControlApplyType.NONE_BTN)
     }
 
   let viewer = undefined
@@ -110,9 +111,6 @@
       }else{
         viewer.camera.setViewToProject(currentProject)
       }
-
-      let model = await currentProject.queryModel('bfba8828b8734e3e889e8e027ac4dde7')
-
     }
     openProj(projectId)
 </script>

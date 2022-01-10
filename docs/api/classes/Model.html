@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Model | motor-sdk</title>
-	<meta name="description" content="Documentation for motor-sdk">
+	<title>Model | luban_motor_sdk</title>
+	<meta name="description" content="Documentation for luban_motor_sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">motor-sdk</a>
+					<a href="../index.html" class="title">luban_motor_sdk</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -50,7 +50,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../index.html">motor-sdk</a>
+					<a href="../index.html">luban_motor_sdk</a>
 				</li>
 				<li>
 					<a href="Model.html">Model</a>
@@ -102,6 +102,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#deselect" class="tsd-kind-icon">deselect</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#drawModel" class="tsd-kind-icon">draw<wbr>Model</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#getAllLeafNodeDirByDir" class="tsd-kind-icon">get<wbr>All<wbr>Leaf<wbr>Node<wbr>Dir<wbr>ByDir</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#getBimDirTree" class="tsd-kind-icon">get<wbr>Bim<wbr>Dir<wbr>Tree</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#getBoundingBox" class="tsd-kind-icon">get<wbr>Bounding<wbr>Box</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#getCustomId" class="tsd-kind-icon">get<wbr>Custom<wbr>Id</a></li>
@@ -109,6 +110,8 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#getElementViewPosition" class="tsd-kind-icon">get<wbr>Element<wbr>View<wbr>Position</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#getElmentBoundingBox" class="tsd-kind-icon">get<wbr>Elment<wbr>Bounding<wbr>Box</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#getProperties" class="tsd-kind-icon">get<wbr>Properties</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#getTreeNodeByDirPath" class="tsd-kind-icon">get<wbr>Tree<wbr>Node<wbr>ByDir<wbr>Path</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#getTreeNodeByDirPathLoop" class="tsd-kind-icon">get<wbr>Tree<wbr>Node<wbr>ByDir<wbr>Path<wbr>Loop</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#getWorldMatrix" class="tsd-kind-icon">get<wbr>World<wbr>Matrix</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#queryElement" class="tsd-kind-icon">query<wbr>Element</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Model.html#queryElementByBimIds" class="tsd-kind-icon">query<wbr>Element<wbr>ByBim<wbr>Ids</a></li>
@@ -484,6 +487,42 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getAllLeafNodeDirByDir" class="tsd-anchor"></a>
+					<h3>get<wbr>All<wbr>Leaf<wbr>Node<wbr>Dir<wbr>ByDir</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>All<wbr>Leaf<wbr>Node<wbr>Dir<wbr>ByDir<span class="tsd-signature-symbol">(</span>treeNode<span class="tsd-signature-symbol">: </span><a href="../interfaces/MotorCore.DirTree.html" class="tsd-signature-type" data-tsd-kind="Interface">DirTree</a>, dirPath<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>获取当前节点下的所有的叶子节点的dir 数组
+									例如： [[&#39;5F&#39;, &#39;Revit&#39;, &#39;墙&#39;, &#39;基本墙&#39;, &#39;1F_NQ_200&#39;],[&#39;5F&#39;, &#39;Revit&#39;, &#39;墙&#39;, &#39;基本墙&#39;, &#39;内墙 100mm&#39;],[&#39;5F&#39;, &#39;Revit&#39;, &#39;墙&#39;, &#39;基本墙&#39;, &#39;内墙 200mm&#39;]]</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>treeNode: <a href="../interfaces/MotorCore.DirTree.html" class="tsd-signature-type" data-tsd-kind="Interface">DirTree</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>传入的当前节点，注意此节点不一定是根节点，是dirTree中的任意节点</p>
+									</div>
+								</li>
+								<li>
+									<h5>dirPath: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>传入当前节点的路径，和上面的参数 treeNode是对应的</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></h4>
+							<p>dir数组</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="getBimDirTree" class="tsd-anchor"></a>
 					<h3>get<wbr>Bim<wbr>Dir<wbr>Tree</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -628,6 +667,76 @@
 							<aside class="tsd-sources">
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getTreeNodeByDirPath" class="tsd-anchor"></a>
+					<h3>get<wbr>Tree<wbr>Node<wbr>ByDir<wbr>Path</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Tree<wbr>Node<wbr>ByDir<wbr>Path<span class="tsd-signature-symbol">(</span>treeNode<span class="tsd-signature-symbol">: </span><a href="../interfaces/MotorCore.DirTree.html" class="tsd-signature-type" data-tsd-kind="Interface">DirTree</a>, dirPathAry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/MotorCore.DirTree.html" class="tsd-signature-type" data-tsd-kind="Interface">DirTree</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>根据当前路径dir， 递归获取对应的dirTree 节点</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>treeNode: <a href="../interfaces/MotorCore.DirTree.html" class="tsd-signature-type" data-tsd-kind="Interface">DirTree</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>根节点</p>
+									</div>
+								</li>
+								<li>
+									<h5>dirPathAry: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>路径</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/MotorCore.DirTree.html" class="tsd-signature-type" data-tsd-kind="Interface">DirTree</a></h4>
+							<p>节点</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getTreeNodeByDirPathLoop" class="tsd-anchor"></a>
+					<h3>get<wbr>Tree<wbr>Node<wbr>ByDir<wbr>Path<wbr>Loop</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Tree<wbr>Node<wbr>ByDir<wbr>Path<wbr>Loop<span class="tsd-signature-symbol">(</span>treeNode<span class="tsd-signature-symbol">: </span><a href="../interfaces/MotorCore.DirTree.html" class="tsd-signature-type" data-tsd-kind="Interface">DirTree</a>, dirPathAry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/MotorCore.DirTree.html" class="tsd-signature-type" data-tsd-kind="Interface">DirTree</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>根据当前路径dir， 循环获取对应的dirTree 节点， 和上一个方法的区别是，这里用是循环的方法</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>treeNode: <a href="../interfaces/MotorCore.DirTree.html" class="tsd-signature-type" data-tsd-kind="Interface">DirTree</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>根节点</p>
+									</div>
+								</li>
+								<li>
+									<h5>dirPathAry: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>路径</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/MotorCore.DirTree.html" class="tsd-signature-type" data-tsd-kind="Interface">DirTree</a></h4>
+							<p>节点</p>
 						</li>
 					</ul>
 				</section>
@@ -1118,11 +1227,11 @@
 					<a name="setVisibility" class="tsd-anchor"></a>
 					<h3>set<wbr>Visibility</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Visibility<span class="tsd-signature-symbol">(</span>show<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Visibility<span class="tsd-signature-symbol">(</span>show<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Visibility<span class="tsd-signature-symbol">(</span>show<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, ids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Visibility<span class="tsd-signature-symbol">(</span>show<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, dirs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Visibility<span class="tsd-signature-symbol">(</span>show<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, comps<span class="tsd-signature-symbol">: </span><a href="../interfaces/Element.html" class="tsd-signature-type" data-tsd-kind="Interface">Element</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Visibility<span class="tsd-signature-symbol">(</span>show<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Visibility<span class="tsd-signature-symbol">(</span>show<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Visibility<span class="tsd-signature-symbol">(</span>show<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, ids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Visibility<span class="tsd-signature-symbol">(</span>show<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, dirs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Visibility<span class="tsd-signature-symbol">(</span>show<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, comps<span class="tsd-signature-symbol">: </span><a href="../interfaces/Element.html" class="tsd-signature-type" data-tsd-kind="Interface">Element</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -1134,7 +1243,7 @@
 									<h5>show: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
@@ -1148,7 +1257,7 @@
 									<h5>id: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
@@ -1162,7 +1271,7 @@
 									<h5>ids: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
@@ -1176,7 +1285,7 @@
 									<h5>dirs: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
@@ -1190,7 +1299,7 @@
 									<h5>comps: <a href="../interfaces/Element.html" class="tsd-signature-type" data-tsd-kind="Interface">Element</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1331,6 +1440,9 @@
 								<a href="Model.html#drawModel" class="tsd-kind-icon">draw<wbr>Model</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="Model.html#getAllLeafNodeDirByDir" class="tsd-kind-icon">get<wbr>All<wbr>Leaf<wbr>Node<wbr>Dir<wbr>ByDir</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="Model.html#getBimDirTree" class="tsd-kind-icon">get<wbr>Bim<wbr>Dir<wbr>Tree</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -1350,6 +1462,12 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="Model.html#getProperties" class="tsd-kind-icon">get<wbr>Properties</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="Model.html#getTreeNodeByDirPath" class="tsd-kind-icon">get<wbr>Tree<wbr>Node<wbr>ByDir<wbr>Path</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="Model.html#getTreeNodeByDirPathLoop" class="tsd-kind-icon">get<wbr>Tree<wbr>Node<wbr>ByDir<wbr>Path<wbr>Loop</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="Model.html#getWorldMatrix" class="tsd-kind-icon">get<wbr>World<wbr>Matrix</a>

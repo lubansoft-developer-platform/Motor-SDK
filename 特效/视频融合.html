@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+<body>
+  <div id="motorContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+
+</body>
+<style>
+  html,body,#motorContainer{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+</style>
+<script>
+  Motor.setBaseUrl('../motor-sdk')
+  const appId = '605986c057b942cdb0af77e279f4b2a9'
+  const secret = '1397e0ccbcb8058489ece2ca5479f69e'
+  const projectId = '9c5efaf6189a4709bd8d3dda424fb59e'
+  const serverUrl = 'https://open.lubansoft.com/api'
+
+  let currentProject = undefined
+  function InitViewer() {
+      const viewer = new Motor.Viewer({
+        container: 'motorContainer',
+        baseUrl: serverUrl,
+        appId: appId,
+        secret: secret,
+      })
+      return viewer
+    }
+    const openProj = async (projId) => {
+      const viewer = InitViewer()
+      await viewer.Init()
+      currentProject = await viewer.queryProject(projId)
+      await currentProject.open()
+      if(currentProject.viewPosition){
+        viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+      }else{
+        viewer.camera.setViewToProject(currentProject)
+      }
+
+      const videoEditor = new Motor.VideoProjectionEditor(viewer,currentProject)
+      //x=2235.3443271231527 y=3394.083170413415 z=13.974632914834253
+      if(videoEditor){
+          const videoModel = await videoEditor.createVideo('../static/video/motorvideo.mp4')
+          videoModel.position = new Motor.Vector3(2235.3443271231527,3394.083170413415, 23.974632914834253)
+          videoModel.debugMode = true
+          videoModel.heading = 90 * Math.PI / 180
+          videoModel.pitch = 45 * Math.PI / 180
+          videoModel.roll = 180 * Math.PI / 180
+          videoModel.fov = 60 * Math.PI / 180
+          videoModel.horizontalFov = 100 * Math.PI / 180
+      }
+    }
+    openProj(projectId)
+</script>
+</html>

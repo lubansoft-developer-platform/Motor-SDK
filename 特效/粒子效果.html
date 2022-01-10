@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+<body>
+  <div id="motorContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+
+  <div id="toolbar">
+    <span class="buttons">
+      <button id="button1" onclick="onClickAdd()">添加粒子</button>
+      <button id="button2" onclick="onClickRemove()">删除粒子</button>
+    </span>
+  </div>
+
+</body>
+<style>
+  html,body,#motorContainer{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  #toolbar{
+    position: absolute;
+    background-color:#000000c8;
+    height: 20px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 0;
+    /* width: 100%; */
+    width: calc(100% - 20px);
+}
+.description{
+    position:relative;
+    left:0;
+    color: white;
+    font-size: 14px;
+}
+.buttons{
+    position:absolute;
+    right:0;
+    margin-right: 10px;
+    padding-left:10px;
+}
+.buttons button{
+    transition-duration: 0.4s;
+    background-color: transparent;
+    color: white;
+    border: 1px solid #ffffffcc;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 18px;
+    margin: 0 5;
+}
+.buttons button:hover {
+    background-color: #eee; /* Green */
+    color: black;
+}
+</style>
+<script>
+    async function onClickAdd(){
+        if(modelEditor && !fireModel && !fountainModel){
+            fireModel = await modelEditor.createParticleSystem({
+                image : '../static/particle/fire4.png',
+                startColor : new Motor.Color(1, 1, 1, 1),
+                endColor : new Motor.Color(0.5, 0, 0, 0),//('#ffa000'),
+                emissionRate: 200.0,
+                startScale: 3.0,
+                endScale: 1.5,
+                minimumParticleLife: 1.5,
+                maximumParticleLife: 1.8,
+                minimumSpeed: 7.0,
+                maximumSpeed: 9.0,
+                emitter: new Motor.CircleEmitter(2),
+                imageSize : new Motor.Vector2(2.0, 2.0),
+                lifetime : 6,
+                minimumParticleLife:1,
+                maximumParticleLife:2,
+                sizeInMeters:true
+            },new Motor.Vector3(7.7929,172.5914,21.1298))
+            fountainModel = await modelEditor.createParticleSystem({
+                image : '../static/particle/fountain2.png',
+                startColor : Motor.Color.DEEPSKYBLUE,
+                endColor : Motor.Color.LIGHTCYAN.withAlpha(0.7),
+                emissionRate: 300.0,
+                startScale: 1,
+                endScale: 5,
+                emitter: new Motor.ConeEmitter(15*Math.PI/180),
+                imageSize : new Motor.Vector2(1.0, 1.0),
+                lifetime : 4,
+                minimumParticleLife: 3,
+                maximumParticleLife: 3.5,
+                minimumSpeed: 18,
+                maximumSpeed: 19,
+                updateCallback:applyGravity,
+                sizeInMeters:true
+            },new Motor.Vector3(46.478,177.2384,18.7498))
+        }
+    }
+    async function onClickRemove(){
+        if(modelEditor && fireModel){
+            modelEditor.remove(fireModel)
+            fireModel = undefined
+        }
+        if(modelEditor && fountainModel){
+            modelEditor.remove(fountainModel)
+            fountainModel = undefined
+        }
+    }
+
+
+    const GRAVITATIONAL_CONSTANT = -9.8;
+    const gravityVector = new Motor.Vector3(0, 0, 1);
+    const resultVector = new Motor.Vector3();
+    const applyGravity = (particle, dt) => {
+        Motor.Vector3.multiplyByScalar(gravityVector, GRAVITATIONAL_CONSTANT * dt, resultVector);
+        particle.velocity = Motor.Vector3.add(particle.velocity, resultVector, particle.velocity);
+    };
+
+
+
+    // var GRAVITATIONAL_CONSTANT = -9.8;
+    // var gravityVector = new Motor.Vector3();
+    // function applyGravity(particle, dt) {
+    //     var position = particle.position;
+    //     Motor.Vector3.normalize(position, gravityVector);
+    //     Motor.Vector3.multiplyByScalar(gravityVector, GRAVITATIONAL_CONSTANT * dt, gravityVector);
+    //     particle.velocity = Motor.Vector3.add(particle.velocity, gravityVector, particle.velocity);
+    // }
+
+    const appid = '605986c057b942cdb0af77e279f4b2a9';
+    const secret = '1397e0ccbcb8058489ece2ca5479f69e';
+    const projectId = "32efdb53dbb748d48d1af6b2474e773e";
+    const serverUrl = 'https://open.lubansoft.com/api';
+
+
+  let viewer = undefined
+  let modelEditor = undefined
+  let fireModel = undefined
+  let fountainModel = undefined
+
+
+  Motor.setBaseUrl('../motor-sdk')
+  let currentProject = undefined
+  function InitViewer() {
+      viewer = new Motor.Viewer({
+        container: 'motorContainer',
+        baseUrl: serverUrl,
+        appId: appid,
+        secret: secret,
+      })
+      return viewer
+    }
+    const openProj = async (projId) => {
+      const viewer = InitViewer()
+      await viewer.Init()
+      currentProject = await viewer.queryProject(projId)
+      await currentProject.open()
+      if(currentProject.viewPosition){
+        viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+      }else{
+        viewer.camera.setViewToProject(currentProject)
+      }
+      viewer.renderEffect.backgroundColor = Motor.Color.BLACK
+      modelEditor = new Motor.ModelEditor(viewer,currentProject)
+      
+    }
+    openProj(projectId)
+</script>
+</html>

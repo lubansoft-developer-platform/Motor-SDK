@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../motor-sdk/Motor.css">
   <script src="../motor-sdk/Motor.js"></script>
   <title></title>
 </head>
@@ -23,13 +22,17 @@
 </style>
 <script>
   Motor.setBaseUrl('../motor-sdk')
+  const serverUrl = 'https://open.lubansoft.com/api'
+  const appId = 'd0b3c61c6639434e84900b1fd8d391cb'
+  const secret = '459dc8b77a63a0c009aec27f818febf6'
+  const projectId = 'cd35af5eaed64d6a88619d55584e8311'
   let currentProject = undefined
   function InitViewer() {
       const viewer = new Motor.Viewer({
         container: 'motorContainer',
-        baseUrl: 'https://open.lubansoft.com/api',
-        appId: 'd0b3c61c6639434e84900b1fd8d391cb',
-        secret: '459dc8b77a63a0c009aec27f818febf6',
+        baseUrl: serverUrl,
+        appId: appId,
+        secret: secret,
       })
       return viewer
     }
@@ -44,6 +47,6 @@
         viewer.camera.setViewToProject(currentProject)
       }
     }
-    openProj('cd35af5eaed64d6a88619d55584e8311')
+    openProj(projectId)
 </script>
 </html>

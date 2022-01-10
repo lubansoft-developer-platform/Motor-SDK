@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+    <TITLE> ZTREE DEMO - Simple Data</TITLE>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../../../css/demo.css" type="text/css">
+    <link rel="stylesheet" href="../../../css/metroStyle/metroStyle.css" type="text/css">
+    <script type="text/javascript" src="../../../js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.ztree.exedit.js"></script>
+    <SCRIPT type="text/javascript">
+        var setting = {
+            view: {
+                // addHoverDom: addHoverDom,
+                // removeHoverDom: removeHoverDom,
+                selectedMulti: false
+            },
+            check: {
+                enable: true
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            edit: {
+                // enable: true
+            }
+        };
+
+        var zNodes =[
+            {
+                name:1,
+                children:[{
+                    name:11
+                }]
+            },
+            {
+                name:2,
+                children:[{
+                    name:21
+                }]
+            }
+
+        ]
+
+        $(document).ready(function(){
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+        });
+
+        var newCount = 1;
+        
+        //-->
+    </SCRIPT>
+</HEAD>
+
+<BODY>
+<h1>Metro 风格</h1>
+<h6>[ 文件路径: super/metro.html ]</h6>
+<div class="content_wrap">
+    <div class="zTreeDemoBackground left">
+        <ul id="treeDemo" class="ztree"></ul>
+    </div>
+    <div class="right">
+        <ul class="info">
+            <li class="title"><h2>1、样式文件说明</h2>
+                <ul class="list">
+                    <li class="highlight_red">请使用 css/metroStyle 目录内的样式文件 和 图片</li>
+                    <li>感谢网友 rqx110 提供， 仅供参考</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+</BODY>
+</HTML>

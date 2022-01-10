@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ModVideoProjection | motor-sdk</title>
-	<meta name="description" content="Documentation for motor-sdk">
+	<title>ModVideoProjection | luban_motor_sdk</title>
+	<meta name="description" content="Documentation for luban_motor_sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">motor-sdk</a>
+					<a href="../index.html" class="title">luban_motor_sdk</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -50,7 +50,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../index.html">motor-sdk</a>
+					<a href="../index.html">luban_motor_sdk</a>
 				</li>
 				<li>
 					<a href="../modules/MotorCore.html">MotorCore</a>
@@ -108,6 +108,7 @@
 								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="MotorCore.ModVideoProjection.html#far" class="tsd-kind-icon">far</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="MotorCore.ModVideoProjection.html#fov" class="tsd-kind-icon">fov</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="MotorCore.ModVideoProjection.html#heading" class="tsd-kind-icon">heading</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="MotorCore.ModVideoProjection.html#horizontalFov" class="tsd-kind-icon">horizontal<wbr>Fov</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModVideoProjection.html#id" class="tsd-kind-icon">id</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModVideoProjection.html#name" class="tsd-kind-icon">name</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="MotorCore.ModVideoProjection.html#near" class="tsd-kind-icon">near</a></li>
@@ -380,15 +381,36 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>绕z轴</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>heading: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class">
+					<a name="horizontalFov" class="tsd-anchor"></a>
+					<h3>horizontal<wbr>Fov</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> horizontalFov<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> horizontalFov<span class="tsd-signature-symbol">(</span>fov<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>fov: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -405,11 +427,6 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>模型id</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
@@ -508,11 +525,6 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>绕x轴</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -579,11 +591,6 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>绕y轴</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -739,11 +746,6 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Mod.html">Mod</a>.<a href="MotorCore.Mod.html#drawMod">drawMod</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>绘制模型</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
@@ -789,11 +791,6 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Mod.html">Mod</a>.<a href="MotorCore.Mod.html#getProj">getProj</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>获取工程</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="MotorCore.Proj.html" class="tsd-signature-type" data-tsd-kind="Class">Proj</a></h4>
 						</li>
 					</ul>
@@ -809,11 +806,6 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Mod.html">Mod</a>.<a href="MotorCore.Mod.html#getProjMgr">getProjMgr</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>获取工程管理器</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="MotorCore.ProjMgr.html" class="tsd-signature-type" data-tsd-kind="Class">ProjMgr</a></h4>
 						</li>
 					</ul>
@@ -829,11 +821,6 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Mod.html">Mod</a>.<a href="MotorCore.Mod.html#getViewer">getViewer</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>获取viewer</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="MotorCore.Viewer.html" class="tsd-signature-type" data-tsd-kind="Class">Viewer</a></h4>
 						</li>
 					</ul>
@@ -1035,7 +1022,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> oneBatch: <a href="../interfaces/MotorCore.OneBatch.html" class="tsd-signature-type" data-tsd-kind="Interface">OneBatch</a></h5>
 								</li>
 								<li>
-									<h5>forceDeal: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> forceDeal: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1065,7 +1052,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> oneBatch: <a href="../interfaces/MotorCore.OneBatch.html" class="tsd-signature-type" data-tsd-kind="Interface">OneBatch</a></h5>
 								</li>
 								<li>
-									<h5>forceDeal: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> forceDeal: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1136,7 +1123,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> oneBatch: <a href="../interfaces/MotorCore.OneBatch.html" class="tsd-signature-type" data-tsd-kind="Interface">OneBatch</a></h5>
 								</li>
 								<li>
-									<h5>forceDeal: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> forceDeal: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1160,7 +1147,7 @@
 									<h5>matrix: <a href="MotorCore.Matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></h5>
 								</li>
 								<li>
-									<h5>forceDeal: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> forceDeal: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1193,11 +1180,6 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Mod.html">Mod</a>.<a href="MotorCore.Mod.html#unDrawMod">unDrawMod</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>清除绘制</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
@@ -1257,6 +1239,9 @@
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class">
 								<a href="MotorCore.ModVideoProjection.html#heading" class="tsd-kind-icon">heading</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class">
+								<a href="MotorCore.ModVideoProjection.html#horizontalFov" class="tsd-kind-icon">horizontal<wbr>Fov</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
 								<a href="MotorCore.ModVideoProjection.html#id" class="tsd-kind-icon">id</a>

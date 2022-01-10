@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Particle | motor-sdk</title>
-	<meta name="description" content="Documentation for motor-sdk">
+	<title>Particle | luban_motor_sdk</title>
+	<meta name="description" content="Documentation for luban_motor_sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">motor-sdk</a>
+					<a href="../index.html" class="title">luban_motor_sdk</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -50,7 +50,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../index.html">motor-sdk</a>
+					<a href="../index.html">luban_motor_sdk</a>
 				</li>
 				<li>
 					<a href="../modules/MotorCore.html">MotorCore</a>
@@ -89,6 +89,23 @@
 								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.Particle.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
+						<section class="tsd-index-section tsd-is-inherited">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.Particle.html#age" class="tsd-kind-icon">age</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.Particle.html#endColor" class="tsd-kind-icon">end<wbr>Color</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.Particle.html#endScale" class="tsd-kind-icon">end<wbr>Scale</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.Particle.html#image" class="tsd-kind-icon">image</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.Particle.html#imageSize" class="tsd-kind-icon">image<wbr>Size</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.Particle.html#life" class="tsd-kind-icon">life</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.Particle.html#mass" class="tsd-kind-icon">mass</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.Particle.html#normalizedAge" class="tsd-kind-icon">normalized<wbr>Age</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.Particle.html#position" class="tsd-kind-icon">position</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.Particle.html#startColor" class="tsd-kind-icon">start<wbr>Color</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.Particle.html#startScale" class="tsd-kind-icon">start<wbr>Scale</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.Particle.html#velocity" class="tsd-kind-icon">velocity</a></li>
+							</ul>
+						</section>
 					</div>
 				</section>
 			</section>
@@ -98,7 +115,7 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Particle<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="MotorCore.Particle.html" class="tsd-signature-type" data-tsd-kind="Class">Particle</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Particle<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>endColor<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Color</span><span class="tsd-signature-symbol">; </span>endScale<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>image<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>imageSize<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Cartesian2</span><span class="tsd-signature-symbol">; </span>life<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>mass<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>position<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Cartesian3</span><span class="tsd-signature-symbol">; </span>startColor<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Color</span><span class="tsd-signature-symbol">; </span>startScale<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>velocity<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Cartesian3</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="MotorCore.Particle.html" class="tsd-signature-type" data-tsd-kind="Class">Particle</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -108,14 +125,203 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>options: <span class="tsd-signature-symbol">{}</span></h5>
+									<h5>options: <span class="tsd-signature-symbol">{ </span>endColor<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Color</span><span class="tsd-signature-symbol">; </span>endScale<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>image<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>imageSize<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Cartesian2</span><span class="tsd-signature-symbol">; </span>life<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>mass<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>position<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Cartesian3</span><span class="tsd-signature-symbol">; </span>startColor<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Color</span><span class="tsd-signature-symbol">; </span>startScale<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>velocity<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Cartesian3</span><span class="tsd-signature-symbol"> }</span></h5>
 									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> end<wbr>Color<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Color</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> end<wbr>Scale<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> image<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> image<wbr>Size<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Cartesian2</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> life<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> mass<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> position<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Cartesian3</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> start<wbr>Color<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Color</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> start<wbr>Scale<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> velocity<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Cartesian3</span></h5>
+										</li>
 									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="MotorCore.Particle.html" class="tsd-signature-type" data-tsd-kind="Class">Particle</a></h4>
 						</li>
 					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="age" class="tsd-anchor"></a>
+					<h3>age</h3>
+					<div class="tsd-signature tsd-kind-icon">age<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from Cesium.Particle.age</p>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Gets the age of the particle in seconds.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="endColor" class="tsd-anchor"></a>
+					<h3>end<wbr>Color</h3>
+					<div class="tsd-signature tsd-kind-icon">end<wbr>Color<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Color</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from Cesium.Particle.endColor</p>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The color of the particle when it dies.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="endScale" class="tsd-anchor"></a>
+					<h3>end<wbr>Scale</h3>
+					<div class="tsd-signature tsd-kind-icon">end<wbr>Scale<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from Cesium.Particle.endScale</p>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The scale of the particle when it dies.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="image" class="tsd-anchor"></a>
+					<h3>image</h3>
+					<div class="tsd-signature tsd-kind-icon">image<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from Cesium.Particle.image</p>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The image to use for the particle.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="imageSize" class="tsd-anchor"></a>
+					<h3>image<wbr>Size</h3>
+					<div class="tsd-signature tsd-kind-icon">image<wbr>Size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Cartesian2</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from Cesium.Particle.imageSize</p>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The dimensions, width by height, to scale the particle image in pixels.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="life" class="tsd-anchor"></a>
+					<h3>life</h3>
+					<div class="tsd-signature tsd-kind-icon">life<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from Cesium.Particle.life</p>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The life of the particle in seconds.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="mass" class="tsd-anchor"></a>
+					<h3>mass</h3>
+					<div class="tsd-signature tsd-kind-icon">mass<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from Cesium.Particle.mass</p>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The mass of the particle in kilograms.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="normalizedAge" class="tsd-anchor"></a>
+					<h3>normalized<wbr>Age</h3>
+					<div class="tsd-signature tsd-kind-icon">normalized<wbr>Age<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from Cesium.Particle.normalizedAge</p>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Gets the age normalized to a value in the range [0.0, 1.0].</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="position" class="tsd-anchor"></a>
+					<h3>position</h3>
+					<div class="tsd-signature tsd-kind-icon">position<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Cartesian3</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from Cesium.Particle.position</p>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The positon of the particle in world coordinates.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="startColor" class="tsd-anchor"></a>
+					<h3>start<wbr>Color</h3>
+					<div class="tsd-signature tsd-kind-icon">start<wbr>Color<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Color</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from Cesium.Particle.startColor</p>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The color of the particle when it is born.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="startScale" class="tsd-anchor"></a>
+					<h3>start<wbr>Scale</h3>
+					<div class="tsd-signature tsd-kind-icon">start<wbr>Scale<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from Cesium.Particle.startScale</p>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>the scale of the particle when it is born.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="velocity" class="tsd-anchor"></a>
+					<h3>velocity</h3>
+					<div class="tsd-signature tsd-kind-icon">velocity<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Cartesian3</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from Cesium.Particle.velocity</p>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The velocity of the particle in world coordinates.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -139,6 +345,42 @@
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
 								<a href="MotorCore.Particle.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="MotorCore.Particle.html#age" class="tsd-kind-icon">age</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="MotorCore.Particle.html#endColor" class="tsd-kind-icon">end<wbr>Color</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="MotorCore.Particle.html#endScale" class="tsd-kind-icon">end<wbr>Scale</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="MotorCore.Particle.html#image" class="tsd-kind-icon">image</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="MotorCore.Particle.html#imageSize" class="tsd-kind-icon">image<wbr>Size</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="MotorCore.Particle.html#life" class="tsd-kind-icon">life</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="MotorCore.Particle.html#mass" class="tsd-kind-icon">mass</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="MotorCore.Particle.html#normalizedAge" class="tsd-kind-icon">normalized<wbr>Age</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="MotorCore.Particle.html#position" class="tsd-kind-icon">position</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="MotorCore.Particle.html#startColor" class="tsd-kind-icon">start<wbr>Color</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="MotorCore.Particle.html#startScale" class="tsd-kind-icon">start<wbr>Scale</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="MotorCore.Particle.html#velocity" class="tsd-kind-icon">velocity</a>
 							</li>
 						</ul>
 					</li>

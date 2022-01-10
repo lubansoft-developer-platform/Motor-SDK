@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ProjMgr | motor-sdk</title>
-	<meta name="description" content="Documentation for motor-sdk">
+	<title>ProjMgr | luban_motor_sdk</title>
+	<meta name="description" content="Documentation for luban_motor_sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">motor-sdk</a>
+					<a href="../index.html" class="title">luban_motor_sdk</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -50,7 +50,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../index.html">motor-sdk</a>
+					<a href="../index.html">luban_motor_sdk</a>
 				</li>
 				<li>
 					<a href="../modules/MotorCore.html">MotorCore</a>
@@ -66,13 +66,6 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>工程管理类</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -123,6 +116,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="MotorCore.ProjMgr.html#pullData" class="tsd-kind-icon">pull<wbr>Data</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="MotorCore.ProjMgr.html#revertDeleteProj" class="tsd-kind-icon">revert<wbr>Delete<wbr>Proj</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="MotorCore.ProjMgr.html#save" class="tsd-kind-icon">save</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="MotorCore.ProjMgr.html#updateMgr" class="tsd-kind-icon">update<wbr>Mgr</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="MotorCore.ProjMgr.html#updateStyle" class="tsd-kind-icon">update<wbr>Style</a></li>
 							</ul>
 						</section>
@@ -158,21 +152,21 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="netMgr" class="tsd-anchor"></a>
 					<h3>net<wbr>Mgr</h3>
-					<div class="tsd-signature tsd-kind-icon">net<wbr>Mgr<span class="tsd-signature-symbol">:</span> <a href="MotorCore.NetMgr.html" class="tsd-signature-type" data-tsd-kind="Class">NetMgr</a><span class="tsd-signature-symbol"> = ...</span></div>
+					<div class="tsd-signature tsd-kind-icon">net<wbr>Mgr<span class="tsd-signature-symbol">:</span> <a href="MotorCore.NetMgr.html" class="tsd-signature-type" data-tsd-kind="Class">NetMgr</a></div>
 					<aside class="tsd-sources">
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="sysMgr" class="tsd-anchor"></a>
 					<h3>sys<wbr>Mgr</h3>
-					<div class="tsd-signature tsd-kind-icon">sys<wbr>Mgr<span class="tsd-signature-symbol">:</span> <a href="MotorCore.SysMgr.html" class="tsd-signature-type" data-tsd-kind="Class">SysMgr</a><span class="tsd-signature-symbol"> = ...</span></div>
+					<div class="tsd-signature tsd-kind-icon">sys<wbr>Mgr<span class="tsd-signature-symbol">:</span> <a href="MotorCore.SysMgr.html" class="tsd-signature-type" data-tsd-kind="Class">SysMgr</a></div>
 					<aside class="tsd-sources">
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="templateMgr" class="tsd-anchor"></a>
 					<h3>template<wbr>Mgr</h3>
-					<div class="tsd-signature tsd-kind-icon">template<wbr>Mgr<span class="tsd-signature-symbol">:</span> <a href="MotorCore.TemplateMgr.html" class="tsd-signature-type" data-tsd-kind="Class">TemplateMgr</a><span class="tsd-signature-symbol"> = ...</span></div>
+					<div class="tsd-signature tsd-kind-icon">template<wbr>Mgr<span class="tsd-signature-symbol">:</span> <a href="MotorCore.TemplateMgr.html" class="tsd-signature-type" data-tsd-kind="Class">TemplateMgr</a></div>
 					<aside class="tsd-sources">
 					</aside>
 				</section>
@@ -196,18 +190,10 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>删除工程</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>proj: <a href="MotorCore.Proj.html" class="tsd-signature-type" data-tsd-kind="Class">Proj</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>工程</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -239,18 +225,10 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>获取本地工程列表</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>projAry: <a href="MotorCore.Proj.html" class="tsd-signature-type" data-tsd-kind="Class">Proj</a><span class="tsd-signature-symbol">[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>存出结果的数组</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -267,18 +245,10 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>获取本地工程</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>id: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>工程id</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Proj.html" class="tsd-signature-type" data-tsd-kind="Class">Proj</a></h4>
@@ -338,18 +308,10 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>获取工程 不对外</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>id: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>工程id</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Proj.html" class="tsd-signature-type" data-tsd-kind="Class">Proj</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -381,11 +343,6 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>新建工程</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -446,18 +403,10 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>打开工程</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>id: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>工程id</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Proj.html" class="tsd-signature-type" data-tsd-kind="Class">Proj</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -488,18 +437,10 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>还原删除的工程</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>id: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>工程id</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Proj.html" class="tsd-signature-type" data-tsd-kind="Class">Proj</a></h4>
@@ -516,12 +457,21 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>保存</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="updateMgr" class="tsd-anchor"></a>
+					<h3>update<wbr>Mgr</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Mgr<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -618,6 +568,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="MotorCore.ProjMgr.html#save" class="tsd-kind-icon">save</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="MotorCore.ProjMgr.html#updateMgr" class="tsd-kind-icon">update<wbr>Mgr</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="MotorCore.ProjMgr.html#updateStyle" class="tsd-kind-icon">update<wbr>Style</a>

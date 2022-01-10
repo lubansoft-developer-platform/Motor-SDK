@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>motor-sdk</title>
-	<meta name="description" content="Documentation for motor-sdk">
+	<title>luban_motor_sdk</title>
+	<meta name="description" content="Documentation for luban_motor_sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 	<script async src="assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">motor-sdk</a>
+					<a href="index.html" class="title">luban_motor_sdk</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -48,7 +48,7 @@
 	</div>
 	<div class="tsd-page-title">
 		<div class="container">
-			<h1>motor-sdk</h1>
+			<h1>luban_motor_sdk</h1>
 		</div>
 	</div>
 </header>
@@ -64,8 +64,12 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-reference"><a href="index.html#Box" class="tsd-kind-icon">Box</a></li>
 								<li class="tsd-kind-reference"><a href="index.html#BoxNumberAry" class="tsd-kind-icon">Box<wbr>Number<wbr>Ary</a></li>
+								<li class="tsd-kind-reference"><a href="index.html#CZMLSchema" class="tsd-kind-icon">CZMLSchema</a></li>
+								<li class="tsd-kind-reference"><a href="index.html#CircleEmitter" class="tsd-kind-icon">Circle<wbr>Emitter</a></li>
 								<li class="tsd-kind-reference"><a href="index.html#ClippingPlaneType" class="tsd-kind-icon">Clipping<wbr>Plane<wbr>Type</a></li>
+								<li class="tsd-kind-reference"><a href="index.html#ClockSchema" class="tsd-kind-icon">Clock<wbr>Schema</a></li>
 								<li class="tsd-kind-reference"><a href="index.html#Color" class="tsd-kind-icon">Color</a></li>
+								<li class="tsd-kind-reference"><a href="index.html#ConeEmitter" class="tsd-kind-icon">Cone<wbr>Emitter</a></li>
 								<li class="tsd-kind-reference"><a href="index.html#ControlApplyType" class="tsd-kind-icon">Control<wbr>Apply<wbr>Type</a></li>
 								<li class="tsd-kind-reference"><a href="index.html#HeadingPitchRoll" class="tsd-kind-icon">Heading<wbr>Pitch<wbr>Roll</a></li>
 								<li class="tsd-kind-reference"><a href="index.html#InputType" class="tsd-kind-icon">Input<wbr>Type</a></li>
@@ -75,12 +79,15 @@
 								<li class="tsd-kind-reference"><a href="index.html#Matrix3" class="tsd-kind-icon">Matrix3</a></li>
 								<li class="tsd-kind-reference"><a href="index.html#Matrix4" class="tsd-kind-icon">Matrix4</a></li>
 								<li class="tsd-kind-reference"><a href="index.html#ModSpriteOptions" class="tsd-kind-icon">Mod<wbr>Sprite<wbr>Options</a></li>
+								<li class="tsd-kind-reference"><a href="index.html#ParticleOptions" class="tsd-kind-icon">Particle<wbr>Options</a></li>
 								<li class="tsd-kind-reference"><a href="index.html#Quaternion" class="tsd-kind-icon">Quaternion</a></li>
 								<li class="tsd-kind-reference"><a href="index.html#RenderEffect" class="tsd-kind-icon">Render<wbr>Effect</a></li>
+								<li class="tsd-kind-reference"><a href="index.html#SkyBox" class="tsd-kind-icon">Sky<wbr>Box</a></li>
 								<li class="tsd-kind-reference"><a href="index.html#SpriteOptions" class="tsd-kind-icon">Sprite<wbr>Options</a></li>
 								<li class="tsd-kind-reference"><a href="index.html#Vector2" class="tsd-kind-icon">Vector2</a></li>
 								<li class="tsd-kind-reference"><a href="index.html#Vector3" class="tsd-kind-icon">Vector3</a></li>
 								<li class="tsd-kind-reference"><a href="index.html#ViewPosition" class="tsd-kind-icon">View<wbr>Position</a></li>
+								<li class="tsd-kind-reference"><a href="index.html#WeatherType" class="tsd-kind-icon">Weather<wbr>Type</a></li>
 								<li class="tsd-kind-reference"><a href="index.html#setBaseUrl" class="tsd-kind-icon">set<wbr>Base<wbr>Url</a></li>
 							</ul>
 						</section>
@@ -128,6 +135,7 @@
 								<li class="tsd-kind-interface"><a href="interfaces/CustomIdObject.html" class="tsd-kind-icon">Custom<wbr>IdObject</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/Element.html" class="tsd-kind-icon">Element</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/ExtraPropInterface.html" class="tsd-kind-icon">Extra<wbr>Prop<wbr>Interface</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/FlowLineOption.html" class="tsd-kind-icon">Flow<wbr>Line<wbr>Option</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/MeshModelOption.html" class="tsd-kind-icon">Mesh<wbr>Model<wbr>Option</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/PickObject.html" class="tsd-kind-icon">Pick<wbr>Object</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/PlayAnimationOptions.html" class="tsd-kind-icon">Play<wbr>Animation<wbr>Options</a></li>
@@ -175,14 +183,34 @@
 					Re-exports <a href="modules/MotorCore.html#BoxNumberAry">BoxNumberAry</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference">
+					<a name="CZMLSchema" class="tsd-anchor"></a>
+					<h3>CZMLSchema</h3>
+					Re-exports <a href="interfaces/MotorCore.CZMLSchema.html">CZMLSchema</a>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference">
+					<a name="CircleEmitter" class="tsd-anchor"></a>
+					<h3>Circle<wbr>Emitter</h3>
+					Re-exports <a href="classes/MotorCore.CircleEmitter.html">CircleEmitter</a>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference">
 					<a name="ClippingPlaneType" class="tsd-anchor"></a>
 					<h3>Clipping<wbr>Plane<wbr>Type</h3>
 					Re-exports <a href="enums/MotorCore.ClippingPlaneType.html">ClippingPlaneType</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference">
+					<a name="ClockSchema" class="tsd-anchor"></a>
+					<h3>Clock<wbr>Schema</h3>
+					Re-exports <a href="interfaces/MotorCore.ClockSchema.html">ClockSchema</a>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference">
 					<a name="Color" class="tsd-anchor"></a>
 					<h3>Color</h3>
 					Re-exports <a href="classes/MotorCore.Color.html">Color</a>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference">
+					<a name="ConeEmitter" class="tsd-anchor"></a>
+					<h3>Cone<wbr>Emitter</h3>
+					Re-exports <a href="classes/MotorCore.ConeEmitter.html">ConeEmitter</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference">
 					<a name="ControlApplyType" class="tsd-anchor"></a>
@@ -230,6 +258,11 @@
 					Re-exports <a href="interfaces/MotorCore.ModSpriteOptions.html">ModSpriteOptions</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference">
+					<a name="ParticleOptions" class="tsd-anchor"></a>
+					<h3>Particle<wbr>Options</h3>
+					Re-exports <a href="interfaces/MotorCore.ParticleOptions.html">ParticleOptions</a>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference">
 					<a name="Quaternion" class="tsd-anchor"></a>
 					<h3>Quaternion</h3>
 					Re-exports <a href="classes/MotorCore.Quaternion.html">Quaternion</a>
@@ -238,6 +271,11 @@
 					<a name="RenderEffect" class="tsd-anchor"></a>
 					<h3>Render<wbr>Effect</h3>
 					Re-exports <a href="classes/MotorCore.RenderEffect.html">RenderEffect</a>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference">
+					<a name="SkyBox" class="tsd-anchor"></a>
+					<h3>Sky<wbr>Box</h3>
+					Re-exports <a href="classes/MotorCore.SkyBox.html">SkyBox</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference">
 					<a name="SpriteOptions" class="tsd-anchor"></a>
@@ -258,6 +296,11 @@
 					<a name="ViewPosition" class="tsd-anchor"></a>
 					<h3>View<wbr>Position</h3>
 					Re-exports <a href="interfaces/MotorCore.ViewPosition.html">ViewPosition</a>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference">
+					<a name="WeatherType" class="tsd-anchor"></a>
+					<h3>Weather<wbr>Type</h3>
+					Re-exports <a href="enums/MotorCore.WeatherType.html">WeatherType</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference">
 					<a name="setBaseUrl" class="tsd-anchor"></a>
@@ -407,10 +450,22 @@
 						<a href="index.html#BoxNumberAry" class="tsd-kind-icon">Box<wbr>Number<wbr>Ary</a>
 					</li>
 					<li class=" tsd-kind-reference">
+						<a href="index.html#CZMLSchema" class="tsd-kind-icon">CZMLSchema</a>
+					</li>
+					<li class=" tsd-kind-reference">
+						<a href="index.html#CircleEmitter" class="tsd-kind-icon">Circle<wbr>Emitter</a>
+					</li>
+					<li class=" tsd-kind-reference">
 						<a href="index.html#ClippingPlaneType" class="tsd-kind-icon">Clipping<wbr>Plane<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-reference">
+						<a href="index.html#ClockSchema" class="tsd-kind-icon">Clock<wbr>Schema</a>
+					</li>
+					<li class=" tsd-kind-reference">
 						<a href="index.html#Color" class="tsd-kind-icon">Color</a>
+					</li>
+					<li class=" tsd-kind-reference">
+						<a href="index.html#ConeEmitter" class="tsd-kind-icon">Cone<wbr>Emitter</a>
 					</li>
 					<li class=" tsd-kind-reference">
 						<a href="index.html#ControlApplyType" class="tsd-kind-icon">Control<wbr>Apply<wbr>Type</a>
@@ -440,10 +495,16 @@
 						<a href="index.html#ModSpriteOptions" class="tsd-kind-icon">Mod<wbr>Sprite<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-reference">
+						<a href="index.html#ParticleOptions" class="tsd-kind-icon">Particle<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-reference">
 						<a href="index.html#Quaternion" class="tsd-kind-icon">Quaternion</a>
 					</li>
 					<li class=" tsd-kind-reference">
 						<a href="index.html#RenderEffect" class="tsd-kind-icon">Render<wbr>Effect</a>
+					</li>
+					<li class=" tsd-kind-reference">
+						<a href="index.html#SkyBox" class="tsd-kind-icon">Sky<wbr>Box</a>
 					</li>
 					<li class=" tsd-kind-reference">
 						<a href="index.html#SpriteOptions" class="tsd-kind-icon">Sprite<wbr>Options</a>
@@ -456,6 +517,9 @@
 					</li>
 					<li class=" tsd-kind-reference">
 						<a href="index.html#ViewPosition" class="tsd-kind-icon">View<wbr>Position</a>
+					</li>
+					<li class=" tsd-kind-reference">
+						<a href="index.html#WeatherType" class="tsd-kind-icon">Weather<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-reference">
 						<a href="index.html#setBaseUrl" class="tsd-kind-icon">set<wbr>Base<wbr>Url</a>
@@ -534,6 +598,9 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/ExtraPropInterface.html" class="tsd-kind-icon">Extra<wbr>Prop<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/FlowLineOption.html" class="tsd-kind-icon">Flow<wbr>Line<wbr>Option</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/MeshModelOption.html" class="tsd-kind-icon">Mesh<wbr>Model<wbr>Option</a>

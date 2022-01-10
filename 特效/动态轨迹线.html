@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+<body>
+  <div id="motorContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+
+</body>
+<style>
+  html,body,#motorContainer{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+</style>
+<script>
+  Motor.setBaseUrl('../motor-sdk')
+  const appId = '40ab5755f6914b2b9354616f996a333c'
+  const secret = '5556bdbfa0895d64bf17277e9b670e4f'
+  const projectId = 'ae1dca42459f4109a0d1733563a325d3'
+  const serverUrl = 'https://open.lubansoft.com/api'
+  let currentProject = undefined
+  function InitViewer() {
+      const viewer = new Motor.Viewer({
+        container: 'motorContainer',
+        baseUrl: serverUrl,
+        appId: appId,
+        secret: secret,
+      })
+      return viewer
+    }
+    const openProj = async (projId) => {
+      const viewer = InitViewer()
+      await viewer.Init()
+      currentProject = await viewer.queryProject(projId)
+      await currentProject.open()
+      if(currentProject.viewPosition){
+        viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+      }else{
+        viewer.camera.setViewToProject(currentProject)
+      }
+      const flowEditor = new Motor.ModelEditor(viewer, currentProject)
+
+      const gisModel = await currentProject.queryModel('b4747229b2dd4f6bb4008bbb3b8ce84d')
+      if(gisModel){
+          gisModel.setGlobeMapRange(180)
+      }
+
+      await flowEditor.createFlowLine({
+      linePositionsList: [
+        [
+          new Motor.Vector3(2313.429569549517, 12330.63276807999, 5),
+          new Motor.Vector3(7562.754902548686, 10460.063805056723, 5),
+          new Motor.Vector3(12979.327646022935, 5998.86958387746, 5),
+        ],
+        [
+          new Motor.Vector3(12979.327646022935, 5998.86958387746, 5),
+          new Motor.Vector3(13480.82749923913, -11378.323271253408, 5),
+          new Motor.Vector3(-15426.521904686604, -15657.307180758598, 5),
+        ],
+        [
+          new Motor.Vector3(-15426.521904686604, -15657.307180758598, 5),
+          new Motor.Vector3(-19968.674722244432, -2034.3973217314197),
+          new Motor.Vector3(-18429.061704998392, 8199.782386020124, 5),
+          new Motor.Vector3(-3745.175708506283, 12992.09744302212),
+        ],
+      ],
+      lineColorList: [
+        new Motor.Color(1, 0, 0),
+        new Motor.Color(0, 1, 0),
+        new Motor.Color(1, 0, 0),
+      ],
+      lineWidth: 8,
+      flowSpeed: 1,
+      distancePerTexture: 600,
+      startDistanceList: [0, 0, 0],
+      imageUrl:
+        '../static/flowline/flow2.png',
+      nearFarFlowDistance: [100, 1, 5000, 10],
+    })
+    }
+    openProj(projectId)
+</script>
+</html>

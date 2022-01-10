@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>RenderEffect | motor-sdk</title>
-	<meta name="description" content="Documentation for motor-sdk">
+	<title>RenderEffect | luban_motor_sdk</title>
+	<meta name="description" content="Documentation for luban_motor_sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">motor-sdk</a>
+					<a href="../index.html" class="title">luban_motor_sdk</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -50,7 +50,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../index.html">motor-sdk</a>
+					<a href="../index.html">luban_motor_sdk</a>
 				</li>
 				<li>
 					<a href="../modules/MotorCore.html">MotorCore</a>
@@ -96,6 +96,8 @@
 								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="MotorCore.RenderEffect.html#enableEnvironmentMaps" class="tsd-kind-icon">enable<wbr>Environment<wbr>Maps</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="MotorCore.RenderEffect.html#enableMSAA" class="tsd-kind-icon">enableMSAA</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="MotorCore.RenderEffect.html#enableTAA" class="tsd-kind-icon">enableTAA</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="MotorCore.RenderEffect.html#enableWeather" class="tsd-kind-icon">enable<wbr>Weather</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="MotorCore.RenderEffect.html#isProjectionBIM" class="tsd-kind-icon">is<wbr>ProjectionBIM</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="MotorCore.RenderEffect.html#luminanceAtZenith" class="tsd-kind-icon">luminance<wbr>AtZenith</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="MotorCore.RenderEffect.html#maximumMemoryUsage" class="tsd-kind-icon">maximum<wbr>Memory<wbr>Usage</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="MotorCore.RenderEffect.html#maximumScreenSpaceError" class="tsd-kind-icon">maximum<wbr>Screen<wbr>Space<wbr>Error</a></li>
@@ -334,6 +336,58 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>enable: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class">
+					<a name="enableWeather" class="tsd-anchor"></a>
+					<h3>enable<wbr>Weather</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> enableWeather<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/MotorCore.WeatherType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">WeatherType</a></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> enableWeather<span class="tsd-signature-symbol">(</span>weatherType<span class="tsd-signature-symbol">: </span><a href="../enums/MotorCore.WeatherType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">WeatherType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="../enums/MotorCore.WeatherType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">WeatherType</a></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>weatherType: <a href="../enums/MotorCore.WeatherType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">WeatherType</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class">
+					<a name="isProjectionBIM" class="tsd-anchor"></a>
+					<h3>is<wbr>ProjectionBIM</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> isProjectionBIM<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> isProjectionBIM<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>value: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -639,6 +693,12 @@
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class">
 								<a href="MotorCore.RenderEffect.html#enableTAA" class="tsd-kind-icon">enableTAA</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class">
+								<a href="MotorCore.RenderEffect.html#enableWeather" class="tsd-kind-icon">enable<wbr>Weather</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class">
+								<a href="MotorCore.RenderEffect.html#isProjectionBIM" class="tsd-kind-icon">is<wbr>ProjectionBIM</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class">
 								<a href="MotorCore.RenderEffect.html#luminanceAtZenith" class="tsd-kind-icon">luminance<wbr>AtZenith</a>

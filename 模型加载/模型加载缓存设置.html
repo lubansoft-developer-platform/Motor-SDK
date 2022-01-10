@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+<body>
+  <div id="motorContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+  <div id="toolbar">
+    <span class="description">
+        缓存加载缓存设置（注：此设置针对区域大的场景工程，耗用内存很大的时候，通过设置，能有效的降低内存占用）
+    </span>
+    <!-- <span class="buttons">
+        <label><input name="rootUnload" type="checkbox" value=""  onclick="rootUnloadCheckboxOnclick(this)" />顶层非重建</label> 
+        <label for="catchSize">缓存大小:</label><input id="catchSize" type="range" onchange="changeValue(this)" value="512" step="1" min="0" max="512"/>
+    </span> -->
+</div>
+
+</body>
+<style>
+  html,body,#motorContainer{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  #toolbar{
+    position: absolute;
+    background-color:#000000c8;
+    height: 20px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 0;
+    /* width: 100%; */
+    width: calc(100% - 20px);
+}
+.description{
+    position:relative;
+    left:0;
+    color: white;
+    font-size: 14px;
+}
+</style>
+<script>
+    Motor.setBaseUrl('../motor-sdk')
+    const serverUrl = 'https://open.lubansoft.com/api'
+    const appId = 'd0b3c61c6639434e84900b1fd8d391cb'
+    const secret = '459dc8b77a63a0c009aec27f818febf6'
+    const projectId = 'cd35af5eaed64d6a88619d55584e8311'
+    let viewer = undefined
+    let currentProject = undefined
+  function InitViewer() {
+      viewer = new Motor.Viewer({
+        container: 'motorContainer',
+        baseUrl: serverUrl,
+        appId: appId,
+        secret: secret,
+      })
+      return viewer
+    }
+    const openProj = async (projId) => {
+      const viewer = InitViewer()
+      await viewer.Init()
+      /**
+       * rootTileUnLoad和maximumMemoryUsage必须设置在工程 open 之前才能生效，
+       * 默认打开的值是 rootTileUnLoad=false; maximumMemoryUsage=512(这里建议设置0 2 4 8 16 32 64 128 256 512这几个值)
+       * */
+      viewer.renderEffect.rootTileUnLoad = true
+      viewer.renderEffect.maximumMemoryUsage = 0
+      currentProject = await viewer.queryProject(projId)
+      await currentProject.open()
+      if(currentProject.viewPosition){
+        viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+      }else{
+        viewer.camera.setViewToProject(currentProject)
+      }
+      
+    }
+    openProj(projectId)
+</script>
+</html>

@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ModLBTilesProvider | motor-sdk</title>
-	<meta name="description" content="Documentation for motor-sdk">
+	<title>ModLBTilesProvider | luban_motor_sdk</title>
+	<meta name="description" content="Documentation for luban_motor_sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">motor-sdk</a>
+					<a href="../index.html" class="title">luban_motor_sdk</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -50,7 +50,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../index.html">motor-sdk</a>
+					<a href="../index.html">luban_motor_sdk</a>
 				</li>
 				<li>
 					<a href="../modules/MotorCore.html">MotorCore</a>
@@ -66,13 +66,6 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>分级加载模型类</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -99,6 +92,7 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="MotorCore.ModLBTilesProvider.html#decalOrder" class="tsd-kind-icon">decal<wbr>Order</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="MotorCore.ModLBTilesProvider.html#isAbsPath" class="tsd-kind-icon">is<wbr>Abs<wbr>Path</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModLBTilesProvider.html#isDeleteUpdate" class="tsd-kind-icon">is<wbr>Delete<wbr>Update</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModLBTilesProvider.html#isVirMod" class="tsd-kind-icon">is<wbr>Vir<wbr>Mod</a></li>
@@ -111,6 +105,7 @@
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModLBTilesProvider.html#associatedIds" class="tsd-kind-icon">associated<wbr>Ids</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="MotorCore.ModLBTilesProvider.html#decalHeight" class="tsd-kind-icon">decal<wbr>Height</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModLBTilesProvider.html#delFlag" class="tsd-kind-icon">del<wbr>Flag</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModLBTilesProvider.html#extraProperties" class="tsd-kind-icon">extra<wbr>Properties</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModLBTilesProvider.html#id" class="tsd-kind-icon">id</a></li>
@@ -187,9 +182,16 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="decalOrder" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> decal<wbr>Order</h3>
+					<div class="tsd-signature tsd-kind-icon">decal<wbr>Order<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="isAbsPath" class="tsd-anchor"></a>
 					<h3>is<wbr>Abs<wbr>Path</h3>
-					<div class="tsd-signature tsd-kind-icon">is<wbr>Abs<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Abs<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 					</aside>
 				</section>
@@ -261,6 +263,32 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class">
+					<a name="decalHeight" class="tsd-anchor"></a>
+					<h3>decal<wbr>Height</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> decalHeight<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> decalHeight<span class="tsd-signature-symbol">(</span>height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>height: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
 					<a name="delFlag" class="tsd-anchor"></a>
 					<h3>del<wbr>Flag</h3>
@@ -311,11 +339,6 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>模型id</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
@@ -510,11 +533,6 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Mod.html">Mod</a>.<a href="MotorCore.Mod.html#drawMod">drawMod</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>绘制模型</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
@@ -560,11 +578,6 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Mod.html">Mod</a>.<a href="MotorCore.Mod.html#getProj">getProj</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>获取工程</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="MotorCore.Proj.html" class="tsd-signature-type" data-tsd-kind="Class">Proj</a></h4>
 						</li>
 					</ul>
@@ -580,11 +593,6 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Mod.html">Mod</a>.<a href="MotorCore.Mod.html#getProjMgr">getProjMgr</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>获取工程管理器</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="MotorCore.ProjMgr.html" class="tsd-signature-type" data-tsd-kind="Class">ProjMgr</a></h4>
 						</li>
 					</ul>
@@ -600,11 +608,6 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Mod.html">Mod</a>.<a href="MotorCore.Mod.html#getViewer">getViewer</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>获取viewer</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="MotorCore.Viewer.html" class="tsd-signature-type" data-tsd-kind="Class">Viewer</a></h4>
 						</li>
 					</ul>
@@ -806,7 +809,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> oneBatch: <a href="../interfaces/MotorCore.OneBatch.html" class="tsd-signature-type" data-tsd-kind="Interface">OneBatch</a></h5>
 								</li>
 								<li>
-									<h5>forceDeal: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> forceDeal: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -836,7 +839,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> oneBatch: <a href="../interfaces/MotorCore.OneBatch.html" class="tsd-signature-type" data-tsd-kind="Interface">OneBatch</a></h5>
 								</li>
 								<li>
-									<h5>forceDeal: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> forceDeal: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -884,7 +887,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> oneBatch: <a href="../interfaces/MotorCore.OneBatch.html" class="tsd-signature-type" data-tsd-kind="Interface">OneBatch</a></h5>
 								</li>
 								<li>
-									<h5>forceDeal: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> forceDeal: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -908,7 +911,7 @@
 									<h5>matrix: <a href="MotorCore.Matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></h5>
 								</li>
 								<li>
-									<h5>forceDeal: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> forceDeal: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -941,11 +944,6 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Mod.html">Mod</a>.<a href="MotorCore.Mod.html#unDrawMod">unDrawMod</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>清除绘制</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
@@ -1008,6 +1006,9 @@
 								<a href="MotorCore.ModLBTilesProvider.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="MotorCore.ModLBTilesProvider.html#decalOrder" class="tsd-kind-icon">decal<wbr>Order</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="MotorCore.ModLBTilesProvider.html#isAbsPath" class="tsd-kind-icon">is<wbr>Abs<wbr>Path</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
@@ -1027,6 +1028,9 @@
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
 								<a href="MotorCore.ModLBTilesProvider.html#associatedIds" class="tsd-kind-icon">associated<wbr>Ids</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class">
+								<a href="MotorCore.ModLBTilesProvider.html#decalHeight" class="tsd-kind-icon">decal<wbr>Height</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
 								<a href="MotorCore.ModLBTilesProvider.html#delFlag" class="tsd-kind-icon">del<wbr>Flag</a>

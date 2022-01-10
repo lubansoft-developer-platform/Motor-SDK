@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Camera | motor-sdk</title>
-	<meta name="description" content="Documentation for motor-sdk">
+	<title>Camera | luban_motor_sdk</title>
+	<meta name="description" content="Documentation for luban_motor_sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">motor-sdk</a>
+					<a href="../index.html" class="title">luban_motor_sdk</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -50,7 +50,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../index.html">motor-sdk</a>
+					<a href="../index.html">luban_motor_sdk</a>
 				</li>
 				<li>
 					<a href="Camera.html">Camera</a>
@@ -102,11 +102,13 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#destroy" class="tsd-kind-icon">destroy</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#destroyForward" class="tsd-kind-icon">destroy<wbr>Forward</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#enableOrthographicFrustum" class="tsd-kind-icon">enable<wbr>Orthographic<wbr>Frustum</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#getPickRay" class="tsd-kind-icon">get<wbr>Pick<wbr>Ray</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#getScreenWorldPt" class="tsd-kind-icon">get<wbr>Screen<wbr>World<wbr>Pt</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#getViewPosition" class="tsd-kind-icon">get<wbr>View<wbr>Position</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#getWorldScreenPt" class="tsd-kind-icon">get<wbr>World<wbr>Screen<wbr>Pt</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#isDestroyed" class="tsd-kind-icon">is<wbr>Destroyed</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#look" class="tsd-kind-icon">look</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#lookAtPointOnPlaneMode" class="tsd-kind-icon">look<wbr>AtPoint<wbr>OnPlane<wbr>Mode</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#lookAtTransform" class="tsd-kind-icon">look<wbr>AtTransform</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#lookDown" class="tsd-kind-icon">look<wbr>Down</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="Camera.html#lookLeft" class="tsd-kind-icon">look<wbr>Left</a></li>
@@ -189,11 +191,6 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角前方向向量</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Cartesian3</span></h4>
 						</li>
 					</ul>
@@ -208,11 +205,6 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角前方向向量(世界坐标)</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Cartesian3</span></h4>
 						</li>
 					</ul>
@@ -227,11 +219,6 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>相机位置</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Cartesian3</span></h4>
 						</li>
 					</ul>
@@ -246,11 +233,6 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>相机位置(世界坐标)</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Cartesian3</span></h4>
 						</li>
 					</ul>
@@ -265,11 +247,6 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角右方向向量</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Cartesian3</span></h4>
 						</li>
 					</ul>
@@ -284,11 +261,6 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角右方向向量(世界坐标)</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Cartesian3</span></h4>
 						</li>
 					</ul>
@@ -303,11 +275,6 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角上方向向量</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Cartesian3</span></h4>
 						</li>
 					</ul>
@@ -322,11 +289,6 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角上方向向量(世界坐标)</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Cartesian3</span></h4>
 						</li>
 					</ul>
@@ -386,6 +348,30 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="getPickRay" class="tsd-anchor"></a>
+					<h3>get<wbr>Pick<wbr>Ray</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Pick<wbr>Ray<span class="tsd-signature-symbol">(</span>windowPosition<span class="tsd-signature-symbol">: </span><a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a>, result<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Ray</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Ray</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#getPickRay">getPickRay</a></p>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>windowPosition: <a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> result: <span class="tsd-signature-type">Ray</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Ray</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="getScreenWorldPt" class="tsd-anchor"></a>
 					<h3>get<wbr>Screen<wbr>World<wbr>Pt</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -402,7 +388,7 @@
 									<h5>windowPosition: <a href="MotorCore.Vector2.html" class="tsd-signature-type" data-tsd-kind="Class">Vector2</a></h5>
 								</li>
 								<li>
-									<h5>distance: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 50</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> distance: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4>
@@ -471,24 +457,37 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#look">look</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角绕指定向量转向</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>axis: <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>旋转角度</p>
-									</div>
 								</li>
 								<li>
 									<h5>angle: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>旋转角度</p>
-									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="lookAtPointOnPlaneMode" class="tsd-anchor"></a>
+					<h3>look<wbr>AtPoint<wbr>OnPlane<wbr>Mode</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">look<wbr>AtPoint<wbr>OnPlane<wbr>Mode<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a>, position<span class="tsd-signature-symbol">: </span><a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#lookAtPointOnPlaneMode">lookAtPointOnPlaneMode</a></p>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>target: <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
+								</li>
+								<li>
+									<h5>position: <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -530,18 +529,10 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#lookDown">lookDown</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角向下转向</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>angle: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>旋转角度</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -559,18 +550,10 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#lookLeft">lookLeft</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角向左转向</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>angle: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>旋转角度</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -588,18 +571,10 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#lookRight">lookRight</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角向右转向</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>angle: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>旋转角度</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -617,18 +592,10 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#lookUp">lookUp</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角向上转向</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>angle: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>旋转角度</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -646,24 +613,13 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#move">move</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角指定方向移动</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>direction: <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>移动方向向量</p>
-									</div>
 								</li>
 								<li>
 									<h5>amount: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>移动距离</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -681,18 +637,10 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#moveBackward">moveBackward</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角向后移动</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>amount: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>移动距离</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -710,18 +658,10 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#moveDown">moveDown</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角向下移动</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>amount: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>移动距离</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -739,18 +679,10 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#moveForward">moveForward</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角向前移动</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>amount: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>移动距离</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -768,18 +700,10 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#moveLeft">moveLeft</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角向左移动</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>amount: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>移动距离</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -797,18 +721,10 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#moveRight">moveRight</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角向右移动</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>amount: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>移动距离</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -826,18 +742,10 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#moveUp">moveUp</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角向上移动</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>amount: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>移动距离</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -859,16 +767,12 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>position: <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>世界坐标系下的点</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> result: <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4>
-							<p>视口坐标系下的点</p>
 						</li>
 					</ul>
 				</section>
@@ -883,24 +787,13 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#rotate">rotate</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>绕特定轴旋转</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>axis: <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>旋转轴</p>
-									</div>
 								</li>
 								<li>
 									<h5>angle: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>旋转角度</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -918,18 +811,10 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#rotateDown">rotateDown</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角向下旋转</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>angle: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>旋转角度，单位为弧度</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -947,18 +832,10 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#rotateLeft">rotateLeft</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角向左旋转</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>angle: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>旋转角度，单位为弧度</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -976,18 +853,10 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#rotateRight">rotateRight</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角向右旋转</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>angle: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>旋转角度，单位为弧度</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1005,18 +874,10 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.Camera.html">Camera</a>.<a href="MotorCore.Camera.html#rotateUp">rotateUp</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>视角向上旋转</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>angle: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>旋转角度，单位为弧度</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1064,13 +925,13 @@
 									<h5>box: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="MotorCore.Box.html" class="tsd-signature-type" data-tsd-kind="Class">Box</a></h5>
 								</li>
 								<li>
-									<h5>phi: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 45</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> phi: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>theta: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = -45</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> theta: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>durationTime: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> durationTime: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> completeFunc: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
@@ -1161,7 +1022,7 @@
 					<a name="setViewToViewPosition" class="tsd-anchor"></a>
 					<h3>set<wbr>View<wbr>ToView<wbr>Position</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>View<wbr>ToView<wbr>Position<span class="tsd-signature-symbol">(</span>opt<span class="tsd-signature-symbol">: </span><a href="../interfaces/MotorCore.ViewPosition.html" class="tsd-signature-type" data-tsd-kind="Interface">ViewPosition</a>, durationTime<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, completeFunc<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>View<wbr>ToView<wbr>Position<span class="tsd-signature-symbol">(</span>opt<span class="tsd-signature-symbol">: </span><a href="../interfaces/MotorCore.ViewPosition.html" class="tsd-signature-type" data-tsd-kind="Interface">ViewPosition</a>, durationTime<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, directDist<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, completeFunc<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -1174,7 +1035,10 @@
 									<h5>opt: <a href="../interfaces/MotorCore.ViewPosition.html" class="tsd-signature-type" data-tsd-kind="Interface">ViewPosition</a></h5>
 								</li>
 								<li>
-									<h5>durationTime: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> durationTime: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> directDist: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> completeFunc: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
@@ -1211,16 +1075,12 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>position: <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>视口坐标系下的点</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> result: <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="MotorCore.Vector3.html" class="tsd-signature-type" data-tsd-kind="Class">Vector3</a></h4>
-							<p>世界坐标系下的点</p>
 						</li>
 					</ul>
 				</section>
@@ -1284,6 +1144,9 @@
 								<a href="Camera.html#enableOrthographicFrustum" class="tsd-kind-icon">enable<wbr>Orthographic<wbr>Frustum</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="Camera.html#getPickRay" class="tsd-kind-icon">get<wbr>Pick<wbr>Ray</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="Camera.html#getScreenWorldPt" class="tsd-kind-icon">get<wbr>Screen<wbr>World<wbr>Pt</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -1297,6 +1160,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="Camera.html#look" class="tsd-kind-icon">look</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="Camera.html#lookAtPointOnPlaneMode" class="tsd-kind-icon">look<wbr>AtPoint<wbr>OnPlane<wbr>Mode</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="Camera.html#lookAtTransform" class="tsd-kind-icon">look<wbr>AtTransform</a>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+<body>
+  <div id="motorContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+  <div id="toolbar">
+    <span class="buttons">
+      <button id="button1" onclick="onClick1()">沙漠蓝天</button>
+      <button id="button2" onclick="onClick2()">黄昏地面</button>
+      <button id="button3" onclick="onClick3()">晴朗天空</button>
+      <button id="button4" onclick="onClick4()">夜幕圆月</button>
+    </span>
+  </div>
+
+</body>
+<style>
+  html,body,#motorContainer{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  #toolbar{
+    position: absolute;
+    background-color:#000000c8;
+    height: 20px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 0;
+    /* width: 100%; */
+    width: calc(100% - 20px);
+}
+.description{
+    position:relative;
+    left:0;
+    color: white;
+    font-size: 14px;
+}
+.buttons{
+    position:absolute;
+    right:0;
+    margin-right: 10px;
+    padding-left:10px;
+}
+.buttons button{
+    transition-duration: 0.4s;
+    background-color: transparent;
+    color: white;
+    border: 1px solid #ffffffcc;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 18px;
+    margin: 0 5;
+}
+.buttons button:hover {
+    background-color: #eee; /* Green */
+    color: black;
+}
+</style>
+<script>
+
+    const appId = '605986c057b942cdb0af77e279f4b2a9'
+    const secret = '1397e0ccbcb8058489ece2ca5479f69e'
+    const projectId = '1d440a94b1f247caa4537dacd7b673b1'
+    const serverUrl = 'https://open.lubansoft.com/api';
+
+    function onClick1(){
+      if(skyboxes && skyboxes.length === 4){
+        viewer.renderEffect.skyBox = skyboxes[0]
+      }
+    }
+    function onClick2(){
+      if(skyboxes && skyboxes.length === 4){
+        viewer.renderEffect.skyBox = skyboxes[1]
+      }
+    }
+    function onClick3(){
+      if(skyboxes && skyboxes.length === 4){
+        viewer.renderEffect.skyBox = skyboxes[2]
+      }
+    }
+    function onClick4(){
+      if(skyboxes && skyboxes.length === 4){
+        viewer.renderEffect.skyBox = skyboxes[3]
+      }
+    }
+
+  let viewer = undefined
+  let skyboxes = undefined
+  Motor.setBaseUrl('../motor-sdk')
+  let currentProject = undefined
+
+  
+
+  function InitViewer() {
+      viewer = new Motor.Viewer({
+        container: 'motorContainer',
+        baseUrl: serverUrl,
+        appId: appId,
+        secret: secret,
+      })
+      return viewer
+    }
+    const openProj = async (projId) => {
+      const viewer = InitViewer()
+      await viewer.Init()
+      skyboxes=[
+        new Motor.SkyBox({
+        sources : {
+            positiveX : '../static/sandlight/px.png',
+            negativeX : '../static/sandlight/nx.png',
+            positiveY : '../static/sandlight/ny.png',
+            negativeY : '../static/sandlight/py.png',
+            positiveZ : '../static/sandlight/pz.png',
+            negativeZ : '../static/sandlight/nz.png',
+        }
+      }),new Motor.SkyBox({
+      sources : {
+          positiveX : '../static/dusk/px.png',
+          negativeX : '../static/dusk/nx.png',
+          positiveY : '../static/dusk/ny.png',
+          negativeY : '../static/dusk/py.png',
+          positiveZ : '../static/dusk/pz.png',
+          negativeZ : '../static/dusk/nz.png',
+      }
+      }),new Motor.SkyBox({
+        sources : {
+            positiveX : '../static/sunnyday/px.jpg',
+            negativeX : '../static/sunnyday/nx.jpg',
+            positiveY : '../static/sunnyday/ny.jpg',
+            negativeY : '../static/sunnyday/py.jpg',
+            positiveZ : '../static/sunnyday/pz.jpg',
+            negativeZ : '../static/sunnyday/nz.jpg',
+        }
+      }),new Motor.SkyBox({
+          sources : {
+              positiveX : '../static/night/px.png',
+              negativeX : '../static/night/nx.png',
+              positiveY : '../static/night/ny.png',
+              negativeY : '../static/night/py.png',
+              positiveZ : '../static/night/pz.png',
+              negativeZ : '../static/night/nz.png',
+          }
+      })];
+
+      currentProject = await viewer.queryProject(projId)
+      await currentProject.open()
+      if(currentProject.viewPosition){
+        viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+      }else{
+        viewer.camera.setViewToProject(currentProject)
+      }
+
+      let model = await currentProject.queryModel('bfba8828b8734e3e889e8e027ac4dde7')
+
+    }
+    openProj(projectId)
+</script>
+</html>

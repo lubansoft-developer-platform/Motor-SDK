@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../motor-sdk/Motor.css">
   <script src="../motor-sdk/Motor.js"></script>
   <title></title>
 </head>
@@ -17,6 +16,9 @@
     </span>
     <span class="buttons">
         <button id="mouse" onclick="onClickRoam()">开启漫游</button>
+        <label><input name="zhongli" type="checkbox" value=""  onclick="zlCheckboxOnclick(this)" />重 力</label> 
+        <label><input name="pengzhuang" type="checkbox" value="" onclick="pzCheckboxOnclick(this)" />碰 撞</label>
+        <label for="moveSpeedControl">移动速度:</label><input id="moveSpeedControl" type="range" onchange="changeValue(this)" value="5" step="1" min="1" max="30"/>
     </span>
 </div>
 
@@ -77,19 +79,40 @@
 </style>
 <script>
     const serverUrl = 'https://open.lubansoft.com/api'
-    const appId = 'd0b3c61c6639434e84900b1fd8d391cb'
-    const secret = '459dc8b77a63a0c009aec27f818febf6'
-    const projectId = 'cd35af5eaed64d6a88619d55584e8311'
+    const appId = '605986c057b942cdb0af77e279f4b2a9'
+    const secret = '1397e0ccbcb8058489ece2ca5479f69e'
+    const projectId = '20883133bf944792ae8ffabeb1fd9505'
 
+    let zlElement = document.getElementsByName('zhongli')
+    let pzElement = document.getElementsByName('pengzhuang')
+    let moveSpeedControl = document.getElementById("moveSpeedControl");
 
     let modelCreate = undefined
     let modMesh = undefined
     let roamEditor = undefined
+    let animationPlayer = undefined
+
+
+    function zlCheckboxOnclick(ele) {
+      if(roamEditor){
+        roamEditor.enableGravity = ele.checked
+      }
+    }
+    function pzCheckboxOnclick(ele) {
+      if(roamEditor){
+        roamEditor.enableCollision = ele.checked
+      }
+    }
+    function changeValue(ele) {
+      if(roamEditor){
+        roamEditor.moveSpeed = parseFloat(moveSpeedControl.value)
+      }
+    }
+
     async function onClickRoam(){
         if (!modelCreate) {
             modelCreate = new Motor.ModelEditor(viewer, currentProject)
         }
-        const currenViewPos = viewer.camera.getViewPosition()
 
         modMesh = await modelCreate.createMeshModel({
             isAbsPath: false,
@@ -103,8 +126,57 @@
             if(!roamEditor){
                 roamEditor = new Motor.RoamEditor(viewer)
             }
-            roamEditor.setModelController(modMesh, new Motor.Vector3(0, 0, 1))
+            roamEditor.setModelController(modMesh, new Motor.Vector3(0, 0, 1.8))
             roamEditor.enable(true)
+            if(!animationPlayer){
+              animationPlayer = new Motor.AnimationPlayer({
+                model: modMesh,
+                viewer: viewer,
+              })
+            }
+            roamEditor.onMoveForwardStart().addEventListener(() => {
+              animationPlayer.stopAll()
+              animationPlayer.play({ name: 'man|walk' })
+            })
+            roamEditor.onMoveForwardEnd().addEventListener(() => {
+              animationPlayer.stopAll()
+              animationPlayer.play({ name: 'man|idle' })
+            })
+            roamEditor.onMoveBackwardStart().addEventListener(() => {
+              animationPlayer.stopAll()
+              animationPlayer.play({ name: 'man|walk' })
+            })
+            roamEditor.onMoveBackwardEnd().addEventListener(() => {
+              animationPlayer.stopAll()
+              animationPlayer.play({ name: 'man|idle' })
+            })
+            roamEditor.onMoveLeftStart().addEventListener(() => {
+              animationPlayer.stopAll()
+              animationPlayer.play({ name: 'man|step_left' })
+            })
+            roamEditor.onMoveLeftEnd().addEventListener(() => {
+              animationPlayer.stopAll()
+              animationPlayer.play({ name: 'man|idle' })
+            })
+            roamEditor.onMoveRightStart().addEventListener(() => {
+              animationPlayer.stopAll()
+              animationPlayer.play({ name: 'man|step_right' })
+            })
+            roamEditor.onMoveRightEnd().addEventListener(() => {
+              animationPlayer.stopAll()
+              animationPlayer.play({ name: 'man|idle' })
+            })
+
+           
+            let moveSpeedControlValue = parseFloat(moveSpeedControl.value);
+
+            roamEditor.moveSpeed = moveSpeedControlValue
+            if(zlElement.checked){
+              roamEditor.enableGravity = true
+            }
+            if(pzElement.checked){
+              roamEditor.enableCollision = true
+            }
         }
     }
 

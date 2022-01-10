@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/ztree/css/metroStyle/metroStyle.css" type="text/css">
+  
+  <script type="text/javascript" src="../static/ztree/js/jquery-1.4.4.min.js"></script>
+  <script type="text/javascript" src="../static/ztree/js/jquery.ztree.core.js"></script>
+  <script type="text/javascript" src="../static/ztree/js/jquery.ztree.excheck.js"></script>
+  <script type="text/javascript" src="../static/ztree/js/jquery.ztree.exedit.js"></script>
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+<body>
+  <div id="motorContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+  <div id="toolbar">
+    <span class="description">
+        BIM模型部位树，勾选构件树节点控制显隐
+    </span>
+    </div>
+    <pre id="infobox"></pre>
+    <div class="tree_container">
+        <ul id="treeDemo" class="ztree"></ul>
+    </div>
+
+</body>
+<style>
+  html,body,#motorContainer{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  #infobox{
+    position: absolute;
+    background-color:#00000080;
+    top: 50px;
+    right:10px;
+    color:white;
+    padding:10px 10px;
+    line-height: 26px;
+    margin: 10;
+    display:none;
+    width:400px;
+    overflow-y:scroll;
+    height:500px;
+}
+#toolbar{
+    position: absolute;
+    background-color:#000000c8;
+    height: 20px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 0;
+    /* width: 100%; */
+    width: calc(100% - 20px);
+}
+.description{
+    position:relative;
+    left:0;
+    color: white;
+    font-size: 14px;
+}
+.tree_container {
+    position: absolute;
+    left: 10px;
+    top: 50px;
+    z-index: 3;
+    width: 270px;
+    height: 340px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: #f7fcff00;
+    /* opacity:0; */
+    display:none;
+}
+</style>
+<script>
+    // 正式外网 
+    const appid = 'd0b3c61c6639434e84900b1fd8d391cb';
+    const secret = '459dc8b77a63a0c009aec27f818febf6';
+    const projectId = "cd35af5eaed64d6a88619d55584e8311";
+    const serverUrl = 'https://open.lubansoft.com/api';
+
+
+    let currentSelectedModel = undefined
+
+    let infobox = document.getElementById("infobox");
+
+  let viewer = undefined
+  Motor.setBaseUrl('../motor-sdk')
+  let currentProject = undefined
+  function InitViewer() {
+      viewer = new Motor.Viewer({
+        container: 'motorContainer',
+        baseUrl: serverUrl,
+        appId: appid,
+        secret: secret,
+      })
+      return viewer
+    }
+    const openProj = async (projId) => {
+      const viewer = InitViewer()
+      await viewer.Init()
+      currentProject = await viewer.queryProject(projId)
+      await currentProject.open()
+      
+      let zNodes = []
+      let bimModelList = await currentProject.queryModel([Motor.ModelType.BIM])
+      if(bimModelList.length > 0){
+          for (let index = 0; index < bimModelList.length; index++) {
+              const element = bimModelList[index];
+              const dirTreeItem = await element.getBimDirTree()
+              console.log(1000, dirTreeItem);
+              dirTreeItem.modelId = element.id
+              zNodes.push(dirTreeItem)
+          }
+          let setting = {
+            view: {
+                // addHoverDom: addHoverDom,
+                // removeHoverDom: removeHoverDom,
+                selectedMulti: false
+            },
+            check: {
+                enable: true
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback:{
+                onCheck: async function (e, id, treeNode) {
+                        // console.log(100,treeNode);
+                        let pathList = treeNode.getPath()
+                        let pathDirList = []
+                        let curentModelId = ''
+                        
+                        pathList.forEach((element,index) => {
+                            if(index > 0){
+                                pathDirList.push(element.name)
+                            }else{
+                                curentModelId = element.modelId
+                            }
+                        });
+                        if(curentModelId.length > 0){
+                            const bimModel = await currentProject.queryModel(curentModelId)
+                            if(bimModel){
+                                if(pathDirList.length > 0){
+                                    bimModel.setVisibility(treeNode.checked, [pathDirList])
+                                }else{
+                                    bimModel.setVisibility(treeNode.checked)
+                                }
+                            }
+                        }
+                    },
+                onClick: function (e, id, treeNode) {
+                        
+                        },
+            }
+            
+          }
+          let zTreeObj;
+          zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+          zTreeObj.checkAllNodes(true);
+        //   reSetNodes(zTreeObj);
+          $('.tree_container').show();
+      }
+
+      if(currentProject.viewPosition){
+        viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+      }else{
+        viewer.camera.setViewToProject(currentProject)
+      }
+
+      const inputMap = new Motor.InputMap(viewer)
+      inputMap.setInput(Motor.InputType.LEFT_CLICK, async (winPt2) => {
+        if(currentSelectedModel){
+            currentSelectedModel.deselect()
+        }
+        const pickObj = viewer.pick(winPt2)
+        if(pickObj?.id && pickObj.model){
+          const elementObj = await pickObj.model.queryElement(pickObj.id)
+          if(elementObj?.bimProperties){
+            infobox.innerHTML = '结构路径: '+JSON.stringify(elementObj?.dir)+'\n'+JSON.stringify(elementObj?.bimProperties,null,2)
+            infobox.setAttribute("style","display:block;")
+          }
+          pickObj.model.select(pickObj.id)
+          currentSelectedModel = pickObj.model
+        }else{
+          pickObj.model.select()
+          currentSelectedModel = pickObj.model
+          alert('当前构件非BIM构件')
+        }
+      })
+    }
+    openProj(projectId)
+</script>
+</html>

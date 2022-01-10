@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ModCZML | motor-sdk</title>
-	<meta name="description" content="Documentation for motor-sdk">
+	<title>ModCZML | luban_motor_sdk</title>
+	<meta name="description" content="Documentation for luban_motor_sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">motor-sdk</a>
+					<a href="../index.html" class="title">luban_motor_sdk</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -50,7 +50,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../index.html">motor-sdk</a>
+					<a href="../index.html">luban_motor_sdk</a>
 				</li>
 				<li>
 					<a href="../modules/MotorCore.html">MotorCore</a>
@@ -97,6 +97,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModCZML.html#isVirMod" class="tsd-kind-icon">is<wbr>Vir<wbr>Mod</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModCZML.html#parentMod" class="tsd-kind-icon">parent<wbr>Mod</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModCZML.html#proj" class="tsd-kind-icon">proj</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="MotorCore.ModCZML.html#clock" class="tsd-kind-icon">clock</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -139,6 +140,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModCZML.html#refreshStyle" class="tsd-kind-icon">refresh<wbr>Style</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModCZML.html#removeAssociatedId" class="tsd-kind-icon">remove<wbr>Associated<wbr>Id</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModCZML.html#resetDefaultColor" class="tsd-kind-icon">reset<wbr>Default<wbr>Color</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="MotorCore.ModCZML.html#setClockOptions" class="tsd-kind-icon">set<wbr>Clock<wbr>Options</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModCZML.html#setColor" class="tsd-kind-icon">set<wbr>Color</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModCZML.html#setSelect" class="tsd-kind-icon">set<wbr>Select</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="MotorCore.ModCZML.html#setVisibility" class="tsd-kind-icon">set<wbr>Visibility</a></li>
@@ -216,6 +218,13 @@
 					<div class="tsd-signature tsd-kind-icon">proj<span class="tsd-signature-symbol">:</span> <a href="MotorCore.Proj.html" class="tsd-signature-type" data-tsd-kind="Class">Proj</a></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="MotorCore.ModVirtual.html">ModVirtual</a>.<a href="MotorCore.ModVirtual.html#proj">proj</a></p>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="clock" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagOptional">Optional</span> clock</h3>
+					<div class="tsd-signature tsd-kind-icon">clock<span class="tsd-signature-symbol">:</span> <a href="../interfaces/MotorCore.ClockSchema.html" class="tsd-signature-type" data-tsd-kind="Interface">ClockSchema</a></div>
+					<aside class="tsd-sources">
 					</aside>
 				</section>
 			</section>
@@ -297,11 +306,6 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>模型id</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
@@ -496,11 +500,6 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.ModVirtual.html">ModVirtual</a>.<a href="MotorCore.ModVirtual.html#drawMod">drawMod</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>绘制模型</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
@@ -546,11 +545,6 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.ModVirtual.html">ModVirtual</a>.<a href="MotorCore.ModVirtual.html#getProj">getProj</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>获取工程</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="MotorCore.Proj.html" class="tsd-signature-type" data-tsd-kind="Class">Proj</a></h4>
 						</li>
 					</ul>
@@ -566,11 +560,6 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.ModVirtual.html">ModVirtual</a>.<a href="MotorCore.ModVirtual.html#getProjMgr">getProjMgr</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>获取工程管理器</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="MotorCore.ProjMgr.html" class="tsd-signature-type" data-tsd-kind="Class">ProjMgr</a></h4>
 						</li>
 					</ul>
@@ -586,11 +575,6 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.ModVirtual.html">ModVirtual</a>.<a href="MotorCore.ModVirtual.html#getViewer">getViewer</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>获取viewer</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="MotorCore.Viewer.html" class="tsd-signature-type" data-tsd-kind="Class">Viewer</a></h4>
 						</li>
 					</ul>
@@ -792,7 +776,27 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> oneBatch: <a href="../interfaces/MotorCore.OneBatch.html" class="tsd-signature-type" data-tsd-kind="Interface">OneBatch</a></h5>
 								</li>
 								<li>
-									<h5>forceDeal: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> forceDeal: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setClockOptions" class="tsd-anchor"></a>
+					<h3>set<wbr>Clock<wbr>Options</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Clock<wbr>Options<span class="tsd-signature-symbol">(</span>c<span class="tsd-signature-symbol">: </span><a href="../interfaces/MotorCore.ClockSchema.html" class="tsd-signature-type" data-tsd-kind="Interface">ClockSchema</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>c: <a href="../interfaces/MotorCore.ClockSchema.html" class="tsd-signature-type" data-tsd-kind="Interface">ClockSchema</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -822,7 +826,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> oneBatch: <a href="../interfaces/MotorCore.OneBatch.html" class="tsd-signature-type" data-tsd-kind="Interface">OneBatch</a></h5>
 								</li>
 								<li>
-									<h5>forceDeal: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> forceDeal: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -870,7 +874,7 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> oneBatch: <a href="../interfaces/MotorCore.OneBatch.html" class="tsd-signature-type" data-tsd-kind="Interface">OneBatch</a></h5>
 								</li>
 								<li>
-									<h5>forceDeal: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> forceDeal: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -894,7 +898,7 @@
 									<h5>matrix: <a href="MotorCore.Matrix4.html" class="tsd-signature-type" data-tsd-kind="Class">Matrix4</a></h5>
 								</li>
 								<li>
-									<h5>forceDeal: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> forceDeal: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -927,11 +931,6 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="MotorCore.ModVirtual.html">ModVirtual</a>.<a href="MotorCore.ModVirtual.html#unDrawMod">unDrawMod</a></p>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>清除绘制</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
@@ -1029,6 +1028,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="MotorCore.ModCZML.html#proj" class="tsd-kind-icon">proj</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="MotorCore.ModCZML.html#clock" class="tsd-kind-icon">clock</a>
+							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
 								<a href="MotorCore.ModCZML.html#associatedIds" class="tsd-kind-icon">associated<wbr>Ids</a>
 							</li>
@@ -1125,6 +1127,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="MotorCore.ModCZML.html#resetDefaultColor" class="tsd-kind-icon">reset<wbr>Default<wbr>Color</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="MotorCore.ModCZML.html#setClockOptions" class="tsd-kind-icon">set<wbr>Clock<wbr>Options</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="MotorCore.ModCZML.html#setColor" class="tsd-kind-icon">set<wbr>Color</a>
 							</li>
@@ -1177,10 +1182,11 @@
 				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 			</ul>
 		</div>
 	</div>

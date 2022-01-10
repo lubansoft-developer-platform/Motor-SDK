@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+<body>
+  <div id="motorContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+
+</body>
+<style>
+  html,body,#motorContainer{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  #toolbar{
+    position: absolute;
+    background-color:#000000c8;
+    height: 20px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 0;
+    /* width: 100%; */
+    width: calc(100% - 20px);
+}
+.description{
+    position:relative;
+    left:0;
+    color: white;
+    font-size: 14px;
+}
+.buttons{
+    position:absolute;
+    right:0;
+    margin-right: 10px;
+    padding-left:10px;
+}
+.buttons button{
+    transition-duration: 0.4s;
+    background-color: transparent;
+    color: white;
+    border: 1px solid #ffffffcc;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 18px;
+    margin: 0 5;
+}
+.buttons button:hover {
+    background-color: #eee; /* Green */
+    color: black;
+}
+</style>
+<script>
+    const serverUrl = 'https://open.lubansoft.com/api'
+    const appId = '605986c057b942cdb0af77e279f4b2a9'
+    const secret = '1397e0ccbcb8058489ece2ca5479f69e'
+    const projectId = '8eebee8eac1c4f3193da9654650224c2'
+
+    function filterPoint(startPt, endPt, resultPt){
+        const filterResultPt = [];
+        const totalLength = Motor.GeoAlgorithm.distance(startPt,endPt)
+        for (let index = 0; index < resultPt.length; index++) {
+            const ptItem = resultPt[index];
+            const distanceItem = Motor.GeoAlgorithm.distance(startPt, ptItem);
+            if(distanceItem <= totalLength){
+                filterResultPt.push(ptItem)
+            }
+        }
+        return filterResultPt
+    }
+    const polylineStyle1 = {
+        width: 2,
+        material: {
+            solidColor: {
+                color:{
+                    rgba: [0, 255, 0, 255]
+                }
+            }
+        },
+        depthFailMaterial:{
+            solidColor: {
+                color: {
+                    rgba: [0, 255, 0, 255],
+                },
+            },
+        }
+    };
+    const polylineStyle2 = {
+        width: 2,
+        material: {
+            solidColor: {
+                color:{
+                    rgba: [255, 0, 0, 255]
+                }
+            }
+        },
+        depthFailMaterial:{
+            solidColor: {
+                color: {
+                    rgba: [255, 0, 0, 255],
+                },
+            },
+        }
+    };
+    let lineCount = 0;
+    async function drawLine(resultPt){
+        for (let index = 0; index < resultPt.length - 1 ; index++) {
+            const pt1 = resultPt[index];
+            const pt2 = resultPt[index+1]
+            await markCollection.create(
+                {
+                    //标注id
+                    id: "line"+lineCount,
+                    polyline: {
+                        positions: {
+                            cartesian: [
+                            pt1.x,pt1.y,pt1.z,
+                            pt2.x,pt2.y,pt2.z,
+                            ]
+                        },
+                        followSurface:false,
+                        ...(lineCount%2?polylineStyle2:polylineStyle1)
+                    },
+                    position:{
+                        cartesian:[pt1.x,pt1.y,pt1.z]
+                    },
+                    point: {
+                        disableDepthTestDistance:Number.POSITIVE_INFINITY,
+                        pixelSize: 10,
+                        color:{
+                            rgba: [255, 0, 0, 255]
+                        }
+                    },
+                }           
+            )
+            if(index === resultPt.length-2){
+                await markCollection.create(
+                    {
+                        //标注id
+                        id: "line"+lineCount,
+                        position:{
+                            cartesian:[pt2.x,pt2.y,pt2.z]
+                        },
+                        point: {
+                            disableDepthTestDistance:Number.POSITIVE_INFINITY,
+                            pixelSize: 10,
+                            color:{
+                                rgba: [255, 0, 0, 255]
+                            }
+                        },
+                    }           
+                )
+            }
+            lineCount++;
+        }
+    }
+  let viewer = undefined
+  Motor.setBaseUrl('../motor-sdk')
+  let currentProject = undefined
+  let markCollection = undefined
+  let startPt = undefined
+  let endPt = undefined
+  function InitViewer() {
+      viewer = new Motor.Viewer({
+        container: 'motorContainer',
+        baseUrl: serverUrl,
+        appId: appId,
+        secret: secret,
+      })
+      return viewer
+    }
+    const openProj = async (projId) => {
+      const viewer = InitViewer()
+      await viewer.Init()
+      currentProject = await viewer.queryProject(projId)
+      await currentProject.open()
+      if(currentProject.viewPosition){
+        viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+      }else{
+        viewer.camera.setViewToProject(currentProject)
+      }
+
+      if(!markCollection){
+        markCollection = new Motor.MarkCollectionEditor(viewer,currentProject)
+      }
+
+      const inputListener = new Motor.InputMap(viewer)
+      inputListener.setInput(Motor.InputType.LEFT_CLICK,async (windPt2) => {
+        const pickPosition = await viewer?.pickPosition(windPt2)
+        if(pickPosition){
+            if(!startPt){
+                // remove线
+                startPt = pickPosition
+            }else if(!endPt){
+                endPt = pickPosition
+                console.log(1000, startPt,endPt);
+                let directV = new Motor.Vector3();
+                Motor.GeoAlgorithm.subtract(endPt,startPt,directV)
+                let resultP = []
+                await viewer.pickPositionAryByRayForPhysical(startPt, directV, resultP)
+                //1943.1794653836141, y: 3362.2799473970194, z: 13.903622049024861}
+                // await viewer.pickPositionAryByRayForPhysical(new Motor.Vector3(1943.1794653836141,3362.2799473970194,0), new Motor.Vector3(0,0,1), resultP)
+                console.log(2000, resultP);
+                const filterResultPt = filterPoint(startPt,endPt, resultP)
+
+                console.log(3000, filterResultPt);
+                await drawLine(filterResultPt)
+                startPt = undefined
+                endPt = undefined
+            }
+        }
+      })
+    }
+    openProj(projectId)
+</script>
+</html>
