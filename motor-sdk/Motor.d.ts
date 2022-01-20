@@ -28074,6 +28074,7 @@ export class SpriteCollection {
  * @param [options.videoHeight] - 视频高
  * @param [options.aspectRatio] - 投影的宽/长
  * @param [options.fov] - 投影的角度
+ * @param [options.url] - 视频路径
  * @param [options.debugMode] - 是否进行调试模式
  */
 export class VideoProjection {
@@ -28090,6 +28091,7 @@ export class VideoProjection {
         videoHeight?: number;
         aspectRatio?: number;
         fov?: number;
+        url?: string;
         debugMode?: boolean;
     });
     /**
