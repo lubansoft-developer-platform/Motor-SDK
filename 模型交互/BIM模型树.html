@@ -116,7 +116,6 @@
           for (let index = 0; index < bimModelList.length; index++) {
               const element = bimModelList[index];
               const dirTreeItem = await element.getBimDirTree()
-              console.log(1000, dirTreeItem);
               dirTreeItem.modelId = element.id
               zNodes.push(dirTreeItem)
           }
@@ -136,7 +135,6 @@
             },
             callback:{
                 onCheck: async function (e, id, treeNode) {
-                        // console.log(100,treeNode);
                         let pathList = treeNode.getPath()
                         let pathDirList = []
                         let curentModelId = ''

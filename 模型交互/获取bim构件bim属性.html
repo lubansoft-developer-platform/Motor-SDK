@@ -80,7 +80,6 @@
         if(pickObj?.id && pickObj.model){
           const elementObj = await pickObj.model.queryElement(pickObj.id)
           if(elementObj?.bimProperties){
-            // console.log(8000, elementObj);
             //setProperties(elementObj?.bimProperties)
             // infobox.innerHTML = JSON.stringify(elementObj?.bimProperties, null, 2)
             infobox.innerHTML = '结构路径: '+JSON.stringify(elementObj?.dir)+'\n'+JSON.stringify(elementObj?.bimProperties,null,2)

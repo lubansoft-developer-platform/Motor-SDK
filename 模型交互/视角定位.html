@@ -124,28 +124,20 @@
             async (windowPosition) => {
               const res = viewer.pick(windowPosition)
               if (res !== undefined) {
+                if(selectModel){
+                  selectModel.deselect()
+                }
                 if (res.model.type === Motor.ModelType.BIM) {
                   res.model.select(res.id)
+                  selectBox = res.box
                 } else {
                   res.model.select()
+                  selectBox = res.model.getBoundingBox()
                 }
                 selectModel = res.model
-                selectBox = res.box
               } else {
                 currentProject.deselect()
               }
-
-              // const elementInfo = await res.model.queryElement(res.id)
-              // const coms = await res.model.queryElementByBimIds([res.bimId])
-              // console.log(
-              //   300,
-              //   coms,
-              //   res,
-              //   elementInfo,
-              //   res.model.extraProperties,
-              // )
-              // const cusId = await res.model.getElementCustomId(res.id)
-              // console.log(400, cusId, await res.model.getCustomId())
             },
           )
     }

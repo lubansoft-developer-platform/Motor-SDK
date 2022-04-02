@@ -28,12 +28,6 @@
 
 </body>
 <style>
-  html,body,#motorContainer{
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-  }
   #toolbar{
     position: absolute;
     background-color:#000000c8;
@@ -120,7 +114,6 @@
 
     let axisLength = document.getElementById("axisLength");
     axisLength.onchange = async function () {
-      console.log(1000, parseInt(axisLength.value));
       clippingEditor.axisLength = parseInt(axisLength.value);
     }
 

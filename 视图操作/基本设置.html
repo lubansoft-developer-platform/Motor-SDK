@@ -17,6 +17,7 @@
       <button id="button2" onclick="onClick2()">开/关边线</button>
       <button id="button3" onclick="onClick3()">背景色</button>
       <button id="button4" onclick="onClick4()">亮度</button>
+      <button id='button5' onclick="onClick5()">开/关抗锯齿</button>
     </span>
   </div>
 
@@ -68,14 +69,18 @@
 }
 </style>
 <script>
+    Motor.setBaseUrl('../motor-sdk')
 
     const appId = 'd0b3c61c6639434e84900b1fd8d391cb'
     const secret = '459dc8b77a63a0c009aec27f818febf6'
     const projectId = 'cd35af5eaed64d6a88619d55584e8311'
     const serverUrl = 'https://open.lubansoft.com/api';
     let enableSnap = false
+    let enableTAA = false
     let defaultBkColor = undefined
     let defaultSunlightIntensity = undefined
+    let viewer = undefined
+    let currentProject = undefined
 
     function onClick1(){
         if(enableSnap){
@@ -106,10 +111,10 @@
             defaultSunlightIntensity = undefined
         } 
     }
-
-  let viewer = undefined
-  Motor.setBaseUrl('../motor-sdk')
-  let currentProject = undefined
+    function onClick5(){
+      enableTAA = !enableTAA
+      viewer.renderEffect.enableTAA = enableTAA
+    }
   function InitViewer() {
       viewer = new Motor.Viewer({
         container: 'motorContainer',
@@ -124,14 +129,12 @@
       await viewer.Init()
       currentProject = await viewer.queryProject(projId)
       await currentProject.open()
+      viewer.renderEffect.enableTAA = enableTAA
       if(currentProject.viewPosition){
         viewer.camera.setViewToViewPosition(currentProject.viewPosition)
       }else{
         viewer.camera.setViewToProject(currentProject)
       }
-
-      let model = await currentProject.queryModel('bfba8828b8734e3e889e8e027ac4dde7')
-
     }
     openProj(projectId)
 </script>

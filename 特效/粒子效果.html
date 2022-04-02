@@ -165,6 +165,7 @@
       await viewer.Init()
       currentProject = await viewer.queryProject(projId)
       await currentProject.open()
+      // viewer.renderEffect.enableTAA = true
       if(currentProject.viewPosition){
         viewer.camera.setViewToViewPosition(currentProject.viewPosition)
       }else{

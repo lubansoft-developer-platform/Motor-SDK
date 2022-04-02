@@ -201,17 +201,13 @@
                 startPt = pickPosition
             }else if(!endPt){
                 endPt = pickPosition
-                console.log(1000, startPt,endPt);
                 let directV = new Motor.Vector3();
                 Motor.GeoAlgorithm.subtract(endPt,startPt,directV)
                 let resultP = []
                 await viewer.pickPositionAryByRayForPhysical(startPt, directV, resultP)
                 //1943.1794653836141, y: 3362.2799473970194, z: 13.903622049024861}
                 // await viewer.pickPositionAryByRayForPhysical(new Motor.Vector3(1943.1794653836141,3362.2799473970194,0), new Motor.Vector3(0,0,1), resultP)
-                console.log(2000, resultP);
                 const filterResultPt = filterPoint(startPt,endPt, resultP)
-
-                console.log(3000, filterResultPt);
                 await drawLine(filterResultPt)
                 startPt = undefined
                 endPt = undefined

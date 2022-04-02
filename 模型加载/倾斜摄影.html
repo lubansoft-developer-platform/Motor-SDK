@@ -138,7 +138,6 @@
       currentProject = await viewer.queryProject(projId)
       await currentProject.open()
       if(currentProject.viewPosition){
-        console.log(888,currentProject.viewPosition);
         viewer.camera.setViewToViewPosition(currentProject.viewPosition)
       }else{
         viewer.camera.setViewToProject(currentProject)

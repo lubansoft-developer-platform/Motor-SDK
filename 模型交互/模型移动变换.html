@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+<body>
+  <div id="motorContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+  <div id="toolbar">
+    <span class="description">
+        平移 旋转变换
+    </span>
+    <span class="buttons">
+        <label for="xTrans">X轴移动:</label><input id="xTrans" type="range" value="0" step="1" min="0" max="50"/>
+        <label for="yTrans">Y轴移动:</label><input id="yTrans" type="range" value="0" step="1" min="0" max="50"/>
+        <label for="zTrans">Z轴移动:</label><input id="zTrans" type="range" value="0" step="1" min="0" max="50"/>
+        <label for="zRotate">Z轴转动:</label><input id="zRotate" type="range" value="0" step="1" min="0" max="360"/>
+        <label for="scale">缩放:</label><input id="scale" type="range" value="1" step="1" min="1" max="10"/>
+    </span>
+</div>
+
+</body>
+<style>
+  #toolbar{
+    position: absolute;
+    background-color:#000000c8;
+    height: 20px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 0;
+    /* width: 100%; */
+    width: calc(100% - 20px);
+}
+.description{
+    position:relative;
+    left:0;
+    color: white;
+    font-size: 14px;
+}
+.buttons{
+    position:absolute;
+    right:0;
+    margin-right: 10px;
+    padding-left:10px;
+}
+.buttons button{
+    transition-duration: 0.4s;
+    background-color: transparent;
+    color: white;
+    border: 1px solid #ffffffcc;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 18px;
+    margin: 0 5;
+}
+.buttons button:hover {
+    background-color: #eee; /* Green */
+    color: black;
+}
+.buttons input{
+    color: white;
+    height: 10px;
+}
+.buttons label{
+    color: white;
+    font-size: 14px;
+}
+</style>
+<script>   
+    let xTrans = document.getElementById("xTrans");
+    xTrans.onchange = async function () {
+        const xTransValue = parseFloat(xTrans.value)
+        if(currentModel && currentModelCenterPt){
+            currentModel.setWorldMatrix(savedWorldMatrix)
+            currentModel.translate(new Motor.Vector3(xTransValue,0,0))
+        }
+    }
+
+    let yTrans = document.getElementById("yTrans");
+    yTrans.onchange = async function () {
+        const yTransValue = parseFloat(yTrans.value)
+        if(currentModel && currentModelCenterPt){
+            currentModel.setWorldMatrix(savedWorldMatrix)
+            currentModel.translate(new Motor.Vector3(0,yTransValue,0))
+        }
+    }
+    let zTrans = document.getElementById("zTrans");
+    zTrans.onchange = async function () {
+        const zTransValue = parseFloat(zTrans.value)
+        if(currentModel && currentModelCenterPt){
+            currentModel.setWorldMatrix(savedWorldMatrix)
+            currentModel.translate(new Motor.Vector3(0,0,zTransValue))
+        }
+    }
+
+    let zRotate = document.getElementById("zRotate");
+    zRotate.onchange = async function () {
+        const zRotateValue = parseFloat(zRotate.value)
+        const zRotateValueR = zRotateValue * Math.PI / 180
+        if(currentModel && currentModelCenterPt){
+            currentModel.setWorldMatrix(savedWorldMatrix)
+            const negateVector = Motor.Vector3.ZERO.clone()
+            currentModel.translate(Motor.Vector3.negate(currentModelCenterPt,negateVector))
+            currentModel.rotate(zRotateValueR,new Motor.Vector3(0,0,1))
+            currentModel.translate(currentModelCenterPt)
+        }
+    }
+    let scale = document.getElementById("scale"); 
+    scale.onchange = async function () {
+        const scaleValue = parseFloat(scale.value)
+        if(currentModel && currentModelCenterPt){
+            currentModel.setWorldMatrix(savedWorldMatrix)
+            const negateVector = Motor.Vector3.ZERO.clone()
+            currentModel.translate(Motor.Vector3.negate(currentModelCenterPt,negateVector))
+            currentModel.scale(new Motor.Vector3(scaleValue,scaleValue,scaleValue))
+            currentModel.translate(currentModelCenterPt)
+        }
+    }
+
+    const appid = 'd0b3c61c6639434e84900b1fd8d391cb';
+    const secret = '459dc8b77a63a0c009aec27f818febf6';
+    const projectId = "cd35af5eaed64d6a88619d55584e8311";
+    const serverUrl = 'https://open.lubansoft.com/api';
+    
+    Motor.setBaseUrl('../motor-sdk')
+    let viewer = undefined
+    let currentProject = undefined
+
+    let currentModel
+    let currentModelCenterPt
+    let savedWorldMatrix
+  function InitViewer() {
+      viewer = new Motor.Viewer({
+        container: 'motorContainer',
+        baseUrl: serverUrl,
+        appId: appid,
+        secret: secret,
+      })
+      return viewer
+    }
+    const openProj = async (projId) => {
+      const viewer = InitViewer()
+      await viewer.Init()
+      currentProject = await viewer.queryProject(projId)
+      await currentProject.open()
+      if(currentProject.viewPosition){
+        viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+      }else{
+        viewer.camera.setViewToProject(currentProject)
+      }
+      const modelBimList = await currentProject.queryModel([Motor.ModelType.BIM])
+      currentModel = modelBimList[0]
+      const projectBox = currentModel.getBoundingBox()
+      currentModelCenterPt = projectBox?.center
+      savedWorldMatrix = currentModel.getWorldMatrix()
+}
+    openProj(projectId)
+</script>
+</html>
