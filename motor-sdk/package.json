@@ -1,6 +1,6 @@
 {
-  "name": "luban_motor_sdk",
-  "version": "3.2.1-2.2.0-Release",
+  "name": "@motor/core",
+  "version": "3.3.0-2.2.0-Release",
   "main": "Motor.js",
   "license": "UNLICENSED",
   "types": "Motor.d.ts"

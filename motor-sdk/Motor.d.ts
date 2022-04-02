@@ -73,6 +73,7 @@ declare module 'motor' {
     export { default as InputType } from 'motor/Viewer/InputType';
     export { default as ManipulatorControl, ManipulatorControlOptions } from 'motor/Viewer/ManipulatorControl';
     export { default as ManipulatorType } from 'motor/Viewer/ManipulatorType';
+    export { default as PolygonEditor, PolygonSelectObject } from 'motor/Viewer/PolygonEditor';
     export { default as PostProcessStage } from 'motor/Viewer/PostProcessStage';
     export { default as RenderEffect, WeatherType } from 'motor/Viewer/RenderEffect';
     export { default as SkyBox, SkyBoxSources, SkyBoxOptions } from 'motor/Viewer/SkyBox';
@@ -454,9 +455,8 @@ declare module 'motor/Core/ModLBTilesProvider' {
         tileset?: Cesium.Cesium3DTileset;
         isAbsPath: boolean;
         decalOrder?: number;
+        decalHeight?: number;
         constructor(options?: ModOptions);
-        set decalHeight(height: number | undefined);
-        get decalHeight(): number | undefined;
         static classType(): string;
         static cast(mod: Mod | undefined): ModLBTilesProvider | undefined;
         type(): string;
@@ -550,7 +550,6 @@ declare module 'motor/Core/ModPlanish' {
     import Mod, { ModOptions } from "motor/Core/Mod";
     import ModPolygon from "motor/Core/ModPolygon";
     class ModPlanish extends ModPolygon {
-        constructor(modOptions?: ModOptions);
         static classType(): string;
         static cast(mod: Mod | undefined): ModPlanish | undefined;
         type(): string;
@@ -580,7 +579,6 @@ declare module 'motor/Core/ModPolygon' {
         protected loadForward(properties: object): void;
         protected saveForward(properties: object): void;
         protected getWorldBoxForward(): Box | undefined;
-        protected refreshStyleForward(): void;
         protected addHighlightVolumePrimitive(clr: Color, height: number): void;
         protected removeHighlightVolumePrimitive(): void;
     }
@@ -650,6 +648,10 @@ declare module 'motor/Core/ModSprite' {
     interface LabelOptions {
         text: string;
         textFont?: string;
+        textFillColor?: string;
+        textStrokeColor?: string;
+        textBackgroundColor?: string;
+        textBackgroundBorderColor?: string;
         offset?: Vector2;
         scale?: number;
         nearFarScalar?: FixedLengthArray<number, 4>;
@@ -1287,6 +1289,7 @@ declare module 'motor/Interface/CZMLSchema' {
         plane?: PlaneSchema;
         name?: string;
         model?: ModelSchema;
+        properties?: unknown;
     }
     export interface PointSchema {
         pixelSize?: number;
@@ -1438,6 +1441,8 @@ declare module 'motor/Util/MotorTool' {
         static destroyObject(object: any, message?: string): void;
         static defaultValue(a: any, b: any): any;
         static computeArea(ptAry: Vector3[]): number;
+        static computeAreaWidthProjectPlane(ptAry: Vector3[]): number;
+        static computeAreaFromEachTriangle(ptAry: Vector3[]): number;
         init(): boolean;
     }
     export const processRegexString: (regStr: string) => string;
@@ -1757,10 +1762,12 @@ declare module 'motor/Viewer/Camera' {
         moveLeft(amount: number): void;
         moveForward(amount: number): void;
         moveBackward(amount: number): void;
+        getPixelSize(center: Vector3, radius: number, width?: number, height?: number): number;
         move(direction: Vector3, amount: number): void;
         lookAtTransform(matrix: Matrix4, offset?: Vector3): void;
         lookAtPointOnPlaneMode(target: Vector3, position: Vector3): void;
         getViewPosition(): ViewPosition;
+        flyToRectangle(west: number, south: number, east: number, north: number, heading?: number, pitch?: number, roll?: number, durationTime?: number): void;
         setViewToViewPosition(opt: ViewPosition, durationTime: number | undefined, directDist: number | undefined, completeFunc: (() => void) | undefined, easingFunction?: Cesium.EasingFunction.Callback): void;
         setViewToProject(project: Proj, phi?: number, theta?: number, durationTime?: number, completeFunc?: () => void): void;
         setViewToBox(box: Box | undefined, phi?: number, theta?: number, durationTime?: number, completeFunc?: () => void): void;
@@ -2029,6 +2036,37 @@ declare module 'motor/Viewer/ManipulatorType' {
     export default ManipulatorType;
 }
 
+declare module 'motor/Viewer/PolygonEditor' {
+    import * as Cesium from "cesium";
+    import ModPolygon from "motor/Core/ModPolygon";
+    import Color from "motor/Util/Color";
+    import Vector2 from "motor/Util/Vector2";
+    import Vector3 from "motor/Util/Vector3";
+    import Viewer from "motor/Viewer/Viewer";
+    export interface PolygonSelectObject {
+        position: Vector3;
+        point?: Cesium.PointPrimitive;
+    }
+    export default class PolygonEditor {
+        adsorbWidth: number;
+        constructor(viewer: Viewer);
+        setSelectColor(color: Color): void;
+        setPointColor(color: Color): void;
+        setTarget(polygon: ModPolygon): void;
+        addPrimitive(positions?: Vector3[], color?: Color): void;
+        removePrimitive(): void;
+        pick(windowPosition: Vector2): PolygonSelectObject | undefined;
+        editing(windowPosition: Vector2): void;
+        setSelectPoint(point: Cesium.PointPrimitive): void;
+        unSelectPoint(): void;
+        addPointPosition(position: Vector3): void;
+        addPoint(position: Vector3): Cesium.PointPrimitive;
+        removePoint(point?: Cesium.PointPrimitive): void;
+        saveData(target: ModPolygon): void;
+        getIntersectPosition(windowPosition: Vector2): Vector3 | undefined;
+    }
+}
+
 declare module 'motor/Viewer/PostProcessStage' {
     import * as Cesium from "cesium";
     import Viewer from "motor/Viewer/Viewer";
@@ -2082,10 +2120,12 @@ declare module 'motor/Viewer/RenderEffect' {
         setEnvironmentMaps(specularEnvironmentMaps: string | undefined, sphericalHarmonicCoefficients: Vector3[] | undefined): void;
         set skyBox(skyBox: SkyBox | undefined);
         get skyBox(): SkyBox | undefined;
-        get enableMSAA(): boolean;
-        set enableMSAA(enable: boolean);
+        get enableSMAA(): boolean;
+        set enableSMAA(enable: boolean);
         get enableWeather(): WeatherType;
         set enableWeather(weatherType: WeatherType);
+        get enableFXAA(): boolean;
+        set enableFXAA(enable: boolean);
         get enableTAA(): boolean;
         set enableTAA(enable: boolean);
         get enableEdge(): boolean;
@@ -2098,6 +2138,10 @@ declare module 'motor/Viewer/RenderEffect' {
         set useGradual(value: boolean);
         get isProjectionBIM(): boolean;
         set isProjectionBIM(value: boolean);
+        set enableShadow(enable: boolean);
+        get enableShadow(): boolean;
+        set enablStaticRender(enable: boolean);
+        get enableStaticRender(): boolean;
     }
     export default RenderEffect;
 }
@@ -2281,12 +2325,13 @@ declare module 'motor/Viewer/Viewer' {
         setPanRotateApplyType(panningApplyType: ControlApplyType, rotatingApplyType: ControlApplyType): void;
         enableViewCube(enable: boolean, options?: ViewCubeOptions): void;
         getCanvas(): HTMLCanvasElement;
+        requestRender(): void;
         pick(windowPosition: Vector2): PickOneResult | undefined;
         pickPosition(windowPosition: Vector2): Cesium.Cartesian3;
         pickPositionFromPhysicalEngine(windowPosition: Vector2): Promise<Vector3 | undefined>;
         pickPositionByRayForPhysical(ray: Ray): Promise<Vector3 | undefined>;
         pickPositionAryByRayForPhysical(ray: Ray, ptAry: Vector3[]): Promise<void>;
-        protected updatePostRender(): void;
+        protected updatePostUpdate(): void;
         protected destroyForward(): void;
     }
     export default Viewer;
@@ -3499,6 +3544,15 @@ export class BoundingSphere {
      */
     static union(left: BoundingSphere, right: BoundingSphere, result?: BoundingSphere): BoundingSphere;
     /**
+     * 将boundingSphere向一个方向进行移动，同时扩大其半径，使其中心点达到这个方向和距离的中心，同时囊括之前的位置
+     * @param sphere - A sphere to expand.
+     * @param distance - A distance to expand.
+     * @param direction - A point to enclose in a bounding sphere.
+     * @param [result] - The object onto which to store the result.
+     * @returns The modified result parameter or a new BoundingSphere instance if none was provided.
+     */
+    static expandDistance(sphere: BoundingSphere, distance: number, direction: Cartesian3, result?: BoundingSphere): BoundingSphere;
+    /**
      * Computes a bounding sphere by enlarging the provided sphere to contain the provided point.
      * @param sphere - A sphere to expand.
      * @param point - A point to enclose in a bounding sphere.
@@ -4326,6 +4380,14 @@ export class Cartesian3 {
      * @returns The modified result parameter.
      */
     static subtract(left: Cartesian3, right: Cartesian3, result: Cartesian3): Cartesian3;
+    /**
+     * 向上取整
+     */
+    static ceil(cartesian: Cartesian3, result: Cartesian3): Cartesian3;
+    /**
+     * 向下取整
+     */
+    static floor(cartesian: Cartesian3, result: Cartesian3): Cartesian3;
     /**
      * Multiplies the provided Cartesian componentwise by the provided scalar.
      * @param cartesian - The Cartesian to be scaled.
@@ -14841,6 +14903,14 @@ export namespace PolygonPipeline {
      * @returns The input array of positions, scaled to height
      */
     function scaleToGeodeticHeight(positions: number[], height?: number, ellipsoid?: Ellipsoid, scaleToSurface?: boolean): number[];
+    /**
+     * 投影到一个平面上，计算这个平面上的面积
+     */
+    function computeAreaWidthProjectPlane(positions: Cartesian3[]): number;
+    /**
+     * 计算所传入顶点的面积
+     */
+    function computeAreaFromEachTriangle(positions: Cartesian3[]): number;
 }
 
 /**
@@ -26524,6 +26594,10 @@ export class EnvironmentVariables {
      */
     isProjectionBIM: boolean;
     /**
+     * 是否允许平行光阴影
+     */
+    enableShadow: boolean;
+    /**
      * 地图瓦片在图片源为透明的情况下，可以让其进行颜色混合
      */
     tileCanBlend: boolean;
@@ -27931,6 +28005,10 @@ export class ModelInstanceLodTileset {
 export class BorderInfo {
     constructor();
     /**
+     * clone
+     */
+    static clone(borderInfo: BorderInfo): BorderInfo;
+    /**
      * get abb box
      */
     getBoundingbox(): AxisAlignedBoundingBox;
@@ -27940,7 +28018,6 @@ export class BorderInfo {
      * @param indexAry - indice out Ary
      */
     createTriangle(ptAry: Cartesian3[], indexAry: number[]): void;
-    modelMatrix: Matrix4;
     pt2DAry: Cartesian2[];
     under: number;
     height: number;
@@ -27950,6 +28027,10 @@ export class BorderInfo {
      * @param ptAry - pt out Ary
      */
     getPtAry(bUnder: boolean, ptAry: Cartesian3[]): void;
+    /**
+     * trans matrix
+     */
+    transformBy(matrix: Matrix4): void;
 }
 
 /**
@@ -27958,13 +28039,21 @@ export class BorderInfo {
 export class PlanishCollection {
     constructor(scene: Scene);
     /**
-     * add hole borderInfo
+     * set hole borderInfo
      */
-    addHoleBorderInfo(id: string, borderInfo: BorderInfo): void;
+    setHoleBorderInfo(id: string, borderInfo: BorderInfo): void;
     /**
-     * remove borderInfo
+     * remove hole borderInfo
      */
     removeHoleBorderInfo(id: string): void;
+    /**
+     * set planish borderInfo
+     */
+    setPlanishBorderInfo(id: string, borderInfo: BorderInfo): void;
+    /**
+     * remove planish borderInfo
+     */
+    removePlanishBorderInfo(id: string): void;
     /**
      * add planish
      * @param options.positions - 点位信息
@@ -28503,12 +28592,14 @@ export class EmLBDeal {
     computeCartesianToProjAry(points: number[], bYup: boolean, matrix?: Matrix4): void;
     /**
      * rel center proj pt ary to rel map center cartesian pt
+     * @param [bYup] - true is Y up  false is Z up default false
      */
-    computeProjToCartesian(cartesian: Cartesian3, matrix?: Matrix4, result?: Cartesian3): Cartesian3;
+    computeProjToCartesian(cartesian: Cartesian3, bYup?: boolean, matrix?: Matrix4, result?: Cartesian3): Cartesian3;
     /**
      * cartesian pt to rel center proj pt
+     * @param [bYup] - true is Y up  false is Z up default false
      */
-    computeCartesianToProj(cartesian: Cartesian3, matrix?: Matrix4, result?: Cartesian3): Cartesian3;
+    computeCartesianToProj(cartesian: Cartesian3, bYup?: boolean, matrix?: Matrix4, result?: Cartesian3): Cartesian3;
     /**
      * map degree ary to proj
      */
@@ -29999,6 +30090,10 @@ export class Camera {
      */
     unProject(position: Cartesian3, result?: Cartesian3): Cartesian3;
     /**
+     * 相机的控制中心点，用于提供给阴影和dwg投影，用于更好的确定范围，使得效果更好
+     */
+    target: Cartesian3 | undefined;
+    /**
      * Gets the camera's reference frame. The inverse of this transformation is appended to the view matrix.
      */
     readonly transform: Matrix4;
@@ -30525,6 +30620,10 @@ export class Camera {
      * This function is a no-op in 2D which will always be orthographic.
      */
     switchToOrthographicFrustum(target: Cartesian3): void;
+    /**
+     * 正交相机，通过相机方向和矩阵，调整frustum.width(height)和camera.position、camera.up方向
+     */
+    static resetOrthographicCameraByPositions(camera: Camera, lightDirection: Cartesian3, positions: Cartesian3[]): void;
 }
 
 export namespace Camera {
@@ -41130,9 +41229,10 @@ export class Scene {
      * @param windowPosition - Window coordinates to perform picking on.
      * @param [width = 3] - Width of the pick rectangle.
      * @param [height = 3] - Height of the pick rectangle.
+     * @param [primitivesNeedUpdate] - Height of the pick rectangle.
      * @returns Object containing the picked primitive.
      */
-    pick(windowPosition: Cartesian2, width?: number, height?: number): any;
+    pick(windowPosition: Cartesian2, width?: number, height?: number, primitivesNeedUpdate?: any): any;
     /**
      * Returns the cartesian position reconstructed from the depth buffer and window position.
      * The returned position is in world coordinates. Used internally by camera functions to
@@ -46495,58 +46595,85 @@ declare module "cesium/Source/Extension/Source/Worker/EmWrapperManager" { import
 //   ../../motor
 //   ../../eventemitter3
 
-declare module 'luban_motor_sdk' {
-    export { default as Camera } from 'luban_motor_sdk/Camera';
-    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, } from 'luban_motor_sdk/Core';
-    export { default as InputMap } from 'luban_motor_sdk/InputMap';
-    export { default as Model } from 'luban_motor_sdk/Model';
-    export { default as Project } from 'luban_motor_sdk/Project';
-    export { default as Viewer } from 'luban_motor_sdk/Viewer';
-    export { default as GeoAlgorithm } from 'luban_motor_sdk/geo/GeoAlgorithm';
-    export { default as AnimationPlayer, AnimationPlayerOptions, PlayAnimationOptions, ModelAnimationLoop, } from 'luban_motor_sdk/plugins/AnimationPlayer';
-    export { default as ClippingControl } from 'luban_motor_sdk/plugins/ClippingPlaneEditor';
-    export { default as MarkCollectionEditor } from 'luban_motor_sdk/plugins/MarkCollectionEditor';
-    export { default as MarkGifLabelEdtior } from 'luban_motor_sdk/plugins/MarkGifLabelEdtior';
-    export { default as MarqueeEditor, selectionAreaService, } from 'luban_motor_sdk/plugins/MarqueeEditor';
-    export { MeasureTwoPoint, MeasureMultiplePoint, MeasureThreePointAngle, } from 'luban_motor_sdk/plugins/MeasureEditor';
-    export { default as ModelEditor, MeshModelOption, FlowLineOption, } from 'luban_motor_sdk/plugins/ModelEditor';
-    export { PathObject, PathPointObj, pathManagerService, } from 'luban_motor_sdk/plugins/PathRoaming';
-    export { default as RoamEditor } from 'luban_motor_sdk/plugins/RoamEditor';
-    export { default as selector, ModConstructor, SelectModeType, SelectedModType, SelectorEventMap, } from 'luban_motor_sdk/plugins/Selector';
-    export { default as VideoProjectionEditor, ModelVideo, } from 'luban_motor_sdk/plugins/VideoProjectionEditor';
-    export { default as WaterEditor } from 'luban_motor_sdk/plugins/WaterEditor';
-    export { ModelType, Element, ExtraPropInterface, PickObject, CustomIdObject, ProjectOpenOption, RenderEffctProp, PathPointData, PathData, } from 'luban_motor_sdk/typedefine';
-    export { gHighLightColor, gIsolateColor, gBlockColor, gIsolateStatus, gGlobalConfig, } from 'luban_motor_sdk/until/MotorContext';
-    export { modType2ModType, computeArea } from 'luban_motor_sdk/until/UtilTool';
+declare module '@motor/core' {
+    import * as Motor from '@motor/core/all';
+    export default Motor;
+    export { default as Camera } from '@motor/core/Camera';
+    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, } from '@motor/core/Core';
+    export { default as InputMap } from '@motor/core/InputMap';
+    export { default as Model } from '@motor/core/Model';
+    export { default as Project } from '@motor/core/Project';
+    export { default as Viewer } from '@motor/core/Viewer';
+    export { default as GeoAlgorithm } from '@motor/core/geo/GeoAlgorithm';
+    export { default as AnimationPlayer, AnimationPlayerOptions, PlayAnimationOptions, ModelAnimationLoop, } from '@motor/core/plugins/AnimationPlayer';
+    export { default as ClippingControl } from '@motor/core/plugins/ClippingPlaneEditor';
+    export { default as MarkCollectionEditor } from '@motor/core/plugins/MarkCollectionEditor';
+    export { default as MarkGifLabelEdtior } from '@motor/core/plugins/MarkGifLabelEdtior';
+    export { default as MarqueeEditor, selectionAreaService, } from '@motor/core/plugins/MarqueeEditor';
+    export { MeasureTwoPoint, MeasureMultiplePoint, MeasureThreePointAngle, } from '@motor/core/plugins/MeasureEditor';
+    export { default as ModelEditor, MeshModelOption, FlowLineOption, } from '@motor/core/plugins/ModelEditor';
+    export { PathObject, PathPointObj, pathManagerService, } from '@motor/core/plugins/PathRoaming';
+    export { default as RoamEditor } from '@motor/core/plugins/RoamEditor';
+    export { default as selector, ModConstructor, SelectModeType, SelectedModType, SelectorEventMap, } from '@motor/core/plugins/Selector';
+    export { default as VideoProjectionEditor, ModelVideo, } from '@motor/core/plugins/VideoProjectionEditor';
+    export { default as WaterEditor } from '@motor/core/plugins/WaterEditor';
+    export { ModelType, Element, ExtraPropInterface, PickObject, CustomIdObject, ProjectOpenOption, RenderEffctProp, PathPointData, PathData, ModelProjectData, } from '@motor/core/typedefine';
+    export { gHighLightColor, gIsolateColor, gBlockColor, gIsolateStatus, gGlobalConfig, } from '@motor/core/until/MotorContext';
+    export { modType2ModType, computeArea } from '@motor/core/until/UtilTool';
 }
 
-declare module 'luban_motor_sdk/Camera' {
-    import MotorCore from 'luban_motor_sdk/Core';
-    import Project from 'luban_motor_sdk/Project';
-    import Viewer from 'luban_motor_sdk/Viewer';
+declare module '@motor/core/all' {
+    export { default as Camera } from '@motor/core/Camera';
+    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier } from '@motor/core/Core';
+    export { default as InputMap } from '@motor/core/InputMap';
+    export { default as Model } from '@motor/core/Model';
+    export { default as Project } from '@motor/core/Project';
+    export { default as Viewer } from '@motor/core/Viewer';
+    export { default as GeoAlgorithm } from '@motor/core/geo/GeoAlgorithm';
+    export { default as AnimationPlayer, AnimationPlayerOptions, PlayAnimationOptions, ModelAnimationLoop } from '@motor/core/plugins/AnimationPlayer';
+    export { default as ClippingControl } from '@motor/core/plugins/ClippingPlaneEditor';
+    export { default as MarkCollectionEditor } from '@motor/core/plugins/MarkCollectionEditor';
+    export { default as MarkGifLabelEdtior } from '@motor/core/plugins/MarkGifLabelEdtior';
+    export { default as MarqueeEditor, selectionAreaService } from '@motor/core/plugins/MarqueeEditor';
+    export { MeasureTwoPoint, MeasureMultiplePoint, MeasureThreePointAngle } from '@motor/core/plugins/MeasureEditor';
+    export { default as ModelEditor, MeshModelOption, FlowLineOption } from '@motor/core/plugins/ModelEditor';
+    export { PathObject, PathPointObj, pathManagerService } from '@motor/core/plugins/PathRoaming';
+    export { default as RoamEditor } from '@motor/core/plugins/RoamEditor';
+    export { default as selector, ModConstructor, SelectModeType, SelectedModType, SelectorEventMap } from '@motor/core/plugins/Selector';
+    export { default as VideoProjectionEditor, ModelVideo } from '@motor/core/plugins/VideoProjectionEditor';
+    export { default as WaterEditor } from '@motor/core/plugins/WaterEditor';
+    export { ModelType, Element, ExtraPropInterface, PickObject, CustomIdObject, ProjectOpenOption, RenderEffctProp, PathPointData, PathData, ModelProjectData } from '@motor/core/typedefine';
+    export { gHighLightColor, gIsolateColor, gBlockColor, gIsolateStatus, gGlobalConfig } from '@motor/core/until/MotorContext';
+    export { modType2ModType, computeArea } from '@motor/core/until/UtilTool';
+}
+
+declare module '@motor/core/Camera' {
+    import MotorCore from '@motor/core/Core';
+    import Project from '@motor/core/Project';
+    import Viewer from '@motor/core/Viewer';
     export default class Camera extends MotorCore.Camera {
         constructor(viewer: Viewer);
         setViewToProject(project: Project | unknown, phi?: number, theta?: number, durationTime?: number, completeFunc?: () => void): void;
     }
 }
 
-declare module 'luban_motor_sdk/Core' {
+declare module '@motor/core/Core' {
     import * as MotorCore from 'motor';
     export default MotorCore;
     export { InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, } from 'motor';
 }
 
-declare module 'luban_motor_sdk/InputMap' {
-    import MotorCore from 'luban_motor_sdk/Core';
-    import Viewer from 'luban_motor_sdk/Viewer';
+declare module '@motor/core/InputMap' {
+    import MotorCore from '@motor/core/Core';
+    import Viewer from '@motor/core/Viewer';
     export default class InputMap extends MotorCore.InputMap {
         constructor(viewer: Viewer);
     }
 }
 
-declare module 'luban_motor_sdk/Model' {
-    import { ModelType, Element, CustomIdObject } from 'luban_motor_sdk/typedefine';
-    import MotorCore from 'luban_motor_sdk/Core';
+declare module '@motor/core/Model' {
+    import { ModelType, Element, CustomIdObject } from '@motor/core/typedefine';
+    import MotorCore from '@motor/core/Core';
     export default class Model {
         constructor(mod: MotorCore.Mod);
         get mod(): MotorCore.Mod;
@@ -46619,10 +46746,10 @@ declare module 'luban_motor_sdk/Model' {
     }
 }
 
-declare module 'luban_motor_sdk/Project' {
-    import Model from 'luban_motor_sdk/Model';
-    import { ModelType, Element, CustomIdObject, ProjectOpenOption, PathData } from 'luban_motor_sdk/typedefine';
-    import MotorCore from 'luban_motor_sdk/Core';
+declare module '@motor/core/Project' {
+    import Model from '@motor/core/Model';
+    import { ModelType, Element, CustomIdObject, ProjectOpenOption, PathData } from '@motor/core/typedefine';
+    import MotorCore from '@motor/core/Core';
     export default class Project {
         constructor(proj: MotorCore.Proj);
         get id(): string;
@@ -46694,18 +46821,19 @@ declare module 'luban_motor_sdk/Project' {
     }
 }
 
-declare module 'luban_motor_sdk/Viewer' {
-    import Project from 'luban_motor_sdk/Project';
-    import MotorCore from 'luban_motor_sdk/Core';
+declare module '@motor/core/Viewer' {
+    import Project from '@motor/core/Project';
+    import MotorCore from '@motor/core/Core';
     import 'motor-ts/library/Widgets/widgets.css';
-    import Camera from 'luban_motor_sdk/Camera';
-    import { PickObject } from 'luban_motor_sdk/typedefine';
+    import Camera from '@motor/core/Camera';
+    import { PickObject, ModelProjectData } from '@motor/core/typedefine';
     export default class Viewer {
         constructor(options: MotorCore.ViewerOptions);
         get viewer(): MotorCore.Viewer;
         get camera(): Camera | undefined;
         get renderEffect(): MotorCore.RenderEffect;
         setLightDir(heading: number, pitch: number, roll: number): void;
+        openModelProject(modelId: string): Promise<ModelProjectData | undefined>;
         queryProject(): Promise<Project[]>;
         queryProject(projectId: string): Promise<Project | undefined>;
         queryProject(projectIds: string[]): Promise<Project[]>;
@@ -46738,8 +46866,8 @@ declare module 'luban_motor_sdk/Viewer' {
     }
 }
 
-declare module 'luban_motor_sdk/geo/GeoAlgorithm' {
-    import MotorCore from 'luban_motor_sdk/Core';
+declare module '@motor/core/geo/GeoAlgorithm' {
+    import MotorCore from '@motor/core/Core';
     export default class GeoAlgorithm {
         static distance(left: MotorCore.Vector3, right: MotorCore.Vector3): number;
         static normalize(vec: MotorCore.Vector3, result: MotorCore.Vector3): MotorCore.Vector3;
@@ -46756,10 +46884,10 @@ declare module 'luban_motor_sdk/geo/GeoAlgorithm' {
     }
 }
 
-declare module 'luban_motor_sdk/plugins/AnimationPlayer' {
-    import MotorCore from 'luban_motor_sdk/Core';
-    import Model from 'luban_motor_sdk/Model';
-    import Viewer from 'luban_motor_sdk/Viewer';
+declare module '@motor/core/plugins/AnimationPlayer' {
+    import MotorCore from '@motor/core/Core';
+    import Model from '@motor/core/Model';
+    import Viewer from '@motor/core/Viewer';
     enum ModelAnimationLoop {
         NONE = 0,
         REPEAT = 1,
@@ -46791,9 +46919,9 @@ declare module 'luban_motor_sdk/plugins/AnimationPlayer' {
     export { AnimationPlayerOptions, PlayAnimationOptions, ModelAnimationLoop };
 }
 
-declare module 'luban_motor_sdk/plugins/ClippingPlaneEditor' {
-    import MotorCore from 'luban_motor_sdk/Core';
-    import Viewer from 'luban_motor_sdk/Viewer';
+declare module '@motor/core/plugins/ClippingPlaneEditor' {
+    import MotorCore from '@motor/core/Core';
+    import Viewer from '@motor/core/Viewer';
     export default class ClippingControl extends MotorCore.ClippingControl {
         constructor(viewer: Viewer, center: MotorCore.Vector3, dimensions: MotorCore.Vector3, clippingType?: MotorCore.ClippingTypes);
         addClippingPlaneByPlane(normal: MotorCore.Vector3, point: MotorCore.Vector3): void;
@@ -46812,11 +46940,11 @@ declare module 'luban_motor_sdk/plugins/ClippingPlaneEditor' {
     }
 }
 
-declare module 'luban_motor_sdk/plugins/MarkCollectionEditor' {
-    import Viewer from 'luban_motor_sdk/Viewer';
-    import Project from 'luban_motor_sdk/Project';
-    import Model from 'luban_motor_sdk/Model';
-    import MotorCore from 'luban_motor_sdk/Core';
+declare module '@motor/core/plugins/MarkCollectionEditor' {
+    import Viewer from '@motor/core/Viewer';
+    import Project from '@motor/core/Project';
+    import Model from '@motor/core/Model';
+    import MotorCore from '@motor/core/Core';
     export default class MarkCollectionEditor {
         constructor(viewer: Viewer, project: Project);
         get viewer(): Viewer;
@@ -46827,11 +46955,11 @@ declare module 'luban_motor_sdk/plugins/MarkCollectionEditor' {
     }
 }
 
-declare module 'luban_motor_sdk/plugins/MarkGifLabelEdtior' {
-    import Viewer from 'luban_motor_sdk/Viewer';
-    import Project from 'luban_motor_sdk/Project';
-    import Model from 'luban_motor_sdk/Model';
-    import MotorCore from 'luban_motor_sdk/Core';
+declare module '@motor/core/plugins/MarkGifLabelEdtior' {
+    import Viewer from '@motor/core/Viewer';
+    import Project from '@motor/core/Project';
+    import Model from '@motor/core/Model';
+    import MotorCore from '@motor/core/Core';
     export default class MarkGifLabelEdtior {
         constructor(viewer: Viewer, project: Project);
         get viewer(): Viewer;
@@ -46841,9 +46969,9 @@ declare module 'luban_motor_sdk/plugins/MarkGifLabelEdtior' {
     }
 }
 
-declare module 'luban_motor_sdk/plugins/MarqueeEditor' {
-    import MotorCore from 'luban_motor_sdk/Core';
-    import Viewer from 'luban_motor_sdk/Viewer';
+declare module '@motor/core/plugins/MarqueeEditor' {
+    import MotorCore from '@motor/core/Core';
+    import Viewer from '@motor/core/Viewer';
     import { EventEmitter } from 'eventemitter3';
     interface Point {
         x: number;
@@ -46894,10 +47022,10 @@ declare module 'luban_motor_sdk/plugins/MarqueeEditor' {
     export {};
 }
 
-declare module 'luban_motor_sdk/plugins/MeasureEditor' {
-    import MotorCore from 'luban_motor_sdk/Core';
-    import Viewer from 'luban_motor_sdk/Viewer';
-    import Project from 'luban_motor_sdk/Project';
+declare module '@motor/core/plugins/MeasureEditor' {
+    import MotorCore from '@motor/core/Core';
+    import Viewer from '@motor/core/Viewer';
+    import Project from '@motor/core/Project';
     type ColorLine = [number, number, number, number];
     type PointNumAry = [number, number, number];
     class DrawCZMLMod {
@@ -46972,11 +47100,11 @@ declare module 'luban_motor_sdk/plugins/MeasureEditor' {
     export { MeasureTwoPoint, MeasureMultiplePoint, MeasureThreePointAngle };
 }
 
-declare module 'luban_motor_sdk/plugins/ModelEditor' {
-    import Viewer from 'luban_motor_sdk/Viewer';
-    import Project from 'luban_motor_sdk/Project';
-    import MotorCore from 'luban_motor_sdk/Core';
-    import Model from 'luban_motor_sdk/Model';
+declare module '@motor/core/plugins/ModelEditor' {
+    import Viewer from '@motor/core/Viewer';
+    import Project from '@motor/core/Project';
+    import MotorCore from '@motor/core/Core';
+    import Model from '@motor/core/Model';
     export interface MeshModelOption {
         origin?: MotorCore.Vector3;
         path?: string;
@@ -47010,9 +47138,9 @@ declare module 'luban_motor_sdk/plugins/ModelEditor' {
     }
 }
 
-declare module 'luban_motor_sdk/plugins/PathRoaming' {
-    import MotorCore from 'luban_motor_sdk/Core';
-    import { PathData } from 'luban_motor_sdk/typedefine';
+declare module '@motor/core/plugins/PathRoaming' {
+    import MotorCore from '@motor/core/Core';
+    import { PathData } from '@motor/core/typedefine';
     class PathManager {
         isPlaying: boolean;
         pathList: PathObject[];
@@ -47058,10 +47186,10 @@ declare module 'luban_motor_sdk/plugins/PathRoaming' {
     export { PathObject, PathPointObj, pathManagerService };
 }
 
-declare module 'luban_motor_sdk/plugins/RoamEditor' {
-    import MotorCore from 'luban_motor_sdk/Core';
-    import Model from 'luban_motor_sdk/Model';
-    import Viewer from 'luban_motor_sdk/Viewer';
+declare module '@motor/core/plugins/RoamEditor' {
+    import MotorCore from '@motor/core/Core';
+    import Model from '@motor/core/Model';
+    import Viewer from '@motor/core/Viewer';
     export default class RoamEditor {
         constructor(viewer: Viewer);
         get viewer(): Viewer;
@@ -47100,8 +47228,8 @@ declare module 'luban_motor_sdk/plugins/RoamEditor' {
     }
 }
 
-declare module 'luban_motor_sdk/plugins/Selector' {
-    import MotorCore from 'luban_motor_sdk/Core';
+declare module '@motor/core/plugins/Selector' {
+    import MotorCore from '@motor/core/Core';
     interface ModConstructorType {
         bimId: string;
         guid: string;
@@ -47149,10 +47277,10 @@ declare module 'luban_motor_sdk/plugins/Selector' {
     export default selector;
 }
 
-declare module 'luban_motor_sdk/plugins/VideoProjectionEditor' {
-    import MotorCore from 'luban_motor_sdk/Core';
-    import Project from 'luban_motor_sdk/Project';
-    import Viewer from 'luban_motor_sdk/Viewer';
+declare module '@motor/core/plugins/VideoProjectionEditor' {
+    import MotorCore from '@motor/core/Core';
+    import Project from '@motor/core/Project';
+    import Viewer from '@motor/core/Viewer';
     export class ModelVideo {
         constructor(mod: MotorCore.ModVideoProjection);
         get modVideo(): MotorCore.ModVideoProjection;
@@ -47183,11 +47311,11 @@ declare module 'luban_motor_sdk/plugins/VideoProjectionEditor' {
     }
 }
 
-declare module 'luban_motor_sdk/plugins/WaterEditor' {
-    import MotorCore from 'luban_motor_sdk/Core';
-    import Model from 'luban_motor_sdk/Model';
-    import Viewer from 'luban_motor_sdk/Viewer';
-    import Project from 'luban_motor_sdk/Project';
+declare module '@motor/core/plugins/WaterEditor' {
+    import MotorCore from '@motor/core/Core';
+    import Model from '@motor/core/Model';
+    import Viewer from '@motor/core/Viewer';
+    import Project from '@motor/core/Project';
     export default class WaterEditor {
         _viewer: Viewer;
         _project: Project;
@@ -47197,10 +47325,11 @@ declare module 'luban_motor_sdk/plugins/WaterEditor' {
     }
 }
 
-declare module 'luban_motor_sdk/typedefine' {
-    import Model from 'luban_motor_sdk/Model';
-    import MotorCore from 'luban_motor_sdk/Core';
-    export { ModelType, Element, ExtraPropInterface, PickObject, CustomIdObject, ProjectOpenOption, RenderEffctProp, PathPointData, PathData, };
+declare module '@motor/core/typedefine' {
+    import Model from '@motor/core/Model';
+    import Project from '@motor/core/Project';
+    import MotorCore from '@motor/core/Core';
+    export { ModelType, Element, ExtraPropInterface, PickObject, CustomIdObject, ProjectOpenOption, RenderEffctProp, PathPointData, PathData, ModelProjectData, };
     interface RenderEffctProp {
         sunlightIntensity?: number;
         directionalLightDirection?: MotorCore.Vector3;
@@ -47230,6 +47359,10 @@ declare module 'luban_motor_sdk/typedefine' {
     interface ProjectOpenOption {
         isDrawAllModel: boolean;
         drawingModelList: string[];
+    }
+    interface ModelProjectData {
+        project: Project;
+        model: Model;
     }
     enum ModelType {
         FOLDER = 0,
@@ -47270,9 +47403,9 @@ declare module 'luban_motor_sdk/typedefine' {
     }
 }
 
-declare module 'luban_motor_sdk/until/MotorContext' {
-    import MotorCore from 'luban_motor_sdk/Core';
-    import Project from 'luban_motor_sdk/Project';
+declare module '@motor/core/until/MotorContext' {
+    import MotorCore from '@motor/core/Core';
+    import Project from '@motor/core/Project';
     const gHighLightColor: MotorCore.Color;
     const gIsolateColor: MotorCore.Color;
     const gBlockColor: MotorCore.Color;
@@ -47289,9 +47422,9 @@ declare module 'luban_motor_sdk/until/MotorContext' {
     export { gHighLightColor, gIsolateColor, gBlockColor, gIsolateStatus, gGlobalConfig, };
 }
 
-declare module 'luban_motor_sdk/until/UtilTool' {
-    import { ModelType } from 'luban_motor_sdk/typedefine';
-    import MotorCore from 'luban_motor_sdk/Core';
+declare module '@motor/core/until/UtilTool' {
+    import { ModelType } from '@motor/core/typedefine';
+    import MotorCore from '@motor/core/Core';
     export function getType(object: any): string;
     export function getModelType(type: string | undefined): ModelType | undefined;
     function modType2ModType(modType: ModelType[]): string[];
