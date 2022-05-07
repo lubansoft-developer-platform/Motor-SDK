@@ -64,6 +64,7 @@ declare module 'motor' {
     export { default as BloomState, BloomStateOptions } from 'motor/Viewer/BloomState';
     export { default as Camera, ViewPosition, EasingFunctionType, EasingFunctionCollection } from 'motor/Viewer/Camera';
     export { default as ClippingControl, ClippingTypes, ClippingPlaneType, ClippingPlaneTypes } from 'motor/Viewer/ClippingControl';
+    export { default as CommentEditor, CommentType } from 'motor/Viewer/CommentEditor';
     export { default as Control, ControlEventCallback, ControlEvent, ControlApplyType } from 'motor/Viewer/Control';
     export { default as DirectionalLight } from 'motor/Viewer/DirectionalLight';
     export { default as EarthControl } from 'motor/Viewer/EarthControl';
@@ -1497,15 +1498,26 @@ declare module 'motor/Util/Resource' {
 }
 
 declare module 'motor/Util/ScreenCanvas' {
+    import Color from "motor/Util/Color";
     import MotorObj from "motor/Util/MotorObj";
     import Vector2 from "motor/Util/Vector2";
     class ScreenCanvas extends MotorObj {
         constructor(container: Element);
+        getCanvas(): HTMLCanvasElement;
+        getContext(): CanvasRenderingContext2D | null;
         updateCanvas(): void;
         drawPoint(point: Vector2, radius: number, fillStyle: string): void;
+        drawArrow(startWindowPt: Vector2, movement: Vector2, lineWidth: number, color: Color): void;
+        drawRect(startWindowPt: Vector2, movement: Vector2, lineWidth: number, color: Color): void;
+        drawEllipse(startWindowPt: Vector2, movement: Vector2, lineWidth: number, color: Color): void;
         drawBullsEye(point: Vector2, radius: number, strokeStyle: string): void;
+        setText(position: Vector2, text: string, color: Color, fontStyle: string): void;
         drawLine(proPoint: Vector2, nextPoint: Vector2, strokeStyle: string, lineDash: number[], lineWidth: number): void;
+        drawImage(canvas: HTMLCanvasElement): void;
         resetGraphics(): void;
+        storeImageData(): void;
+        rollBackImageData(): void;
+        exportImage(type?: string): string;
         protected destroyForward(): void;
     }
     export default ScreenCanvas;
@@ -1768,7 +1780,7 @@ declare module 'motor/Viewer/Camera' {
         lookAtPointOnPlaneMode(target: Vector3, position: Vector3): void;
         getViewPosition(): ViewPosition;
         flyToRectangle(west: number, south: number, east: number, north: number, heading?: number, pitch?: number, roll?: number, durationTime?: number): void;
-        setViewToViewPosition(opt: ViewPosition, durationTime: number | undefined, directDist: number | undefined, completeFunc: (() => void) | undefined, easingFunction?: Cesium.EasingFunction.Callback): void;
+        setViewToViewPosition(opt: ViewPosition, durationTime?: number, directDist?: number, completeFunc?: (() => void), easingFunction?: Cesium.EasingFunction.Callback): void;
         setViewToProject(project: Proj, phi?: number, theta?: number, durationTime?: number, completeFunc?: () => void): void;
         setViewToBox(box: Box | undefined, phi?: number, theta?: number, durationTime?: number, completeFunc?: () => void): void;
         setViewForWinRect(winPt1: Vector2, winPt2: Vector2): boolean;
@@ -1833,6 +1845,34 @@ declare module 'motor/Viewer/ClippingControl' {
     }
     export { ClippingPlaneType, ClippingPlaneTypes };
     export default ClippingControl;
+}
+
+declare module 'motor/Viewer/CommentEditor' {
+    import Color from "motor/Util/Color";
+    import Vector2 from "motor/Util/Vector2";
+    import Control from "motor/Viewer/Control";
+    import Viewer from "motor/Viewer/Viewer";
+    export enum CommentType {
+        None = 0,
+        Ellipse = 1,
+        Rect = 2,
+        ArrowLine = 3
+    }
+    export default class CommentEditor extends Control {
+        color: Color;
+        fontStyle: string;
+        lineWidth: number;
+        commentType: CommentType;
+        constructor(viewer: Viewer);
+        begin(): Promise<boolean>;
+        end(): void;
+        setDrawingType(type: CommentType): void;
+        onMouseMove(movement: Vector2): void;
+        setText(position: Vector2, text: string): void;
+        onLeftDown(movement: Vector2): void;
+        onLeftUp(): void;
+        exportImage(): string;
+    }
 }
 
 declare module 'motor/Viewer/Control' {
@@ -46599,7 +46639,7 @@ declare module '@motor/core' {
     import * as Motor from '@motor/core/all';
     export default Motor;
     export { default as Camera } from '@motor/core/Camera';
-    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, } from '@motor/core/Core';
+    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, CommentType, } from '@motor/core/Core';
     export { default as InputMap } from '@motor/core/InputMap';
     export { default as Model } from '@motor/core/Model';
     export { default as Project } from '@motor/core/Project';
@@ -46607,6 +46647,7 @@ declare module '@motor/core' {
     export { default as GeoAlgorithm } from '@motor/core/geo/GeoAlgorithm';
     export { default as AnimationPlayer, AnimationPlayerOptions, PlayAnimationOptions, ModelAnimationLoop, } from '@motor/core/plugins/AnimationPlayer';
     export { default as ClippingControl } from '@motor/core/plugins/ClippingPlaneEditor';
+    export { default as CommentEditor } from '@motor/core/plugins/CommentEditor';
     export { default as MarkCollectionEditor } from '@motor/core/plugins/MarkCollectionEditor';
     export { default as MarkGifLabelEdtior } from '@motor/core/plugins/MarkGifLabelEdtior';
     export { default as MarqueeEditor, selectionAreaService, } from '@motor/core/plugins/MarqueeEditor';
@@ -46624,7 +46665,7 @@ declare module '@motor/core' {
 
 declare module '@motor/core/all' {
     export { default as Camera } from '@motor/core/Camera';
-    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier } from '@motor/core/Core';
+    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, CommentType } from '@motor/core/Core';
     export { default as InputMap } from '@motor/core/InputMap';
     export { default as Model } from '@motor/core/Model';
     export { default as Project } from '@motor/core/Project';
@@ -46632,6 +46673,7 @@ declare module '@motor/core/all' {
     export { default as GeoAlgorithm } from '@motor/core/geo/GeoAlgorithm';
     export { default as AnimationPlayer, AnimationPlayerOptions, PlayAnimationOptions, ModelAnimationLoop } from '@motor/core/plugins/AnimationPlayer';
     export { default as ClippingControl } from '@motor/core/plugins/ClippingPlaneEditor';
+    export { default as CommentEditor } from '@motor/core/plugins/CommentEditor';
     export { default as MarkCollectionEditor } from '@motor/core/plugins/MarkCollectionEditor';
     export { default as MarkGifLabelEdtior } from '@motor/core/plugins/MarkGifLabelEdtior';
     export { default as MarqueeEditor, selectionAreaService } from '@motor/core/plugins/MarqueeEditor';
@@ -46660,7 +46702,7 @@ declare module '@motor/core/Camera' {
 declare module '@motor/core/Core' {
     import * as MotorCore from 'motor';
     export default MotorCore;
-    export { InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, } from 'motor';
+    export { InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, CommentType, } from 'motor';
 }
 
 declare module '@motor/core/InputMap' {
@@ -46881,6 +46923,8 @@ declare module '@motor/core/geo/GeoAlgorithm' {
         static generateBoxByPt(basePt: MotorCore.Vector3, length: number, width: number, height: number): MotorCore.Box;
         static addBox(leftBox: MotorCore.Box, rightBox: MotorCore.Box): MotorCore.Box;
         static addPointToBox(box: MotorCore.Box, pointList: MotorCore.Vector3[]): MotorCore.Box;
+        static computeAreaFromEachTriangle(ptAry: MotorCore.Vector3[]): number;
+        static computeAreaWidthProjectPlane(ptAry: MotorCore.Vector3[]): number;
     }
 }
 
@@ -46937,6 +46981,14 @@ declare module '@motor/core/plugins/ClippingPlaneEditor' {
         get outlineColor(): MotorCore.Color;
         set rotateSpeed(speed: number);
         set axisLength(length: number);
+    }
+}
+
+declare module '@motor/core/plugins/CommentEditor' {
+    import MotorCore from '@motor/core/Core';
+    import Viewer from '@motor/core/Viewer';
+    export default class CommentEditor extends MotorCore.CommentEditor {
+        constructor(viewer: Viewer);
     }
 }
 
@@ -47126,6 +47178,8 @@ declare module '@motor/core/plugins/ModelEditor' {
         get viewer(): Viewer;
         get project(): Project;
         constructor(viewer: Viewer, project: Project);
+        createLine(points: MotorCore.Vector3[], lineColor: MotorCore.Color): Promise<Model | undefined>;
+        updateLine(lineModel: Model, points: MotorCore.Vector3[]): Promise<void>;
         createGifModle(modOption: MotorCore.ModSpriteOptions): Promise<Model | undefined>;
         updateGifModel(modelGif: Model, modOption: MotorCore.ModSpriteOptions): Promise<void>;
         createMeshModel(modOption: MeshModelOption): Promise<Model>;
@@ -47376,7 +47430,9 @@ declare module '@motor/core/typedefine' {
         HOLE = 8,
         PGPLAN = 9,
         GLOBEFOLDER = 10,
-        CZML = 11
+        CZML = 11,
+        MESH = 12,
+        LBTILES_PROVIDER = 13
     }
     interface Element {
         model: Model;
