@@ -931,6 +931,7 @@ declare module 'motor/Core/Proj' {
     class Proj extends MotorObj {
         projMgr: ProjMgr;
         ownProj?: Proj;
+        runtimeError?: unknown;
         constructor(projMgr: ProjMgr, projOptions?: ProjOptions);
         save(): Promise<void>;
         addMod(mod: Mod): void;
@@ -46720,6 +46721,9 @@ declare module '@motor/core/Model' {
         constructor(mod: MotorCore.Mod);
         get mod(): MotorCore.Mod;
         get type(): ModelType | undefined;
+        get bimFileType(): string | undefined;
+        setDwgDecalHeight(height: number | undefined): Promise<void>;
+        setDwgDecalOrder(order: number | undefined): Promise<void>;
         get id(): string;
         get name(): string | undefined;
         drawModel(): Promise<void>;
