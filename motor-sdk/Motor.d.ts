@@ -14,6 +14,7 @@ declare module 'motor' {
     export { default as ModFolder } from 'motor/Core/ModFolder';
     export { default as ModGlobeFolder } from 'motor/Core/ModGlobeFolder';
     export { default as ModHole } from 'motor/Core/ModHole';
+    export { default as ModImageProjection } from 'motor/Core/ModImageProection';
     export { default as ModImgTilesProvider } from 'motor/Core/ModImgTilesProvider';
     export { default as ModInstance } from 'motor/Core/ModInstance';
     export { default as ModLBTilesProvider } from 'motor/Core/ModLBTilesProvider';
@@ -34,15 +35,17 @@ declare module 'motor' {
     export { default as SysMgr } from 'motor/Core/SysMgr';
     export { default as Template } from 'motor/Core/Template';
     export { default as TemplateMgr } from 'motor/Core/TemplateMgr';
-    export { default as CZMLSchema, arcType, FixedLengthArray, ColorSchema, BillBoardSchema, LabelSchema, PolylineSchema, ColorObj, ImageMaterialSchema, GridMaterialSchema, CheckerboardMaterialSchema, Material, ShadowModeValue, ShadowMode, ClassificationType, PositionListOfLists, PolygonSchema, PolylineMaterialSchema, SolidColorMaterialSchema, PolylineGlowMaterialSchema, PolylineOutlineMaterialSchema, PolylineArrowMaterialSchema, StripeMaterialSchema, PolylineDashMaterialSchema, StripeOrientationSchema, PositionSchema, ClockSchema, PointSchema, PlaneMaterialSchema, PlaneSchema, ModelSchema } from 'motor/Interface/CZMLSchema';
+    export { default as CZMLSchema, arcType, FixedLengthArray, OrientationSchema, ColorSchema, BillBoardSchema, LabelSchema, PolylineSchema, ColorObj, ImageMaterialSchema, GridMaterialSchema, CheckerboardMaterialSchema, Material, ShadowModeValue, ShadowMode, ClassificationType, PositionListOfLists, PolygonSchema, PolylineMaterialSchema, SolidColorMaterialSchema, PolylineGlowMaterialSchema, PolylineOutlineMaterialSchema, PolylineArrowMaterialSchema, StripeMaterialSchema, PolylineDashMaterialSchema, StripeOrientationSchema, PositionSchema, ClockSchema, PointSchema, PlaneMaterialSchema, PlaneSchema, ModelSchema } from 'motor/Interface/CZMLSchema';
     export { default as AdsorbMode } from 'motor/Util/AdsorbMode';
     export { default as Box, BoxNumberAry } from 'motor/Util/Box';
     export { default as BoxEmitter } from 'motor/Util/BoxEmitter';
+    export { default as Camera, DebugOption } from 'motor/Util/Camera';
     export { default as CircleEmitter } from 'motor/Util/CircleEmitter';
     export { default as Color } from 'motor/Util/Color';
     export { default as ConeEmitter } from 'motor/Util/ConeEmitter';
     export { default as DeveloperError } from 'motor/Util/DeveloperError';
     export { default as Event } from 'motor/Util/Event';
+    export { default as Frustum, FrustumType, FrustumOptions } from 'motor/Util/Frustum';
     export { default as HeadingPitchRoll } from 'motor/Util/HeadingPitchRoll';
     export { default as Matrix3, Matrix3NumberAry } from 'motor/Util/Matrix3';
     export { default as Matrix4, Matrix4NumberAry } from 'motor/Util/Matrix4';
@@ -54,6 +57,8 @@ declare module 'motor' {
     export { default as Resource, MotorRequestOptions } from 'motor/Util/Resource';
     export { default as ScreenCanvas } from 'motor/Util/ScreenCanvas';
     export { default as SphereEmitter } from 'motor/Util/SphereEmitter';
+    export { default as TimeDate } from 'motor/Util/TimeDate';
+    export { isResourceUrlValid, isUrlCORSErr } from 'motor/Util/ValidResourceUrl';
     export { default as Vector2, Vector2NumberAry } from 'motor/Util/Vector2';
     export { default as Vector3, Vector3NumberAry } from 'motor/Util/Vector3';
     export { default as setBaseUrl } from 'motor/Util/setBaseUrl';
@@ -62,7 +67,6 @@ declare module 'motor' {
     export { default as AnimationPlayer } from 'motor/Viewer/AnimationPlayer';
     export { default as AvatarControl } from 'motor/Viewer/AvatarControl';
     export { default as BloomState, BloomStateOptions } from 'motor/Viewer/BloomState';
-    export { default as Camera, ViewPosition, EasingFunctionType, EasingFunctionCollection } from 'motor/Viewer/Camera';
     export { default as ClippingControl, ClippingTypes, ClippingPlaneType, ClippingPlaneTypes } from 'motor/Viewer/ClippingControl';
     export { default as CommentEditor, CommentType } from 'motor/Viewer/CommentEditor';
     export { default as Control, ControlEventCallback, ControlEvent, ControlApplyType } from 'motor/Viewer/Control';
@@ -82,6 +86,7 @@ declare module 'motor' {
     export { default as ToneMappingFilmic, ToneMappingFilmicOptions } from 'motor/Viewer/ToneMappingFilmic';
     export { default as ViewCube, ViewCubeOptions } from 'motor/Viewer/ViewCube';
     export { default as Viewer, OneBatch, PickOneResult, ViewerOptions } from 'motor/Viewer/Viewer';
+    export { default as ViewerCamera, ViewPosition, EasingFunctionType, EasingFunctionCollection } from 'motor/Viewer/ViewerCamera';
 }
 
 declare module 'motor/Core/ChangeMask' {
@@ -151,6 +156,7 @@ declare module 'motor/Core/Mod' {
         parentMod?: Mod;
         isVirMod: boolean;
         isDeleteUpdate: boolean;
+        runtimeError?: unknown;
         protected isHide?: boolean;
         protected isUnSelect?: boolean;
         protected changeMask: number;
@@ -356,6 +362,8 @@ declare module 'motor/Core/ModGlobeFolder' {
         DealSubMod(): void;
         set TerExpandDegree(terExpandDegree: number);
         get TerExpandDegree(): number;
+        set terAlpha(alpha: number);
+        get terAlpha(): number;
         setTerTilesProvider(modTer: ModTerTilesProvider | undefined): void;
         getTerTilesProvider(): ModTerTilesProvider | undefined;
         addImgTilesProvider(modImg: ModImgTilesProvider): void;
@@ -388,6 +396,26 @@ declare module 'motor/Core/ModHole' {
         protected cloneForward(modOptions: ModOptions): Mod;
     }
     export default ModHole;
+}
+
+declare module 'motor/Core/ModImageProection' {
+    import Box from "motor/Util/Box";
+    import Camera from "motor/Util/Camera";
+    import Vector3 from "motor/Util/Vector3";
+    import Mod from "motor/Core/Mod";
+    export default class ModImageProjection extends Mod {
+        get imageAlpha(): number;
+        set imageAlpha(alpha: number);
+        bindPolygonLimits(polygon?: Vector3[]): void;
+        bindCamera(camera: Camera): void;
+        bindSource(source: HTMLImageElement | string): void;
+        drawModForward(): Promise<boolean>;
+        unDrawModForward(): Promise<boolean>;
+        type(): string;
+        refreshStyleForward(): void;
+        cloneForward(): Mod;
+        getWorldBoxForward(): Box;
+    }
 }
 
 declare module 'motor/Core/ModImgTilesProvider' {
@@ -757,11 +785,11 @@ declare module 'motor/Core/ModVirLine' {
     import ModVirtual from "motor/Core/ModVirtual";
     import Box from "motor/Util/Box";
     import Vector3 from "motor/Util/Vector3";
-    import Camera from "motor/Viewer/Camera";
+    import ViewerCamera from "motor/Viewer/ViewerCamera";
     import Mod, { ModOptions } from "motor/Core/Mod";
     class ModVirLine extends ModVirtual {
         positions: Vector3[];
-        static computeRectangleByTwoPoints(camera: Camera, points: Vector3[]): import("cesium").Cartesian3[];
+        static computeRectangleByTwoPoints(camera: ViewerCamera, points: Vector3[]): import("cesium").Cartesian3[];
         static classType(): string;
         static cast(mod: Mod | undefined): ModVirLine | undefined;
         type(): string;
@@ -907,7 +935,7 @@ declare module 'motor/Core/Proj' {
     import Vector3, { Vector3NumberAry } from "motor/Util/Vector3";
     import Box from "motor/Util/Box";
     import Mod from "motor/Core/Mod";
-    import { ViewPosition } from "motor/Viewer/Camera";
+    import { ViewPosition } from "motor/Viewer/ViewerCamera";
     export interface DirTree {
         name: string;
         children?: DirTree[];
@@ -931,7 +959,7 @@ declare module 'motor/Core/Proj' {
     class Proj extends MotorObj {
         projMgr: ProjMgr;
         ownProj?: Proj;
-        runtimeError?: unknown;
+        haveRuntimeError: boolean;
         constructor(projMgr: ProjMgr, projOptions?: ProjOptions);
         save(): Promise<void>;
         addMod(mod: Mod): void;
@@ -1088,6 +1116,9 @@ declare module 'motor/Interface/CZMLSchema' {
     export interface FixedLengthArray<T extends unknown, L extends number> extends Array<T> {
         0: T;
         length: L;
+    }
+    export interface OrientationSchema {
+        velocityReference?: string;
     }
     export interface ColorSchema {
         rgba?: FixedLengthArray<number, 4>;
@@ -1292,6 +1323,7 @@ declare module 'motor/Interface/CZMLSchema' {
         name?: string;
         model?: ModelSchema;
         properties?: unknown;
+        orientation?: OrientationSchema;
     }
     export interface PointSchema {
         pixelSize?: number;
@@ -1359,6 +1391,48 @@ declare module 'motor/Util/BoxEmitter' {
     export default BoxEmitter;
 }
 
+declare module 'motor/Util/Camera' {
+    import * as Cesium from "cesium";
+    import Viewer from "motor/Viewer/Viewer";
+    import { ViewPosition } from "motor/Viewer/ViewerCamera";
+    import Color from "motor/Util/Color";
+    import Frustum, { FrustumOptions } from "motor/Util/Frustum";
+    import Matrix4 from "motor/Util/Matrix4";
+    import MotorObj from "motor/Util/MotorObj";
+    import Vector3 from "motor/Util/Vector3";
+    export interface DebugOption {
+        fill?: boolean;
+        line?: boolean;
+        color?: Color;
+        lineColor?: Color;
+    }
+    class Camera extends MotorObj {
+        frustum: Frustum;
+        constructor(viewer: Viewer);
+        setDebugOptions(options?: DebugOption): void;
+        type(): string;
+        setFrustum(frustumOptions: FrustumOptions): void;
+        get position(): Cesium.Cartesian3;
+        get positionWC(): Cesium.Cartesian3;
+        get direction(): Cesium.Cartesian3;
+        get directionWC(): Cesium.Cartesian3;
+        get up(): Cesium.Cartesian3;
+        get upWC(): Cesium.Cartesian3;
+        get right(): Cesium.Cartesian3;
+        get rightWC(): Cesium.Cartesian3;
+        get inverseViewMatrix(): Matrix4;
+        getIntersectWithHorizontalPlane(height: number): Cesium.Cartesian3[];
+        getCesiumCamera(): Cesium.Camera;
+        setWorldMatrix(matrix: Matrix4): void;
+        project(position: Vector3, result?: Vector3): Vector3;
+        unProject(position: Vector3, result?: Vector3): Vector3;
+        getViewPosition(): ViewPosition;
+        setViewToViewPosition(opt: ViewPosition, durationTime?: number, easingFunction?: Cesium.EasingFunction.Callback): void;
+        protected destroyForward(): void;
+    }
+    export default Camera;
+}
+
 declare module 'motor/Util/CircleEmitter' {
     import * as Cesium from "cesium";
     class CircleEmitter extends Cesium.CircleEmitter {
@@ -1395,6 +1469,44 @@ declare module 'motor/Util/Event' {
     class Event extends Cesium.Event {
     }
     export default Event;
+}
+
+declare module 'motor/Util/Frustum' {
+    import * as Cesium from "cesium";
+    import MotorObj from "motor/Util/MotorObj";
+    export enum FrustumType {
+        perspective = 0,
+        orthographic = 1
+    }
+    export interface FrustumOptions {
+        type: FrustumType;
+        verticalFov?: number;
+        horizontalFov?: number;
+        near?: number;
+        far?: number;
+        width?: number;
+        height?: number;
+    }
+    class Frustum extends MotorObj {
+        constructor(frustum: Cesium.PerspectiveFrustum | Cesium.OrthographicFrustum);
+        getFrustum(): Cesium.PerspectiveFrustum | Cesium.OrthographicFrustum;
+        set far(far: number);
+        get far(): number;
+        set near(near: number);
+        get near(): number;
+        set verticalFov(verticalFov: number);
+        get verticalFov(): number;
+        set horizontalFov(horizontalFov: number);
+        get horizontalFov(): number;
+        set fov(fov: number);
+        get fov(): number;
+        set width(width: number);
+        get width(): number;
+        set height(height: number);
+        get height(): number;
+        protected destroyForward(): void;
+    }
+    export default Frustum;
 }
 
 declare module 'motor/Util/HeadingPitchRoll' {
@@ -1530,6 +1642,21 @@ declare module 'motor/Util/SphereEmitter' {
         constructor(radius: number);
     }
     export default SphereEmitter;
+}
+
+declare module 'motor/Util/TimeDate' {
+    import * as Cesium from "cesium";
+    import Vector3 from "motor/Util/Vector3";
+    class TimeDate extends Cesium.JulianDate {
+        static getSunDir(time: TimeDate, result?: Vector3): Vector3;
+    }
+    export default TimeDate;
+}
+
+declare module 'motor/Util/ValidResourceUrl' {
+    const isUrlCORSErr: (urlstring: string) => boolean;
+    const isResourceUrlValid: (url: string) => boolean;
+    export { isResourceUrlValid, isUrlCORSErr };
 }
 
 declare module 'motor/Util/Vector2' {
@@ -1728,72 +1855,6 @@ declare module 'motor/Viewer/BloomState' {
     export default BloomState;
 }
 
-declare module 'motor/Viewer/Camera' {
-    import * as Cesium from "cesium";
-    import MotorObj from "motor/Util/MotorObj";
-    import Viewer from "motor/Viewer/Viewer";
-    import Vector3, { Vector3NumberAry } from "motor/Util/Vector3";
-    import Matrix4 from "motor/Util/Matrix4";
-    import Proj from "motor/Core/Proj";
-    import Vector2 from "motor/Util/Vector2";
-    import Box from "motor/Util/Box";
-    export interface ViewPosition {
-        pos: Vector3NumberAry;
-        phi: number;
-        theta: number;
-    }
-    export type EasingFunctionType = Cesium.EasingFunction.Callback;
-    export const EasingFunctionCollection: typeof Cesium.EasingFunction;
-    class Camera extends MotorObj {
-        constructor(viewer: Viewer);
-        get position(): Cesium.Cartesian3;
-        get positionWC(): Cesium.Cartesian3;
-        get direction(): Cesium.Cartesian3;
-        get directionWC(): Cesium.Cartesian3;
-        get up(): Cesium.Cartesian3;
-        get upWC(): Cesium.Cartesian3;
-        get right(): Cesium.Cartesian3;
-        get rightWC(): Cesium.Cartesian3;
-        get cameraMoveStart(): Cesium.Event;
-        get cameraMoveEnd(): Cesium.Event;
-        get cameraChanged(): Cesium.Event;
-        project(position: Vector3, result?: Vector3): Vector3;
-        unProject(position: Vector3, result?: Vector3): Vector3;
-        rotateLeft(angle: number): void;
-        rotateRight(angle: number): void;
-        rotateUp(angle: number): void;
-        rotateDown(angle: number): void;
-        rotate(axis: Vector3, angle: number): void;
-        lookLeft(angle: number): void;
-        lookRight(angle: number): void;
-        lookUp(angle: number): void;
-        lookDown(angle: number): void;
-        look(axis: Vector3, angle: number): void;
-        moveDown(amount: number): void;
-        moveUp(amount: number): void;
-        moveRight(amount: number): void;
-        moveLeft(amount: number): void;
-        moveForward(amount: number): void;
-        moveBackward(amount: number): void;
-        getPixelSize(center: Vector3, radius: number, width?: number, height?: number): number;
-        move(direction: Vector3, amount: number): void;
-        lookAtTransform(matrix: Matrix4, offset?: Vector3): void;
-        lookAtPointOnPlaneMode(target: Vector3, position: Vector3): void;
-        getViewPosition(): ViewPosition;
-        flyToRectangle(west: number, south: number, east: number, north: number, heading?: number, pitch?: number, roll?: number, durationTime?: number): void;
-        setViewToViewPosition(opt: ViewPosition, durationTime?: number, directDist?: number, completeFunc?: (() => void), easingFunction?: Cesium.EasingFunction.Callback): void;
-        setViewToProject(project: Proj, phi?: number, theta?: number, durationTime?: number, completeFunc?: () => void): void;
-        setViewToBox(box: Box | undefined, phi?: number, theta?: number, durationTime?: number, completeFunc?: () => void): void;
-        setViewForWinRect(winPt1: Vector2, winPt2: Vector2): boolean;
-        enableOrthographicFrustum(enable: boolean): void;
-        getScreenWorldPt(windowPosition: Vector2, distance?: number): Vector3;
-        getWorldScreenPt(worldPt: Vector3): Vector2;
-        getPickRay(windowPosition: Vector2, result?: Cesium.Ray): Cesium.Ray;
-        destroyForward(): boolean;
-    }
-    export default Camera;
-}
-
 declare module 'motor/Viewer/ClippingControl' {
     import * as Cesium from "cesium";
     import Viewer from "motor/Viewer/Viewer";
@@ -1879,7 +1940,7 @@ declare module 'motor/Viewer/CommentEditor' {
 declare module 'motor/Viewer/Control' {
     import MotorObj from "motor/Util/MotorObj";
     import Viewer from "motor/Viewer/Viewer";
-    import Camera from "motor/Viewer/Camera";
+    import ViewerCamera from "motor/Viewer/ViewerCamera";
     import { PitchPosition } from "motor/Viewer/InputMap";
     import Vector2 from "motor/Util/Vector2";
     export type ControlEventCallback = ((result: Vector2 | number | string | PitchPosition | undefined) => void);
@@ -1910,7 +1971,7 @@ declare module 'motor/Viewer/Control' {
     }
     class Control extends MotorObj {
         viewer: Viewer;
-        protected camera: Camera;
+        protected camera: ViewerCamera;
         constructor(viewer: Viewer);
         register(): void;
         removeApplyType(apply: ControlApplyType): void;
@@ -1923,8 +1984,25 @@ declare module 'motor/Viewer/Control' {
 }
 
 declare module 'motor/Viewer/DirectionalLight' {
-    import * as Cesium from "cesium";
-    class DirectionalLight extends Cesium.DirectionalLight {
+    import Color from "motor/Util/Color";
+    import Vector3 from "motor/Util/Vector3";
+    import Viewer from "motor/Viewer/Viewer";
+    interface DirectionalLightOption {
+        direction: Vector3;
+        color: Color;
+        intensity: number;
+        viewer: Viewer;
+    }
+    class DirectionalLight {
+        constructor(opt: DirectionalLightOption);
+        set direction(dir: Vector3);
+        get direction(): Vector3;
+        set color(clr: Color);
+        get color(): Color;
+        set intensity(inten: number);
+        get intensity(): number;
+        set timeHour(timeH: number);
+        get timeHour(): number;
     }
     export default DirectionalLight;
 }
@@ -1946,7 +2024,6 @@ declare module 'motor/Viewer/EarthControl' {
 }
 
 declare module 'motor/Viewer/FreeControl' {
-    import * as Cesium from "cesium";
     import Vector3 from "motor/Util/Vector3";
     import Vector2 from "motor/Util/Vector2";
     import Viewer from "motor/Viewer/Viewer";
@@ -1959,8 +2036,6 @@ declare module 'motor/Viewer/FreeControl' {
         minimumZoomDistance?: number;
     }
     class FreeControl extends Control {
-        maximumPitch: number;
-        minimumPitch: number;
         maximumZoomDistance: number;
         minimumZoomDistance: number;
         enableInputs: boolean;
@@ -1979,7 +2054,6 @@ declare module 'motor/Viewer/FreeControl' {
         onMouseMove(windowPosition: Vector2): void;
         init(): void;
         setTarget(winPt: Vector2, noPickPt?: Vector3): Promise<void>;
-        setCamera(position: Cesium.Cartesian3, direction: Cesium.Cartesian3): void;
     }
     export default FreeControl;
 }
@@ -2090,13 +2164,16 @@ declare module 'motor/Viewer/PolygonEditor' {
     }
     export default class PolygonEditor {
         adsorbWidth: number;
+        error: boolean;
         constructor(viewer: Viewer);
+        getPositions(): Vector3[];
         setSelectColor(color: Color): void;
         setPointColor(color: Color): void;
-        setTarget(polygon: ModPolygon): void;
+        setTarget(polygon?: ModPolygon, positions?: Vector3[]): void;
         addPrimitive(positions?: Vector3[], color?: Color): void;
         removePrimitive(): void;
         pick(windowPosition: Vector2): PolygonSelectObject | undefined;
+        checkError(): void;
         editing(windowPosition: Vector2): void;
         setSelectPoint(point: Cesium.PointPrimitive): void;
         unSelectPoint(): void;
@@ -2104,6 +2181,7 @@ declare module 'motor/Viewer/PolygonEditor' {
         addPoint(position: Vector3): Cesium.PointPrimitive;
         removePoint(point?: Cesium.PointPrimitive): void;
         saveData(target: ModPolygon): void;
+        destroy(): void;
         getIntersectPosition(windowPosition: Vector2): Vector3 | undefined;
     }
 }
@@ -2303,7 +2381,7 @@ declare module 'motor/Viewer/Viewer' {
     import * as Cesium from "cesium";
     import MotorObj from "motor/Util/MotorObj";
     import ProjMgr from "motor/Core/ProjMgr";
-    import Camera from "motor/Viewer/Camera";
+    import ViewerCamera from "motor/Viewer/ViewerCamera";
     import EarthControl from "motor/Viewer/EarthControl";
     import FreeControl from "motor/Viewer/FreeControl";
     import { ViewCubeOptions } from "motor/Viewer/ViewCube";
@@ -2341,6 +2419,7 @@ declare module 'motor/Viewer/Viewer' {
         backgroundImageCss?: string;
         debugFps?: boolean;
         orderIndependentTranslucency?: boolean;
+        highDecalQuality?: boolean;
     }
     class Viewer extends MotorObj {
         static idSeed: number;
@@ -2351,7 +2430,7 @@ declare module 'motor/Viewer/Viewer' {
         adsorbControl: AdsorbControl;
         modelCollection: Cesium.PrimitiveCollection;
         czmlDataSource: Cesium.CzmlDataSource;
-        camera: Camera;
+        camera: ViewerCamera;
         controller: FreeControl | EarthControl;
         avatarControl: AvatarControl;
         enablePick: boolean;
@@ -2376,6 +2455,80 @@ declare module 'motor/Viewer/Viewer' {
         protected destroyForward(): void;
     }
     export default Viewer;
+}
+
+declare module 'motor/Viewer/ViewerCamera' {
+    import * as Cesium from "cesium";
+    import MotorObj from "motor/Util/MotorObj";
+    import Viewer from "motor/Viewer/Viewer";
+    import Vector3, { Vector3NumberAry } from "motor/Util/Vector3";
+    import Matrix4 from "motor/Util/Matrix4";
+    import Proj from "motor/Core/Proj";
+    import Vector2 from "motor/Util/Vector2";
+    import Box from "motor/Util/Box";
+    import Frustum from "motor/Util/Frustum";
+    export interface ViewPosition {
+        pos: Vector3NumberAry;
+        phi: number;
+        theta: number;
+        target?: Vector3NumberAry;
+    }
+    export type EasingFunctionType = Cesium.EasingFunction.Callback;
+    export const EasingFunctionCollection: typeof Cesium.EasingFunction;
+    class ViewerCamera extends MotorObj {
+        frustum: Frustum;
+        constructor(viewer: Viewer);
+        static fromSceneCamera(viewer: Viewer): ViewerCamera;
+        getCesiumCamera(): Cesium.Camera;
+        setWorldMatrix(matrix: Matrix4): void;
+        get position(): Cesium.Cartesian3;
+        get positionWC(): Cesium.Cartesian3;
+        get direction(): Cesium.Cartesian3;
+        get directionWC(): Cesium.Cartesian3;
+        get up(): Cesium.Cartesian3;
+        get upWC(): Cesium.Cartesian3;
+        get right(): Cesium.Cartesian3;
+        get rightWC(): Cesium.Cartesian3;
+        get cameraMoveStart(): Cesium.Event;
+        get cameraMoveEnd(): Cesium.Event;
+        get cameraChanged(): Cesium.Event;
+        get inverseViewMatrix(): Matrix4;
+        getIntersectWithHorizontalPlane(height: number): Cesium.Cartesian3[];
+        project(position: Vector3, result?: Vector3): Vector3;
+        unProject(position: Vector3, result?: Vector3): Vector3;
+        rotateLeft(angle: number): void;
+        rotateRight(angle: number): void;
+        rotateUp(angle: number): void;
+        rotateDown(angle: number): void;
+        rotate(axis: Vector3, angle: number): void;
+        lookLeft(angle: number): void;
+        lookRight(angle: number): void;
+        lookUp(angle: number): void;
+        lookDown(angle: number): void;
+        look(axis: Vector3, angle: number): void;
+        moveDown(amount: number): void;
+        moveUp(amount: number): void;
+        moveRight(amount: number): void;
+        moveLeft(amount: number): void;
+        moveForward(amount: number): void;
+        moveBackward(amount: number): void;
+        getPixelSize(center: Vector3, radius: number, width?: number, height?: number): number;
+        move(direction: Vector3, amount: number): void;
+        lookAtTransform(matrix: Matrix4, offset?: Vector3): void;
+        lookAtPointOnPlaneMode(target: Vector3, position: Vector3): void;
+        getViewPosition(): ViewPosition;
+        flyToRectangle(west: number, south: number, east: number, north: number, heading?: number, pitch?: number, roll?: number, durationTime?: number): void;
+        setViewToViewPosition(opt: ViewPosition, durationTime?: number, directDist?: number, completeFunc?: (() => void), easingFunction?: Cesium.EasingFunction.Callback): void;
+        setViewToProject(project: Proj, phi?: number, theta?: number, durationTime?: number, completeFunc?: () => void): void;
+        setViewToBox(box: Box | undefined, phi?: number, theta?: number, durationTime?: number, completeFunc?: () => void): void;
+        setViewForWinRect(winPt1: Vector2, winPt2: Vector2): boolean;
+        enableOrthographicFrustum(enable: boolean): void;
+        getScreenWorldPt(windowPosition: Vector2, distance?: number): Vector3;
+        getWorldScreenPt(worldPt: Vector3): Vector2;
+        getPickRay(windowPosition: Vector2, result?: Cesium.Ray): Cesium.Ray;
+        destroyForward(): boolean;
+    }
+    export default ViewerCamera;
 }
 
 
@@ -13668,8 +13821,8 @@ export class OrientedBoundingBox {
  * frustum.near = 0.01 * maxRadii;
  * frustum.far = 50.0 * maxRadii;
  * @param [options] - An object with the following properties:
- * @param [options.width] - The width of the frustum in meters.
- * @param [options.aspectRatio] - The aspect ratio of the frustum's width to it's height.
+ * @param [options.width = 1000] - The width of the frustum in meters.
+ * @param [options.aspectRatio = 1] - The aspect ratio of the frustum's width to it's height.
  * @param [options.near = 1.0] - The distance of the near plane.
  * @param [options.far = 500000000.0] - The distance of the far plane.
  */
@@ -14406,6 +14559,13 @@ export class Plane {
      * @returns A new plane instance or the modified result parameter.
      */
     static fromCartesian4(coefficients: Cartesian4, result?: Plane): Plane;
+    /**
+     * 求平面与线段的交点，返回undefined或者某个点
+     * @param plane - 平面
+     * @param startPoint - 线段端点
+     * @param endPoint - 线段端点
+     */
+    static getIntersectWithLineSegment(plane: Plane, startPoint: Cartesian3, endPoint: Cartesian3): Cartesian3 | undefined;
     /**
      * Computes the signed shortest distance of a point to a plane.
      * The sign of the distance determines which side of the plane the point
@@ -26631,6 +26791,10 @@ export const classificationPrimitiveNumbers: {};
  */
 export class EnvironmentVariables {
     /**
+     * decal质量
+     */
+    highDecalQuality: boolean;
+    /**
      * 是否对于BIM模型进行投影
      */
     isProjectionBIM: boolean;
@@ -28174,6 +28338,23 @@ export class Line {
      */
     removePrimitive(): boolean;
     changeVisible(isShow: boolean): void;
+    destroy(): boolean;
+}
+
+export class ProjectionPrimitive {
+    constructor(options?: any);
+    imageAlpha: any;
+    addPolygonLimits(positions: Cartesian3[] | undefined): void;
+    bindSource(source: ProjectionSource): void;
+    /**
+     * 绑定相机
+     */
+    bindCameras(cameras: Camera[]): void;
+    destroy(): boolean;
+}
+
+export class ProjectionSource {
+    constructor(viewer: Viewer, source: HTMLImageElement | string);
     destroy(): boolean;
 }
 
@@ -30109,6 +30290,11 @@ export class Camera {
      */
     percentageChanged: number;
     /**
+     * 通过传入水平面的高度，获取相机与平面的相交情况
+     */
+    static getIntersectWithHorizontalPlane(camera: Camera, height: number): Cartesian3[];
+    static getIntersectWithPlane(camera: Camera, plane: Plane): Cartesian3[];
+    /**
      * The default rectangle the camera will view on creation.
      */
     static DEFAULT_VIEW_RECTANGLE: Rectangle;
@@ -30197,6 +30383,10 @@ export class Camera {
      * Gets the event that will be raised when the camera has changed by <code>percentageChanged</code>.
      */
     readonly changed: Event;
+    /**
+     * 设置相机的逆矩阵
+     */
+    setInvViewMatrix(inViewMatrix: Matrix4): void;
     /**
      * Sets the camera position, orientation and transform.
      * @example
@@ -30661,6 +30851,7 @@ export class Camera {
      * This function is a no-op in 2D which will always be orthographic.
      */
     switchToOrthographicFrustum(target: Cartesian3): void;
+    static clone(camera: Camera, result: Camera): Camera;
     /**
      * 正交相机，通过相机方向和矩阵，调整frustum.width(height)和camera.position、camera.up方向
      */
@@ -33513,6 +33704,8 @@ export class DebugAppearance {
  * @param options - Object with the following properties:
  * @param options.camera - The camera.
  * @param [options.color = Color.CYAN] - The color of the debug outline.
+ * @param [options.fill = false] - Determines if this body will be shown.
+ * @param [options.outline = true] - Determines if this outline will be shown.
  * @param [options.updateOnChange = true] - Whether the primitive updates when the underlying camera changes.
  * @param [options.show = true] - Determines if this primitive will be shown.
  * @param [options.id] - A user-defined object to return when the instance is picked with {@link Scene#pick}.
@@ -33521,6 +33714,8 @@ export class DebugCameraPrimitive {
     constructor(options: {
         camera: Camera;
         color?: Color;
+        fill?: boolean;
+        outline?: boolean;
         updateOnChange?: boolean;
         show?: boolean;
         id?: any;
@@ -46615,6 +46810,8 @@ declare module "cesium/Source/Extension/Source/Planish/BorderInfo" { import { Bo
 declare module "cesium/Source/Extension/Source/Planish/PlanishCollection" { import { PlanishCollection } from 'cesium'; export default PlanishCollection; }
 declare module "cesium/Source/Extension/Source/Planish/PlanishPrimitive" { import { PlanishPrimitive } from 'cesium'; export default PlanishPrimitive; }
 declare module "cesium/Source/Extension/Source/Primitive/Line" { import { Line } from 'cesium'; export default Line; }
+declare module "cesium/Source/Extension/Source/Projection/ProjectionPrimitive" { import { ProjectionPrimitive } from 'cesium'; export default ProjectionPrimitive; }
+declare module "cesium/Source/Extension/Source/Projection/ProjectionSource" { import { ProjectionSource } from 'cesium'; export default ProjectionSource; }
 declare module "cesium/Source/Extension/Source/Scene/ViewerMode" { import { ViewerMode } from 'cesium'; export default ViewerMode; }
 declare module "cesium/Source/Extension/Source/Sprite/Sprite" { import { Sprite } from 'cesium'; export default Sprite; }
 declare module "cesium/Source/Extension/Source/Sprite/SpriteCollection" { import { SpriteCollection } from 'cesium'; export default SpriteCollection; }
@@ -46640,7 +46837,7 @@ declare module '@motor/core' {
     import * as Motor from '@motor/core/all';
     export default Motor;
     export { default as Camera } from '@motor/core/Camera';
-    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, CommentType, } from '@motor/core/Core';
+    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, CommentType, FrustumOptions, } from '@motor/core/Core';
     export { default as InputMap } from '@motor/core/InputMap';
     export { default as Model } from '@motor/core/Model';
     export { default as Project } from '@motor/core/Project';
@@ -46649,6 +46846,7 @@ declare module '@motor/core' {
     export { default as AnimationPlayer, AnimationPlayerOptions, PlayAnimationOptions, ModelAnimationLoop, } from '@motor/core/plugins/AnimationPlayer';
     export { default as ClippingControl } from '@motor/core/plugins/ClippingPlaneEditor';
     export { default as CommentEditor } from '@motor/core/plugins/CommentEditor';
+    export { default as EditorPloygonEditor } from '@motor/core/plugins/EditorPlogonEditor';
     export { default as MarkCollectionEditor } from '@motor/core/plugins/MarkCollectionEditor';
     export { default as MarkGifLabelEdtior } from '@motor/core/plugins/MarkGifLabelEdtior';
     export { default as MarqueeEditor, selectionAreaService, } from '@motor/core/plugins/MarqueeEditor';
@@ -46666,7 +46864,7 @@ declare module '@motor/core' {
 
 declare module '@motor/core/all' {
     export { default as Camera } from '@motor/core/Camera';
-    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, CommentType } from '@motor/core/Core';
+    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, CommentType, FrustumOptions } from '@motor/core/Core';
     export { default as InputMap } from '@motor/core/InputMap';
     export { default as Model } from '@motor/core/Model';
     export { default as Project } from '@motor/core/Project';
@@ -46675,6 +46873,7 @@ declare module '@motor/core/all' {
     export { default as AnimationPlayer, AnimationPlayerOptions, PlayAnimationOptions, ModelAnimationLoop } from '@motor/core/plugins/AnimationPlayer';
     export { default as ClippingControl } from '@motor/core/plugins/ClippingPlaneEditor';
     export { default as CommentEditor } from '@motor/core/plugins/CommentEditor';
+    export { default as EditorPloygonEditor } from '@motor/core/plugins/EditorPlogonEditor';
     export { default as MarkCollectionEditor } from '@motor/core/plugins/MarkCollectionEditor';
     export { default as MarkGifLabelEdtior } from '@motor/core/plugins/MarkGifLabelEdtior';
     export { default as MarqueeEditor, selectionAreaService } from '@motor/core/plugins/MarqueeEditor';
@@ -46694,7 +46893,7 @@ declare module '@motor/core/Camera' {
     import MotorCore from '@motor/core/Core';
     import Project from '@motor/core/Project';
     import Viewer from '@motor/core/Viewer';
-    export default class Camera extends MotorCore.Camera {
+    export default class Camera extends MotorCore.ViewerCamera {
         constructor(viewer: Viewer);
         setViewToProject(project: Project | unknown, phi?: number, theta?: number, durationTime?: number, completeFunc?: () => void): void;
     }
@@ -46703,7 +46902,7 @@ declare module '@motor/core/Camera' {
 declare module '@motor/core/Core' {
     import * as MotorCore from 'motor';
     export default MotorCore;
-    export { InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, CommentType, } from 'motor';
+    export { InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, CommentType, FrustumOptions, } from 'motor';
 }
 
 declare module '@motor/core/InputMap' {
@@ -46725,6 +46924,7 @@ declare module '@motor/core/Model' {
         setDwgDecalHeight(height: number | undefined): Promise<void>;
         setDwgDecalOrder(order: number | undefined): Promise<void>;
         get id(): string;
+        get modelProjId(): string | undefined;
         get name(): string | undefined;
         drawModel(): Promise<void>;
         unDrawModel(): Promise<void>;
@@ -46735,6 +46935,8 @@ declare module '@motor/core/Model' {
         queryElement(id: string): Promise<Element | undefined>;
         queryElement(ids: string[]): Promise<Element[]>;
         queryElement(dirs: string[][]): Promise<Element[]>;
+        getElementIndex(dirs: string[][]): Promise<number[] | undefined>;
+        queryElementByIndex(indexArry: number[]): Promise<Element[] | undefined>;
         get children(): Model[];
         removed(): boolean;
         queyElementsByKeywords(keyWord: string): Promise<string[]>;
@@ -46864,6 +47066,7 @@ declare module '@motor/core/Project' {
         worldToGeo(position: MotorCore.Vector3): MotorCore.Vector3;
         worldToProjection(position: MotorCore.Vector3): MotorCore.Vector3;
         projectionToWorld(position: MotorCore.Vector3): MotorCore.Vector3;
+        getProjectCenterBasePt(): MotorCore.Vector3;
     }
 }
 
@@ -46900,10 +47103,6 @@ declare module '@motor/core/Viewer' {
         getSnapPoint(): MotorCore.Vector3 | undefined;
         enableClampZoom(): void;
         disableClampZoom(): void;
-        get maximumPitch(): number | undefined;
-        set maximumPitch(value: number | undefined);
-        get minimumPitch(): number | undefined;
-        set minimumPitch(value: number | undefined);
         get maximumZoomDistance(): number | undefined;
         set maximumZoomDistance(value: number | undefined);
         get minimumZoomDistance(): number | undefined;
@@ -46993,6 +47192,17 @@ declare module '@motor/core/plugins/CommentEditor' {
     import Viewer from '@motor/core/Viewer';
     export default class CommentEditor extends MotorCore.CommentEditor {
         constructor(viewer: Viewer);
+    }
+}
+
+declare module '@motor/core/plugins/EditorPlogonEditor' {
+    import MotorCore from '@motor/core/Core';
+    import Viewer from '@motor/core/Viewer';
+    export default class EditorPloygonEditor {
+        onEditing?: (positions?: MotorCore.Vector3[]) => void;
+        constructor(viewer: Viewer);
+        start(positions: MotorCore.Vector3[]): void;
+        end(): void;
     }
 }
 
