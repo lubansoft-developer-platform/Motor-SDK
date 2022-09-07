@@ -1,1 +1,1 @@
-define(["exports","./when-45f3d25d"],(function(t,n){"use strict";function i(t){t=n.defaultValue(t,n.defaultValue.EMPTY_OBJECT),this.position=t.position,this.normal=t.normal,this.st=t.st,this.bitangent=t.bitangent,this.tangent=t.tangent,this.color=t.color}t.GeometryAttributes=i}));
+define(["exports","./when-45f3d25d"],(function(t,n){"use strict";t.GeometryAttributes=function(t){t=n.defaultValue(t,n.defaultValue.EMPTY_OBJECT),this.position=t.position,this.normal=t.normal,this.st=t.st,this.bitangent=t.bitangent,this.tangent=t.tangent,this.color=t.color}}));

@@ -1,6 +1,6 @@
 {
   "name": "@motor/core",
-  "version": "3.4.1-2.3.0-Release",
+  "version": "3.4.3-2.4.0-Release",
   "main": "Motor.js",
   "license": "UNLICENSED",
   "types": "Motor.d.ts"
