@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+
+<body>
+  <div id="motorContainer"
+    style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+  <div id="toolbar">
+    <span class="description">
+      二三维联动
+    </span>
+  </div>
+
+</body>
+<style>
+  html,
+  body,
+  #motorContainer {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  #toolbar {
+    position: absolute;
+    background-color: #000000c8;
+    height: 20px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 0;
+    /* width: 100%; */
+    width: calc(100% - 20px);
+  }
+
+  .description {
+    position: relative;
+    left: 0;
+    color: white;
+    font-size: 14px;
+  }
+</style>
+<script>
+  Motor.setBaseUrl('../motor-sdk');
+  const serverUrl = 'https://open.lubansoft.com/api';
+  const appId = '605986c057b942cdb0af77e279f4b2a9';
+  const secret = '1397e0ccbcb8058489ece2ca5479f69e';
+  const projectId = '502204e8faeb456cb80ded5d5f179888';
+  let currentProject = undefined;
+  let viewer = undefined;
+  let inputListener = undefined;
+  let selectModel = undefined;
+  let model3D = undefined;
+  let model2D = undefined;
+  function InitViewer() {
+    viewer = new Motor.Viewer({
+      container: 'motorContainer',
+      baseUrl: serverUrl,
+      appId: appId,
+      secret: secret,
+    })
+    return viewer;
+  }
+  const openProj = async (projId) => {
+    const viewer = InitViewer();
+    await viewer.Init();
+    currentProject = await viewer.queryProject(projId);
+    await currentProject.open();
+    if (currentProject.viewPosition) {
+      viewer.camera.setViewToViewPosition(currentProject.viewPosition);
+    } else {
+      viewer.camera.setViewToProject(currentProject);
+    }
+    inputListener = new Motor.InputMap(viewer);
+    inputListener.setInput(
+      Motor.InputType.LEFT_CLICK, fnDefaultSelect);
+    let modelAll = await currentProject.queryModel();
+    model3D = modelAll[1];
+    model2D = [modelAll[0], modelAll[3], modelAll[2], modelAll[4], modelAll[5], modelAll[6], modelAll[7]];
+  }
+  openProj(projectId);
+  // 默认点选
+  const fnDefaultSelect = async (windowPosition) => {
+    console.log("windowPosition", windowPosition);
+    res = viewer.pick(windowPosition);
+    model2D.forEach((item) => {
+      item.deselect();
+    })
+    model3D.deselect();
+    if (res !== undefined) {
+      if (selectModel) {
+        selectModel.deselect();
+      }
+      if (res.model.type === Motor.ModelType.BIM) {
+        res.model.select(res.id);
+        setViewToOtherModel();
+      } else {
+        res.model.select();
+      }
+      selectModel = res.model;
+    } else {
+      selectModel = undefined;
+      // 没有点击构件 解除隔离
+      currentProject.clearIsolate();
+    }
+  }
+  // 点击二维飞向三维对应的地方，点击三维飞向二维对应的地方
+  const setViewToOtherModel = async () => {
+    let currentBimid = undefined;
+    let modelBoundBox = undefined;
+    if (model3D.name === res.model.name) {
+      let modelItem = undefined;
+      for (let i = 0; i < model2D.length + 1; i += 1) {
+        currentBimid = await model2D[i].queryElementByBimIds([res.bimId]);
+        modelItem = model2D[i];
+        if (currentBimid.length > 0) {
+          break;
+        }
+      }
+      if (currentBimid.length > 0) {
+        modelBoundBox = await modelItem.getElmentBoundingBox(currentBimid[0].id);
+        modelItem.select(currentBimid[0].id);
+        currentProject.isolate([currentBimid[0].id]);
+      }
+    } else {
+      currentBimid = await model3D.queryElementByBimIds([res.bimId]);
+      if (currentBimid.length > 0) {
+        modelBoundBox = await model3D.getElmentBoundingBox(currentBimid[0].id);
+        model3D.select(currentBimid[0].id);
+        currentProject.isolate([currentBimid[0].id]);
+      }
+    }
+    if (modelBoundBox) {
+      viewer.camera.setViewToBox(modelBoundBox);
+    }
+  }
+</script>
+
+</html>

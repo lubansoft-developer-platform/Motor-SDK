@@ -1,0 +1,1 @@
+define(["exports","./when-52cea266"],(function(t,n){"use strict";function e(t){t=n.defaultValue(t,n.defaultValue.EMPTY_OBJECT),this.position=t.position,this.normal=t.normal,this.st=t.st,this.bitangent=t.bitangent,this.tangent=t.tangent,this.color=t.color}t.GeometryAttributes=e}));

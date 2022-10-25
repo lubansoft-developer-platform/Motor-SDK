@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+
+<body>
+  <div id="motorContainer"
+    style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+  <div id="toolbar">
+    <span class="description">
+      轨迹运动模拟，点击车辆查看属性
+    </span>
+  </div>
+  <div id="infobox"></div>
+
+</body>
+<style>
+  html,
+  body,
+  #motorContainer {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  #toolbar {
+    position: absolute;
+    background-color: #000000c8;
+    height: 20px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 0;
+    /* width: 100%; */
+    width: calc(100% - 20px);
+  }
+
+  .description {
+    position: relative;
+    left: 0;
+    color: white;
+    font-size: 14px;
+  }
+
+  #infobox {
+    position: absolute;
+    background-color: #00000080;
+    top: 45px;
+    color: white;
+    padding: 10px 10px;
+    line-height: 26px;
+    margin: 10;
+  }
+</style>
+<script>
+  const serverUrl = 'https://open.lubansoft.com/api'
+  const appId = '605986c057b942cdb0af77e279f4b2a9'
+  const secret = '1397e0ccbcb8058489ece2ca5479f69e'
+  const projectId = 'd6766deca0544898ae5586e12d99942f'
+  let markCollection = undefined
+  let inputListener = undefined;
+  async function createTrajectory() {
+    if (!markCollection) {
+      markCollection = new Motor.MarkCollectionEditor(
+        viewer,
+        currentProject,
+      )
+    }
+    const markModelOne = await markCollection.create({
+      id: "bus1",
+      position: {
+        epoch: "2022-07-04T16:00:00Z",
+        cartesian: [
+          0, -8051.46669394333, 2807.6362768773497, 0,
+          10, -7867.544634073261, 2794.6362768773497, 0,
+        ]
+      },
+      model: {
+        gltf: '../static/car1.glb',
+        scale: 3
+      },
+      properties: {
+        "名称": "黄色出租车",
+        "车牌号": "666666"
+      },
+      orientation: {
+        velocityReference: "#position",
+      },
+    }, {
+      interval: '2022-07-04T16:00:00Z/2022-07-04T16:00:10Z',
+      currentTime: '2022-07-04T16:00:00Z',
+      multiplier: 1,
+      range: 'LOOP_STOP',
+    })
+    const markModelTwo = await markCollection.create({
+      id: "bus2",
+      position: {
+        epoch: "2022-07-04T16:00:00Z",
+        cartesian: [
+          0, -7886, 3066, 0,
+          1, -7890, 3046, 0,
+          2, -7895, 3027, 0,
+          3, -7898, 3012, 0,
+          4, -7903, 2992, 0,
+          5, -7909, 2971, 0,
+          6, -7914, 2940, 0,
+          7, -7920, 2920, 0,
+          8, -7928, 2900, 0,
+          9, -7938, 2880, 0,
+        ]
+      },
+      model: {
+        gltf: '../static/car2.glb',
+        scale: 3
+      },
+      properties: {
+        "名称": "白色出租车",
+        "车牌号": "888888"
+      },
+      orientation: {
+        epoch: "2022-07-04T16:00:00Z",//该标注动画的起始时间
+        "unitQuaternion": [
+          0, orientationBus.x, orientationBus.y, orientationBus.z, orientationBus.w,
+          9, orientationBus.x, orientationBus.y, orientationBus.z, orientationBus.w,
+        ]
+      },
+    }, {
+      interval: '2022-07-04T16:00:00Z/2022-07-04T16:00:09Z',
+      currentTime: '2022-07-04T16:00:00Z',
+      multiplier: 1,
+      range: 'LOOP_STOP',
+    })
+  }
+
+  let viewer = undefined
+  Motor.setBaseUrl('../motor-sdk')
+  let HeadingPitchRoll = new Motor.HeadingPitchRoll.fromDegrees(100, 0, 0);
+  let orientationBus = new Motor.Quaternion.fromHeadingPitchRoll(HeadingPitchRoll);
+  let currentProject = undefined
+  function InitViewer() {
+    viewer = new Motor.Viewer({
+      container: 'motorContainer',
+      baseUrl: serverUrl,
+      appId: appId,
+      secret: secret,
+    })
+    return viewer
+  }
+  const openProj = async (projId) => {
+    const viewer = InitViewer()
+    await viewer.Init()
+    currentProject = await viewer.queryProject(projId)
+    await currentProject.open()
+    if (currentProject.viewPosition) {
+      viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+    } else {
+      viewer.camera.setViewToProject(currentProject)
+    }
+    inputListener = new Motor.InputMap(viewer);
+    inputListener.setInput(
+      Motor.InputType.LEFT_CLICK, fnDefaultSelect);
+    await createTrajectory()
+
+  }
+  const fnDefaultSelect = async (windowPosition) => {
+    let positionClick = await viewer.pick(windowPosition)
+    let infobox = document.getElementById("infobox")
+    infobox.innerHTML = '';
+    if (positionClick) {
+      let obj = positionClick.model._mod.packet.properties;
+      let infobox = document.getElementById("infobox")
+      for (let propertyName in obj) {
+        infobox.innerHTML += propertyName + ":" + obj[propertyName] + "<br>"
+      }
+    }
+  }
+  openProj(projectId)
+</script>
+
+</html>

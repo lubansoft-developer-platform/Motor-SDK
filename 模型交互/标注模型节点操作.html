@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+
+<body>
+  <div id="motorContainer"
+    style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+  <div id="toolbar">
+    <span class="description">
+      标注模型节点操作
+    </span>
+    <span class="buttons">
+      <label for="rotate">塔吊旋转:</label><input id="rotate" type="range" value=0 step=1 min=0 max=360 />
+      <label for="translate">平移:</label><input id="translate" type="range" value=0 step=1 min=-50 max=50 />
+      <label for="updown">升降:</label><input id="updown" type="range" value=0 step=1 min=-10 max=50 />
+    </span>
+  </div>
+  <div id="infobox"></div>
+
+</body>
+<style>
+  html,
+  body,
+  #motorContainer {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  #toolbar {
+    position: absolute;
+    background-color: #000000c8;
+    height: 20px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 0;
+    /* width: 100%; */
+    width: calc(100% - 20px);
+  }
+
+  .description {
+    position: relative;
+    left: 0;
+    color: white;
+    font-size: 14px;
+  }
+
+  .buttons {
+    position: absolute;
+    right: 0;
+    margin-right: 10px;
+    padding-left: 10px;
+  }
+
+  .buttons button {
+    background-color: transparent;
+    color: white;
+    border: 1px solid #ffffffcc;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 18px;
+    margin: 0 5;
+  }
+
+  .buttons input {
+    color: white;
+    height: 10px;
+  }
+
+  .buttons label {
+    color: white;
+    font-size: 14px;
+  }
+
+  #infobox {
+    position: absolute;
+    background-color: #00000080;
+    top: 45px;
+    color: white;
+    padding: 10px 10px;
+    line-height: 26px;
+    margin: 10;
+  }
+</style>
+<script>
+  Motor.setBaseUrl('../motor-sdk');
+  const serverUrl = 'https://open.lubansoft.com/api';
+  const appId = '605986c057b942cdb0af77e279f4b2a9';
+  const secret = '1397e0ccbcb8058489ece2ca5479f69e';
+  const projectId = '6f0bafbe326d4cd99d0a80419becb28f';
+  let currentProject = undefined;
+  let viewer = undefined;
+  let markCollection = undefined;
+  let markCrane = undefined;
+  let inputListener = undefined;
+  let startMove = false;
+  function InitViewer() {
+    viewer = new Motor.Viewer({
+      container: 'motorContainer',
+      baseUrl: serverUrl,
+      appId: appId,
+      secret: secret,
+    })
+    return viewer;
+  }
+  async function createCrane() {
+    markCrane = await markCollection.create({
+      // const modelImg = await markCollection.create({
+      id: "crane",
+      name: "塔吊",
+      //标注位置
+      position: {
+        cartesian: [20, -20, -15]
+      },
+      model: {
+        gltf: '../static/crane.glb',
+        scale: 0.7
+      },
+      properties: {
+        "名称": "塔吊",
+        "企业": "鲁班软件"
+      }
+    })
+  }
+  let rotate = document.getElementById('rotate');
+  rotate.oninput = async function () {
+    let angle = parseFloat(rotate.value);
+    let HeadingPitchRoll = new Motor.HeadingPitchRoll.fromDegrees(angle, 0, 0);
+    let orientationBus = new Motor.Quaternion.fromHeadingPitchRoll(HeadingPitchRoll)
+    await markCollection.update(markCrane, {
+      id: "crane",
+      model: {
+        nodeTransformations: {
+          "haut-jaune": {
+            rotation: {
+              "unitQuaternion": [
+                orientationBus.x, orientationBus.y, orientationBus.z, orientationBus.w
+              ]
+            }
+          }
+        }
+      }
+    })
+  }
+  let translate = document.getElementById('translate');
+  translate.oninput = async function () {
+    let offset = parseFloat(translate.value);
+    await markCollection.update(markCrane, {
+      id: "crane",
+      model: {
+        nodeTransformations: {
+          "poulie": {
+            translation: {
+              cartesian: [
+                0, offset, 0
+              ]
+            }
+          }
+        }
+      },
+    })
+  }
+  let originalLineLength = 60;//60m
+  let updown = document.getElementById('updown');
+  updown.oninput = async function () {
+    let height = parseFloat(updown.value);
+    await markCollection.update(markCrane, {
+      id: "crane",
+      model: {
+        nodeTransformations: {
+          "accroche": {
+            translation: {
+              cartesian: [
+                0, 0, height
+              ]
+            }
+          },
+          "line": {
+            scale: {
+              cartesian: [
+                1, 1, (originalLineLength - height) / originalLineLength
+              ]
+            }
+          }
+        }
+      }
+    })
+  }
+  const openProj = async (projId) => {
+    const viewer = InitViewer();
+    await viewer.Init();
+    currentProject = await viewer.queryProject(projId);
+    await currentProject.open();
+    if (currentProject.viewPosition) {
+      viewer.camera.setViewToViewPosition(currentProject.viewPosition);
+    } else {
+      viewer.camera.setViewToProject(currentProject);
+    }
+    if (!markCollection) {
+      markCollection = new Motor.MarkCollectionEditor(
+        viewer,
+        currentProject,
+      )
+    }
+    await createCrane()
+    inputListener = new Motor.InputMap(viewer);
+    inputListener.setInput(
+      Motor.InputType.LEFT_CLICK, fnDefaultSelect);
+  }
+
+  const fnDefaultSelect = async (windowPosition) => {
+    let positionClick = await viewer.pick(windowPosition)
+    let infobox = document.getElementById("infobox")
+    infobox.innerHTML = '';
+    if (positionClick) {
+      let obj = positionClick.model._mod.packet.properties;
+      let infobox = document.getElementById("infobox")
+      for (let propertyName in obj) {
+        infobox.innerHTML += propertyName + ":" + obj[propertyName] + "<br>"
+      }
+    }
+  }
+  openProj(projectId);
+
+</script>
+
+</html>

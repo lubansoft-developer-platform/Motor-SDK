@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+
+<body>
+  <div id="motorContainer"
+    style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+  <div id="toolbar">
+    <span class="description">
+      模型对比
+    </span>
+    <span class="buttons">
+      <button id="startButton" onclick="onClickStart()">开始对比</button>
+      <button id="closeButton" onclick="onClickClose()">关闭对比</button>
+    </span>
+    <div id="infobox">
+      <div style="text-align: center;">对比结果如下：（模型工程V1 => 模型工程V2）</div>
+      <div id="rightInfoBox"></div>
+      <table border="10" id="infoboxTable">
+      </table>
+    </div>
+    <div id="rightInfoBox"></div>
+  </div>
+
+</body>
+<style>
+  html,
+  body,
+  #motorContainer {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  #toolbar {
+    position: absolute;
+    background-color: #000000c8;
+    height: 20px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 0;
+    /* width: 100%; */
+    width: calc(100% - 20px);
+  }
+
+  .description {
+    position: relative;
+    left: 0;
+    color: white;
+    font-size: 14px;
+  }
+
+  .buttons {
+    position: absolute;
+    right: 0;
+    margin-right: 10px;
+    padding-left: 10px;
+  }
+
+  .buttons button {
+    transition-duration: 0.4s;
+    background-color: transparent;
+    color: white;
+    border: 1px solid #ffffffcc;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 18px;
+    margin: 0 5;
+  }
+
+  .buttons button:hover {
+    background-color: #eee;
+    /* Green */
+    color: black;
+  }
+
+  #infobox {
+    position: absolute;
+    background-color: #00000080;
+    top: 45px;
+    color: white;
+    line-height: 26px;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+    border: 2px solid #000;
+  }
+
+  #rightInfoBox {
+    text-align: center;
+  }
+</style>
+<script>
+  const serverUrl = 'https://open.lubansoft.com/api'
+  const appId = 'd0b3c61c6639434e84900b1fd8d391cb'
+  const secret = '459dc8b77a63a0c009aec27f818febf6'
+  const projectId = 'e6e691f1ecae43e49bbcc80525d570e2'
+  let proA = undefined;
+  let proB = undefined;
+  let modelAll = undefined;
+  let selectModel = undefined;
+  let res = undefined;
+  let jsondata = undefined
+  let aAddHtmlArray = undefined
+  let bAddHtmlArray = undefined
+  let bEditHtmlArray = undefined
+  let aEditHtmlArray = undefined;
+
+  let viewer = undefined
+  Motor.setBaseUrl('../motor-sdk')
+  let currentProject = undefined
+  function InitViewer() {
+    viewer = new Motor.Viewer({
+      container: 'motorContainer',
+      baseUrl: serverUrl,
+      appId: appId,
+      secret: secret,
+    })
+    return viewer
+  }
+  const openProj = async (projId) => {
+    const viewer = InitViewer()
+    await viewer.Init()
+    currentProject = await viewer.queryProject(projId)
+    await currentProject.open()
+    if (currentProject.viewPosition) {
+      viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+    } else {
+      viewer.camera.setViewToProject(currentProject)
+    }
+    modelAll = await currentProject.queryModel();
+    proA = modelAll[1];
+    proB = modelAll[0];
+    jsondata = await currentProject.projCompare(proA.modelProjId, proB.modelProjId)
+    aAddHtmlArray = jsondata.aAddIndexes;
+    bAddHtmlArray = jsondata.bAddIndexes;
+    bEditHtmlArray = jsondata.bEditIndexes;
+    aEditHtmlArray = jsondata.aEditIndexes;
+    await initData()
+  }
+  const fn = async () => {
+    await openProj(projectId)
+    inputListener = new Motor.InputMap(viewer)
+    inputListener.setInput(
+      Motor.InputType.LEFT_CLICK, fnDefaultSelect)
+  }
+  fn()
+  const fnDefaultSelect = async (windowPosition) => {
+    res = viewer.pick(windowPosition)
+    if (res !== undefined) {
+      if (selectModel) {
+        selectModel.deselect()
+      }
+      if (res.model.type === Motor.ModelType.BIM) {
+        res.model.select(res.id)
+      } else {
+        res.model.select()
+      }
+      selectModel = res.model
+    } else {
+      proB.deselect()
+      proA.deselect()
+      currentProject.clearIsolate();
+      if (selectModel) {
+        selectModel.deselect()
+        selectModel = undefined
+      }
+    }
+  }
+  // 处理接口返回数据，方便循环
+  let bimidAadd = [];
+  let bimidBadd = [];
+  let objEdit = []
+const btest = () => {
+    bEditHtmlArray.forEach((item, index) => {
+        objEdit.push({bimId: '', bId: `${proA.id}_${item}`, aId: ''})
+    })
+}
+const atest = () => {
+    if (objEdit.length > 0) {
+        aEditHtmlArray.forEach(async (item, index) => {
+            let bimId = await proB.queryElement([`${proB.id}_${item}`])
+            objEdit[index].bimId = bimId[0].bimId;
+            objEdit[index].aId = `${proB.id}_${item}`
+    })
+}
+}
+  const initData = async() => {
+    await btest()
+    await atest()
+
+    if (aAddHtmlArray) {
+        aAddHtmlArray.forEach(async item => {
+          let obj = {};
+          let bimId = await proB.queryElement([`${proB.id}_${item}`])
+          obj.bimId = bimId[0].bimId
+          obj.id = `${proB.id}_${item}`
+          bimidAadd.push(obj)
+        })
+    }
+    if (bAddHtmlArray) {
+        bAddHtmlArray.forEach(async item => {
+          let obj = {};
+          let bimId = await proA.queryElement([`${proA.id}_${item}`])
+          obj.bimId = bimId[0].bimId
+          obj.id = `${proA.id}_${item}`
+          bimidBadd.push(obj)
+        })
+    }
+  }
+  // 开启模型对比
+  const onClickStart = async () => {
+    if (jsondata) {
+      let infobox = document.getElementById("infobox")
+      infobox.style.display = "block";
+      let infoboxTable = document.getElementById("infoboxTable")
+      let rightInfoBox = document.getElementById("rightInfoBox");
+      rightInfoBox.innerHTML = `新增${jsondata.bAddIndexes? jsondata.bAddIndexes.length: 0}个构件，删除${jsondata.aAddIndexes ? jsondata.aAddIndexes.length : 0}个构件，变更${ jsondata.aEditIndexes ? jsondata.aEditIndexes.length : 0}个构件`;
+      let thHtml = `<tr align="center">
+          <th>id(V1)</th>
+          <th>id(V2)</th>
+          <th>bimid</th>
+          <th>状态</th>
+        </tr>`
+
+      let aAddHtml = ""
+      bimidAadd.forEach(async item => {
+        aAddHtml += `<tr align="center">
+            <td class="proAid" style="cursor:pointer">-</td>
+            <td class="proBid" style="cursor:pointer">${item.id}</td>
+            <td>${item.bimId}</td>
+            <td>增加</td>
+          </tr>`
+      });
+      let bAddHtml = "";
+      bimidBadd.forEach(async (item) => {
+        bAddHtml += `<tr align="center">
+            <td class="proAid" style="cursor:pointer">${item.id}</td>
+            <td class="proBid" style="cursor:pointer">-</td>
+            <td>${item.bimId}</td>
+            <td>删除</td>
+          </tr>`
+      })
+      let bEditHtml = ""
+      objEdit.forEach(async (item) => {
+        bEditHtml += `<tr align="center">
+            <td class="proAid" style="cursor:pointer">${item.bId}</td>
+            <td class="proBid" style="cursor:pointer">${item.aId}</td>
+            <td>${item.bimId}</td>
+            <td>变更</td>
+          </tr>`
+      })
+
+      let html = thHtml + aAddHtml + bAddHtml + bEditHtml
+      infoboxTable.innerHTML = html;
+      let proAid = document.getElementsByClassName("proAid")
+    //   proAid.style.cursor = "pointer"
+      let proAArray = Array.from(proAid)
+      proAArray.forEach((item) => {
+        item.onclick = async function () {
+          proA.deselect();
+          proB.deselect();
+          let test = item.innerHTML
+          if (test.indexOf("_") != 0) {
+            proA.select(item.innerHTML);
+            currentProject.isolate([item.innerHTML]);
+            let modelBoundBox = await proA.getElmentBoundingBox(item.innerHTML);
+            if (modelBoundBox) {
+              viewer.camera.setViewToBox(modelBoundBox);
+            }
+          }
+        }
+      })
+      let proBid = document.getElementsByClassName("proBid")
+    //   proBid.style.cursor = "pointer"
+      let proBArray = Array.from(proBid)
+      proBArray.forEach((item) => {
+        item.onclick = async function () {
+          proA.deselect();
+          proB.deselect();
+          let test = item.innerHTML
+          if (test.indexOf("_") != 0) {
+            proB.select(item.innerHTML);
+            currentProject.isolate([item.innerHTML]);
+            let modelBoundBox = await proB.getElmentBoundingBox(item.innerHTML);
+            if (modelBoundBox) {
+              viewer.camera.setViewToBox(modelBoundBox);
+            }
+          }
+        }
+      })
+    }
+  }
+  // 关闭模型对比
+  const onClickClose = () => {
+    let infobox = document.getElementById("infobox")
+    infobox.style.display = "none";
+  }
+</script>
+
+</html>

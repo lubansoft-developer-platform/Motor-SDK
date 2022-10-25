@@ -61,11 +61,12 @@
 <script>
     const serverUrl = 'https://open.lubansoft.com/api'
     const appId = '605986c057b942cdb0af77e279f4b2a9'
-    const secret = '1397e0ccbcb8058489ece2ca5479f69e'
-    const projectId = '8eebee8eac1c4f3193da9654650224c2'
+  const secret = '1397e0ccbcb8058489ece2ca5479f69e'
+  const projectId = '8eebee8eac1c4f3193da9654650224c2'
 
     function filterPoint(startPt, endPt, resultPt){
-        const filterResultPt = [];
+        const filterResultPt = []; 
+        filterResultPt.push(startPt)
         const totalLength = Motor.GeoAlgorithm.distance(startPt,endPt)
         for (let index = 0; index < resultPt.length; index++) {
             const ptItem = resultPt[index];

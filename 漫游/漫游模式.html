@@ -117,7 +117,7 @@
         modMesh = await modelCreate.createMeshModel({
             isAbsPath: false,
             path: '../static/man_fbx.glb',
-            viewTo: true,
+            viewTo: false,
             isFirstPerson: true,
             })
         if (modMesh) {
@@ -128,6 +128,7 @@
             }
             roamEditor.setModelController(modMesh, new Motor.Vector3(0, 0, 1.8))
             roamEditor.enable(true)
+
             if(!animationPlayer){
               animationPlayer = new Motor.AnimationPlayer({
                 model: modMesh,

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../motor-sdk/Motor.js"></script>
+    <title></title>
+</head>
+
+<body>
+    <div id="motorContainer"
+        style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+    </div>
+    <div id="toolbar">
+        <span class="description">
+            图片投影(点选俩个位置进行图片投影)
+        </span>
+        <span class="buttons">
+            <button id="btnEdit" onclick="EditImgProjection()">开启图片编辑</button>
+            <button id="btnEnable" onclick="startImgProjection()">图片投影</button>
+            <button id="btnDisable" onclick="endImgProjection()">关闭图片投影</button>
+            <button id="btnProject" onclick="startTwoProjection()">第二种投影方法</button>
+        </span>
+    </div>
+</body>
+<style>
+    html,
+    body,
+    #motorContainer {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    #toolbar {
+        position: absolute;
+        background-color: #000000c8;
+        height: 20px;
+        padding-top: 8px;
+        padding-bottom: 12px;
+        padding-left: 10px;
+        padding-right: 10px;
+        top: 0;
+        /* width: 100%; */
+        width: calc(100% - 20px);
+    }
+
+    .description {
+        position: relative;
+        left: 0;
+        color: white;
+        font-size: 14px;
+    }
+
+    .buttons {
+        position: absolute;
+        right: 0;
+        margin-right: 10px;
+        padding-left: 10px;
+    }
+
+    .buttons button {
+        transition-duration: 0.4s;
+        background-color: transparent;
+        color: white;
+        border: 1px solid #ffffffcc;
+        border-radius: 2px;
+        height: 24px;
+        line-height: 18px;
+        margin: 0 5;
+    }
+
+</style>
+<script>
+    Motor.setBaseUrl('../motor-sdk')
+    const serverUrl = 'https://open.lubansoft.com/api'
+    const appId = 'd0b3c61c6639434e84900b1fd8d391cb'
+    const secret = '459dc8b77a63a0c009aec27f818febf6'
+    const projectId = '2e45b34528fb486087ebcb867268d4c4'
+
+    let currentProject = undefined
+    let imageProjection = undefined;
+    let inputListener = undefined;
+    let viewer = undefined;
+    let position0 = undefined;
+    let position1 = undefined;
+    let editPosition1 = undefined;
+    let editPosition2 = undefined;
+    let editPosition3 = undefined;
+    let editorPolygon = undefined;
+    let isEdit = false;
+    let positions = []
+    let isXOY = true;
+    function InitViewer() {
+        const viewer = new Motor.Viewer({
+            container: 'motorContainer',
+            baseUrl: serverUrl,
+            appId: appId,
+            secret: secret,
+        })
+        return viewer
+    }
+    const openProj = async (projId) => {
+        viewer = InitViewer()
+        await viewer.Init()
+        currentProject = await viewer.queryProject(projId)
+        await currentProject.open()
+        viewer.enableViewCube(true)
+        if (currentProject.viewPosition) {
+            viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+        } else {
+            viewer.camera.setViewToProject(currentProject)
+        }
+        if (!imageProjection) {
+            imageProjection = new Motor.ImageProject(currentProject)
+        }
+        inputListener = new Motor.InputMap(viewer);
+        inputListener.setInput(
+            Motor.InputType.LEFT_CLICK, fnDefaultSelect);
+    }
+    openProj(projectId)
+    const fnDefaultSelect = async (windowPosition) => {
+        if (isEdit) {
+            editorPolygonMethods(windowPosition)
+        } else {
+            ImageProjectMethods(windowPosition)
+        }
+
+    }
+    const EditImgProjection = () => {
+        isEdit = true;
+        alert('请在投影图片上选择三个点')
+    }
+
+    // 开始投影最终区域
+    const startImgProjection = () => {
+        isEdit = false;
+        editPosition1 = undefined;
+        editPosition2 = undefined;
+        editPosition3 = undefined;
+        if (imageProjection) {
+            imageProjection.bindPolygonLimits(positions)
+        }
+        if (editorPolygon) {
+            editorPolygon.end()
+        }
+    }
+    const endImgProjection = () => {
+        if (imageProjection) {
+            imageProjection.unDrawMod()
+        }
+    }
+    // 选定最初投影区域
+    const ImageProjectMethods = async (windowPosition) => {
+        if (position0 === undefined) {
+            position0 = await viewer.pickPosition(windowPosition)
+        } else {
+            position1 = await viewer.pickPosition(windowPosition)
+        }
+        if (position0 !== undefined && position1 !== undefined) {
+            const distance = Motor.Vector3.distance(position0, position1);
+            // 引入图片的像素是1019*727
+            let url = "../static/pic.png"
+            // 图片所选投影的区域的长度
+            let imgWidth = 1019;
+            let pixelPositions = new Motor.Vector2(0, 0);
+            const rVec = new Motor.Vector3()
+            Motor.Vector3.subtract(position1, position0, rVec)
+            Motor.Vector3.normalize(rVec, rVec);
+            const nVec = new Motor.Vector3()
+            if (isXOY) {
+                // 横面投影
+                Motor.Vector3.cross(Motor.Vector3.UNIT_Z, rVec, nVec)
+                Motor.Vector3.cross(rVec, nVec, nVec);
+            } else {
+                // 立面投影
+                Motor.Vector3.cross(Motor.Vector3.UNIT_Y, rVec, nVec);
+                Motor.Vector3.cross(rVec, nVec, nVec);
+            }
+            if (imageProjection) {
+                imageProjection.canGetPosition(nVec, rVec, distance / imgWidth, position0, pixelPositions, url)
+                position0 = undefined;
+                position1 = undefined;
+            }
+        }
+    }
+    // 编辑最终投影区域
+    const editorPolygonMethods = async (windowPosition) => {
+        if (editPosition1 === undefined) {
+            editPosition1 = await viewer.pickPosition(windowPosition);
+        } else if (editPosition2 === undefined) {
+            editPosition2 = await viewer.pickPosition(windowPosition);
+        } else {
+            editPosition3 = await viewer.pickPosition(windowPosition);
+        }
+        if (editPosition1 && editPosition2 && editPosition3) {
+            positions = [editPosition1, editPosition2, editPosition3];
+            if (!editorPolygon) {
+                editorPolygon = new Motor.EditorPloygonEditor(viewer)
+            }
+            editorPolygon.start(positions)
+            editorPolygon.onEditing = (newPositions) => {
+                positions = [...newPositions]
+            }
+        }
+    }
+    // 第二种投影方法
+    const startTwoProjection = () => {
+        if (imageProjection) {
+            let url = "../static/flow1.png"
+            let worldPosition = [
+                new Motor.Vector3(2057, 3436, 26),
+                new Motor.Vector3(2077, 3452, 26),
+                new Motor.Vector3(2089, 3440, 26),
+                new Motor.Vector3(2070, 3424, 26)
+            ]
+            let pixelPosition = [
+                new Motor.Vector2(0, 0),
+                new Motor.Vector2(200, 0),
+                new Motor.Vector2(200, 200),
+                new Motor.Vector2(0, 200)
+            ]
+            imageProjection.startRandom(worldPosition, pixelPosition, url)
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../motor-sdk/Motor.js"></script>
+  <title></title>
+</head>
+<body>
+  <div id="motorContainer" style="color: #eee;font-family: sans-serif;font-size: 9pt;display: block;position: absolute;top: 0;left: 0;border: none; width: 100%;height: 100%;">
+  </div>
+  <div id="toolbar">
+    <span class="description">
+        漫游录制，播放
+    </span>
+    <span class="buttons">
+        <button id='start' onclick="record()">开始录制</button>
+        <button id='play' onclick="play()">播放</button>
+    </span>
+</div>
+
+</body>
+<style>
+  #toolbar{
+    position: absolute;
+    background-color:#000000c8;
+    height: 20px;
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 0;
+    /* width: 100%; */
+    width: calc(100% - 20px);
+}
+.description{
+    position:relative;
+    left:0;
+    color: white;
+    font-size: 14px;
+}
+.buttons{
+    position:absolute;
+    right:0;
+    margin-right: 10px;
+    padding-left:10px;
+}
+.buttons button{
+    transition-duration: 0.4s;
+    background-color: transparent;
+    color: white;
+    border: 1px solid #ffffffcc;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 18px;
+    margin: 0 5;
+}
+.buttons button:hover {
+    background-color: #eee; /* Green */
+    color: black;
+}
+#loading{
+    position:absolute;
+    top:0;
+    z-index:1;
+    width:100%;
+    height:100%;
+    background-color: #0000004d;
+}
+.loading-image{
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50px;
+    display:table;
+    width:100%;
+}
+.buttons select{
+    background-color: #00000040;
+    color: white;
+    border: 1px solid #ffffffcc;
+    border-radius: 2px;
+    height: 24px;
+    line-height: 18px;
+    margin: 0 5;
+}
+</style>
+<script>
+    const serverUrl = 'https://open.lubansoft.com/api'
+    const appId = '605986c057b942cdb0af77e279f4b2a9'
+    const secret = '1397e0ccbcb8058489ece2ca5479f69e'
+    const projectId = '20883133bf944792ae8ffabeb1fd9505'
+    let viewer
+    Motor.setBaseUrl('../motor-sdk')
+
+    let recordEle = document.getElementById('start');
+    let playEle = document.getElementById('play');
+    let currentProject
+    let modelCreate
+    let roamEditor
+    let animationPlayer
+    let timer
+    let viewPositionList = []
+    let martAry = []
+    let modMesh
+
+    let isRecording = false
+
+  async function play(){
+    if(isRecording){
+      alert('正在录制中...')
+    }else{
+      if(viewPositionList.length === 0 || martAry.length === 0){
+        alert('请先录制漫游...')
+      }else{
+        if(modMesh){
+          modMesh.setVisibility(true)
+          roamEditor.enable(true)
+        }
+        let i = 0
+        let timerPlay = setInterval(() => {
+          if (i < viewPositionList.length) {
+            const maTmp = Motor.Matrix4.fromArray(
+            martAry[i],
+            )
+            Motor.Matrix4.clone(maTmp, viewer.viewer.avatarControl.modelMatrix)
+            ++i
+          } else {
+            clearInterval(timerPlay)
+          }
+        }, 1000 / 60)
+      }
+    }
+  }
+  async function record(){
+    isRecording = !isRecording
+    if(isRecording){
+        if (!modelCreate) {
+            modelCreate = new Motor.ModelEditor(viewer, currentProject)
+        }
+        if(!modMesh){
+          modMesh = await modelCreate.createMeshModel({
+            isAbsPath: false,
+            path: '../static/man_fbx.glb',
+            viewTo: false,
+            isFirstPerson: true,
+            })
+            modMesh.scale(new Motor.Vector3(100, 100, 100))
+            if(!roamEditor){
+                roamEditor = new Motor.RoamEditor(viewer)
+            }
+            roamEditor.setModelController(modMesh, new Motor.Vector3(0, 0, 1.8))
+        }
+        if (modMesh) {
+            modMesh.setVisibility(true)
+            roamEditor.enable(true)
+            if(!animationPlayer){
+              animationPlayer = new Motor.AnimationPlayer({
+                model: modMesh,
+                viewer: viewer,
+              })
+            }
+            roamEditor.onMoveForwardStart().addEventListener(() => {
+              animationPlayer.stopAll()
+              animationPlayer.play({ name: 'man|walk' })
+            })
+            roamEditor.onMoveForwardEnd().addEventListener(() => {
+              animationPlayer.stopAll()
+              animationPlayer.play({ name: 'man|idle' })
+            })
+            roamEditor.onMoveBackwardStart().addEventListener(() => {
+              animationPlayer.stopAll()
+              animationPlayer.play({ name: 'man|walk' })
+            })
+            roamEditor.onMoveBackwardEnd().addEventListener(() => {
+              animationPlayer.stopAll()
+              animationPlayer.play({ name: 'man|idle' })
+            })
+            roamEditor.onMoveLeftStart().addEventListener(() => {
+              animationPlayer.stopAll()
+              animationPlayer.play({ name: 'man|step_left' })
+            })
+            roamEditor.onMoveLeftEnd().addEventListener(() => {
+              animationPlayer.stopAll()
+              animationPlayer.play({ name: 'man|idle' })
+            })
+            roamEditor.onMoveRightStart().addEventListener(() => {
+              animationPlayer.stopAll()
+              animationPlayer.play({ name: 'man|step_right' })
+            })
+            roamEditor.onMoveRightEnd().addEventListener(() => {
+              animationPlayer.stopAll()
+              animationPlayer.play({ name: 'man|idle' })
+            })
+            roamEditor.enableGravity = true
+            roamEditor.enableCollision = true
+        }
+        timer = setInterval(() => {
+          viewPositionList.push(viewer.camera.getViewPosition())
+          martAry.push(
+            Motor.Matrix4.toArray(viewer.viewer.avatarControl.modelMatrix),
+            )
+        }, 1000 / 60)
+
+        recordEle.innerHTML = '停止录制'      
+    }else{
+      if(timer){
+        clearInterval(timer)
+        roamEditor.enable(false)
+        if(modMesh){
+          modMesh.setVisibility(false)
+        }
+      }
+      recordEle.innerHTML = '开始录制'
+    }
+  }
+
+  function InitViewer() {
+      viewer = new Motor.Viewer({
+        container: 'motorContainer',
+        baseUrl: serverUrl,
+        appId: appId,
+        secret: secret,
+      })
+      return viewer
+    }
+    const openProj = async (projId) => {
+      const viewer = InitViewer()
+      await viewer.Init()
+      currentProject = await viewer.queryProject(projId)
+      await currentProject.open()
+      if(currentProject.viewPosition){
+        viewer.camera.setViewToViewPosition(currentProject.viewPosition)
+      }else{
+        viewer.camera.setViewToProject(currentProject)
+      }
+    }
+    openProj(projectId)
+</script>
+</html>

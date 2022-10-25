@@ -1,0 +1,1 @@
+import addToArray from"./addToArray.js";function addBuffer(e,r){var f={byteLength:r.length,extras:{_pipeline:{source:r}}},t=addToArray(e.buffers,f),a={buffer:t,byteOffset:0,byteLength:r.length};return addToArray(e.bufferViews,a)}export default addBuffer;

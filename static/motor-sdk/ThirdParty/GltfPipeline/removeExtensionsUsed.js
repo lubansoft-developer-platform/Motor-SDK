@@ -1,0 +1,1 @@
+import removeExtensionsRequired from"./removeExtensionsRequired.js";import defined from"../../Core/defined.js";function removeExtensionsUsed(e,n){var s=e.extensionsUsed;if(defined(s)){var i=s.indexOf(n);i>=0&&s.splice(i,1),removeExtensionsRequired(e,n),0===s.length&&delete e.extensionsUsed}}export default removeExtensionsUsed;

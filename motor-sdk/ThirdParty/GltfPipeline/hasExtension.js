@@ -1,0 +1,1 @@
+import defined from"../../Core/defined.js";function hasExtension(e,n){return defined(e.extensionsUsed)&&e.extensionsUsed.indexOf(n)>=0}export default hasExtension;

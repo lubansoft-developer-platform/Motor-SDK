@@ -108,7 +108,7 @@
             z,
             total,
         ) => {
-            console.log('结果：', x, y, z, total)
+            console.log('结果：',measureTool2Point, x, y, z, total)
             result.innerHTML = ''
             result.innerHTML+=`<span style="padding-left:15px;">长度: ${total} 米</span>`;
             result.innerHTML+=`<span style="padding-left:15px;color:red;">x: ${x} 米</span>`;
@@ -128,7 +128,7 @@
         }
         measureToolMultiPoint.init()
         measureToolMultiPoint.calculateEnd = (total) => {
-            console.log('结果：', total)
+            console.log('结果：', measureToolMultiPoint,total)
             result.innerHTML = ''
             result.innerHTML+=`<span style="padding-left:15px;">长度: ${total} 米</span>`;
             
@@ -147,7 +147,7 @@
         }
         measureToolAngle.init()
         measureToolAngle.calculateEnd = (angle) => {
-            console.log('结果：', angle)
+            console.log('结果：', measureToolAngle,angle)
             result.innerHTML = ''
             result.innerHTML+=`<span style="padding-left:15px;">角度: ${angle} °</span>`;
            

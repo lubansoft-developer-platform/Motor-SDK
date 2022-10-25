@@ -1,0 +1,1 @@
+import addExtensionsUsed from"./addExtensionsUsed.js";import addToArray from"./addToArray.js";import defined from"../../Core/defined.js";function addExtensionsRequired(d,e){var s=d.extensionsRequired;defined(s)||(s=[],d.extensionsRequired=s),addToArray(s,e,!0),addExtensionsUsed(d,e)}export default addExtensionsRequired;

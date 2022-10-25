@@ -1,0 +1,1 @@
+import defaultValue from"../../Core/defaultValue.js";function addToArray(e,r,a){if(a=defaultValue(a,!1),a){var u=e.indexOf(r);if(u>-1)return u}return e.push(r),e.length-1}export default addToArray;
