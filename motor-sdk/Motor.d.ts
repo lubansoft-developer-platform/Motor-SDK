@@ -28,7 +28,7 @@ declare module 'motor-ts' {
     export { default as ModVirLine } from 'motor-ts/Core/ModVirLine';
     export { default as ModVirtual } from 'motor-ts/Core/ModVirtual';
     export { default as ModWaterMesh } from 'motor-ts/Core/ModWaterMesh';
-    export { default as NetMgr, TemplateOptions, PageOptions, PageCustomReqInfo, PageCustomOptions, PageReqInfo, ModelStatus, FilterReqInfo, BindKey, CustomData, CompareModProjResult } from 'motor-ts/Core/NetMgr';
+    export { default as NetMgr, BimProp, BimIdDirIndexSchema, TemplateOptions, PageOptions, PageCustomReqInfo, PageCustomOptions, PageReqInfo, ExtensionOptions, ExtensionResponse, ExtensionBatchData, ModelStatus, FilterReqInfo, BindKey, CustomData, CompareModProjResult } from 'motor-ts/Core/NetMgr';
     export { default as Proj, DirTree, ProjOptions } from 'motor-ts/Core/Proj';
     export { default as ProjMgr } from 'motor-ts/Core/ProjMgr';
     export { default as SysMgr } from 'motor-ts/Core/SysMgr';
@@ -636,6 +636,7 @@ declare module 'motor-ts/Core/ModProjProxy' {
     import Color from "motor-ts/Util/Color";
     import Box, { BoxNumberAry } from "motor-ts/Util/Box";
     import { OneBatch } from "motor-ts/Viewer/Viewer";
+    import { BimProp, ExtensionOptions, ExtensionResponse, ExtensionBatchData } from "motor-ts/Core/NetMgr";
     export interface CompOptions {
         id: string;
         index: number;
@@ -666,8 +667,17 @@ declare module 'motor-ts/Core/ModProjProxy' {
         getCompNum(): number;
         getCompsByIndexes(compIndexAry: number[]): Promise<CompOptions[]>;
         getCompsByBimIds(bimIdAry: string[]): Promise<CompOptions[]>;
+        getCompsByBimIdsEbsTree(bimIdAry: string[]): Promise<CompOptions[]>;
+        getDirsByBimProperties(bimProperties: BimProp): Promise<string[]>;
+        getBimIdDirByIndex(idAry: number[]): Promise<{
+            "bimId": string;
+            "dir": string;
+            "index": number;
+        }[]>;
         getCompIndexesByDirs(dirAry: string[]): Promise<number[]>;
         getCompIndexesByBimPropertiesLike(name: string): Promise<number[]>;
+        projQueryExtension(opt: ExtensionOptions): Promise<ExtensionResponse>;
+        projUpdateExtensionBatch(opt: ExtensionBatchData): Promise<string>;
         getInnerMod(): Mod | undefined;
         protected loadForward(properties: object): void;
         protected saveForward(properties: object): void;
@@ -852,6 +862,20 @@ declare module 'motor-ts/Core/NetMgr' {
     import { ProjOptions } from "motor-ts/Core/Proj";
     import { CompOptions } from "motor-ts/Core/ModProjProxy";
     import { BoxNumberAry } from "motor-ts/Util/Box";
+    export interface BimProp {
+        child?: BimProp[];
+        logical: string;
+        searchList?: {
+            compare: number;
+            condition: string;
+            conditionType: number;
+        }[];
+    }
+    export interface BimIdDirIndexSchema {
+        "bimId": string;
+        "dir": string;
+        "index": number;
+    }
     export interface TemplateOptions {
         id: string;
         box: BoxNumberAry;
@@ -883,6 +907,49 @@ declare module 'motor-ts/Core/NetMgr' {
     export interface PageReqInfo {
         pageSize: number;
         pageNo: number;
+    }
+    export interface ExtensionOptions {
+        entityId: string;
+        entityType: string;
+        list: {
+            bimId: string;
+            floor: string;
+        }[];
+        type: number;
+    }
+    export interface ExtensionResponse {
+        ik: string;
+        ivs: {
+            it: number;
+            iv: string;
+        }[];
+        subList: {
+            [key: string]: unknown;
+        }[];
+    }
+    export interface ExtensionBatchData {
+        entityId: string;
+        entityType: string;
+        extensionVos: {
+            ac: number;
+            ik: string;
+            it: number;
+            iv: string;
+            subList: {
+                ac: number;
+                ik: string;
+                it: number;
+                iv: string;
+                subList: {}[];
+                type: number;
+            }[];
+            type: number;
+        }[];
+        list: {
+            bimId: string;
+            floor: string;
+        }[];
+        type: number;
     }
     export enum ModelStatus {
         ALL = 0,
@@ -930,9 +997,14 @@ declare module 'motor-ts/Core/NetMgr' {
         projModUpate(projId: string, modOptAry: ModOptions[]): Promise<number[]>;
         projCompsByIndexes(projId: string, compIndexAry: number[]): Promise<CompOptions[]>;
         projCompsByBimIds(projId: string, bimIdAry: string[]): Promise<CompOptions[]>;
+        projCompsByBimIdsEbsTree(projId: string, bimIdAry: string[]): Promise<CompOptions[]>;
+        projDirsByBimProperties(projId: string, bimProperties: BimProp): Promise<string[]>;
+        projBimIdDirByIndex(projId: string, idAry: number[]): Promise<BimIdDirIndexSchema[]>;
         projCompIndexesByDirs(projId: string, dirAry: string[]): Promise<number[]>;
         projCompIndexesByBimPropertiesLike(projId: string, name: string): Promise<number[]>;
         projCompare(projIdA: string, projIdB: string): Promise<CompareModProjResult>;
+        projQueryExtension(opt: ExtensionOptions): Promise<ExtensionResponse>;
+        projUpdateExtensionBatch(opt: ExtensionBatchData): Promise<string>;
         templatePage(pageNo: number): Promise<PageOptions>;
         templatePageCustom(pageCustomReqInfo: PageCustomReqInfo): Promise<PageCustomOptions>;
         templatePageFilter(pageReqInfo: PageReqInfo, filterReqInfo: FilterReqInfo): Promise<PageCustomOptions>;
@@ -1394,7 +1466,8 @@ declare module 'motor-ts/Util/AdsorbMode' {
     enum AdsorbMode {
         PICK = 0,
         LINE = 1,
-        POINT = 2
+        POINT = 2,
+        FACENORMAL = 3
     }
     export default AdsorbMode;
 }
@@ -1667,6 +1740,7 @@ declare module 'motor-ts/Util/ScreenCanvas' {
         drawPoint(point: Vector2, radius: number, fillStyle: string): void;
         drawArrow(startWindowPt: Vector2, movement: Vector2, lineWidth: number, color: Color): void;
         drawRect(startWindowPt: Vector2, movement: Vector2, lineWidth: number, color: Color): void;
+        drawPolygon(pt1: Vector2, pt2: Vector2, pt3: Vector2, pt4: Vector2, lineWidth: number, color: string): void;
         drawEllipse(startWindowPt: Vector2, movement: Vector2, lineWidth: number, color: Color): void;
         drawBullsEye(point: Vector2, radius: number, strokeStyle: string): void;
         setText(position: Vector2, text: string, color: Color, fontStyle: string): void;
@@ -1733,6 +1807,7 @@ declare module 'motor-ts/Util/Vector3' {
         static fromArray(ary: Vector3NumberAry): Vector3;
         static toArray(vec: Vector3): Vector3NumberAry;
         static getProjectVectorLength(a: Vector3, b: Vector3): number;
+        static rotateByNormal(normal: Vector3, rotateAngle: number, vec3: Vector3): Cesium.Cartesian3;
     }
     export default Vector3;
 }
@@ -1745,6 +1820,7 @@ declare module 'motor-ts/Viewer/AdsorbControl' {
     import AdsorbMode from "motor-ts/Util/AdsorbMode";
     class AdsorbControl extends Control {
         snapPosition?: Vector3;
+        faceNormal?: Vector3;
         adsorbMode: AdsorbMode;
         style: {
             hint: {
@@ -1760,6 +1836,9 @@ declare module 'motor-ts/Viewer/AdsorbControl' {
         constructor(viewer: Viewer);
         set enableSnap(enable: boolean);
         get enableSnap(): boolean;
+        set enableNormalFace(enable: boolean);
+        get enableNormalFace(): boolean;
+        getSnapPosition(movement: Vector2): Promise<void | Vector3 | undefined>;
         onMouseMove(movement: Vector2): void;
     }
     export default AdsorbControl;
@@ -2311,7 +2390,7 @@ declare module 'motor-ts/Viewer/RenderEffect' {
         set isProjectionBIM(value: boolean);
         set enableShadow(enable: boolean);
         get enableShadow(): boolean;
-        set enablStaticRender(enable: boolean);
+        set enableStaticRender(enable: boolean);
         get enableStaticRender(): boolean;
     }
     export default RenderEffect;
@@ -7754,13 +7833,18 @@ On the other hand, a {@link RuntimeError} indicates an exception that may
 be thrown at runtime, e.g., out of memory, that the calling code should be prepared
 to catch.
  * @param [message] - The error message for this exception.
+ * @param [code] - The error code for this exception.
  */
 export class DeveloperError extends Error {
-    constructor(message?: string);
+    constructor(message?: string, code?: number);
     /**
      * 'DeveloperError' indicating that this exception was thrown due to a developer error.
      */
     readonly name: string;
+    /**
+     * 'DeveloperError' indicating that this exception was thrown due to a developer error.
+     */
+    readonly code: number;
     /**
      * The explanation for why this exception was thrown.
      */
@@ -8873,6 +8957,10 @@ export class Event {
      * @returns A function that will remove this event listener when invoked.
      */
     addEventListener(listener: (...params: any[]) => any, scope?: any): Event.RemoveCallback;
+    /**
+     * Unregisters all listener
+     */
+    removeAllListener(): void;
     /**
      * Unregisters a previously registered callback.
      * @param listener - The function to be unregistered.
@@ -46990,7 +47078,7 @@ declare module '@motor/core' {
     import * as Motor from '@motor/core/all';
     export default Motor;
     export { default as Camera } from '@motor/core/Camera';
-    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, CommentType, FrustumOptions, CompareModProjResult, } from '@motor/core/Core';
+    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ClippingTypes, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, CommentType, FrustumOptions, CompareModProjResult, BimProp, ExtensionOptions, ExtensionResponse, ExtensionBatchData, } from '@motor/core/Core';
     export { default as GeoAlgorithm } from '@motor/core/geo/GeoAlgorithm';
     export { default as InputMap } from '@motor/core/InputMap';
     export { default as Model } from '@motor/core/Model';
@@ -47011,6 +47099,7 @@ declare module '@motor/core' {
     export { default as WaterEditor } from '@motor/core/plugins/WaterEditor';
     export { default as Project } from '@motor/core/Project';
     export { ModelType, Element, ExtraPropInterface, PickObject, CustomIdObject, ProjectOpenOption, RenderEffctProp, PathPointData, PathData, ModelProjectData, } from '@motor/core/typedefine';
+    export { default as GroupRequestQueue } from '@motor/core/until/GroupRequest';
     export { gHighLightColor, gIsolateColor, gBlockColor, gIsolateStatus, gGlobalConfig, } from '@motor/core/until/MotorContext';
     export { modType2ModType, computeArea } from '@motor/core/until/UtilTool';
     export { default as Viewer } from '@motor/core/Viewer';
@@ -47018,7 +47107,7 @@ declare module '@motor/core' {
 
 declare module '@motor/core/all' {
     export { default as Camera } from '@motor/core/Camera';
-    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, CommentType, FrustumOptions, CompareModProjResult, } from '@motor/core/Core';
+    export { default as MotorCore, InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ClippingTypes, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, CommentType, FrustumOptions, CompareModProjResult, BimProp, ExtensionOptions, ExtensionResponse, ExtensionBatchData, } from '@motor/core/Core';
     export { default as GeoAlgorithm } from '@motor/core/geo/GeoAlgorithm';
     export { default as InputMap } from '@motor/core/InputMap';
     export { default as Model } from '@motor/core/Model';
@@ -47039,6 +47128,7 @@ declare module '@motor/core/all' {
     export { default as WaterEditor } from '@motor/core/plugins/WaterEditor';
     export { default as Project } from '@motor/core/Project';
     export { ModelType, Element, ExtraPropInterface, PickObject, CustomIdObject, ProjectOpenOption, RenderEffctProp, PathPointData, PathData, ModelProjectData, } from '@motor/core/typedefine';
+    export { default as GroupRequestQueue } from '@motor/core/until/GroupRequest';
     export { gHighLightColor, gIsolateColor, gBlockColor, gIsolateStatus, gGlobalConfig, } from '@motor/core/until/MotorContext';
     export { modType2ModType, computeArea } from '@motor/core/until/UtilTool';
     export { default as Viewer } from '@motor/core/Viewer';
@@ -47057,7 +47147,7 @@ declare module '@motor/core/Camera' {
 declare module '@motor/core/Core' {
     import * as MotorCore from 'motor-ts';
     export default MotorCore;
-    export { InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, CommentType, FrustumOptions, CompareModProjResult, } from 'motor-ts';
+    export { InputType, Vector2, Vector3, Color, ManipulatorControl, ManipulatorControlOptions, ManipulatorType, Matrix3, Matrix4, HeadingPitchRoll, Quaternion, RenderEffect, ClippingPlaneType, ClippingTypes, ControlApplyType, ViewPosition, setBaseUrl, Box, BoxNumberAry, ModSpriteOptions, SpriteOptions, SkyBox, ParticleOptions, CircleEmitter, ConeEmitter, CZMLSchema, ClockSchema, WeatherType, InputModifier, CommentType, FrustumOptions, CompareModProjResult, BimProp, ExtensionOptions, ExtensionResponse, ExtensionBatchData, } from 'motor-ts';
 }
 
 declare module '@motor/core/geo/GeoAlgorithm' {
@@ -47108,10 +47198,30 @@ declare module '@motor/core/Model' {
         getElementCustomId(elementId: string): Promise<string>;
         queryElement(): Promise<string[]>;
         queryElement(id: string): Promise<Element | undefined>;
-        queryElement(ids: string[]): Promise<Element[]>;
-        queryElement(dirs: string[][]): Promise<Element[]>;
+        queryElement(ids: string[], maxGroupCount?: number, errCallback?: (data: any) => void): Promise<Element[]>;
+        queryElement(dirs: string[][], maxGroupCount?: number, errCallback?: (data: any) => void): Promise<Element[]>;
         getElementIndex(dirs?: string[][]): Promise<number[] | undefined>;
-        queryElementByIndex(indexArry: number[]): Promise<Element[] | undefined>;
+        queryElementEbsTree(bimids: string[]): Promise<any[]>;
+        queryElementByIndex(indexArry: number[], maxGroupCount?: number, errCallback?: (data: any) => any): Promise<Element[] | undefined>;
+        queryExtension(opt: MotorCore.ExtensionOptions): Promise<MotorCore.ExtensionResponse | undefined>;
+        UpdateExtensionBatch(opt: MotorCore.ExtensionBatchData, reqEndCallback?: (data: {
+            errData: {
+                data: any[];
+                err: any;
+            }[];
+            succData: any[];
+        }) => void, maxParallel?: number, groupLength?: number, stepSuccCallback?: () => void): Promise<unknown | undefined>;
+        queryBimidDirByIndexAry(indexArry: number[], reqEndCallback: (data: {
+            errData: {
+                data: number[];
+                err: any;
+            }[];
+            succData: {
+                index: number;
+                bimId: string;
+                dir: string;
+            }[];
+        }) => void, maxParallel?: number, groupLength?: number, stepSuccCallback?: (data: any) => void): void;
         get children(): Model[];
         removed(): boolean;
         queyElementsByKeywords(keyWord: string): Promise<string[]>;
@@ -47124,28 +47234,36 @@ declare module '@motor/core/Model' {
         select(): void;
         select(id: string): void;
         select(ids: string[]): void;
+        select(indexs: number[]): void;
         select(dirs: string[][]): void;
         select(comps: Element[]): void;
         deselect(): void;
         deselect(id: string): void;
         deselect(ids: string[]): void;
+        deselect(indexs: number[]): void;
         deselect(dirs: string[][]): void;
         deselect(comps: Element[]): void;
         setVisibilityByBimIds(show: boolean, bimIds: string[]): Promise<void>;
         setVisibility(show: boolean): Promise<void>;
         setVisibility(show: boolean, id: string): Promise<void>;
         setVisibility(show: boolean, ids: string[]): Promise<void>;
+        setVisibility(show: boolean, indexs: number[]): Promise<void>;
         setVisibility(show: boolean, dirs: string[][]): Promise<void>;
         setVisibility(show: boolean, comps: Element[]): Promise<void>;
         setColorByBimIds(color: MotorCore.Color, bimIds: string[]): void;
+        resetColorByBimIds(bimIds: string[]): void;
+        isolateByBimIds(bimids: string[]): void;
+        clearIsolate(): void;
         setColor(color: MotorCore.Color): void;
         setColor(color: MotorCore.Color, id: string): void;
         setColor(color: MotorCore.Color, ids: string[]): void;
+        setColor(color: MotorCore.Color, indexs: number[]): void;
         setColor(color: MotorCore.Color, dirs: string[][]): void;
         setColor(color: MotorCore.Color, comps: Element[]): void;
         resetColor(): void;
         resetColor(id: string): void;
         resetColor(ids: string[]): void;
+        resetColor(indexs: number[]): void;
         resetColor(dirs: string[][]): void;
         resetColor(comps: Element[]): void;
         getBoundingBox(): MotorCore.Box | undefined;
@@ -47167,6 +47285,7 @@ declare module '@motor/core/Model' {
         getProperties(): any;
         getAllLeafNodeDirByDir(treeNode: MotorCore.DirTree, dirPath: string[]): string[][];
         getTreeNodeByDirPath(treeNode: MotorCore.DirTree, dirPathAry: string[]): MotorCore.DirTree | undefined;
+        queryDirByBimSearch(bimProperties: MotorCore.BimProp): Promise<string[]>;
         getTreeNodeByDirPathLoop(treeNode: MotorCore.DirTree, dirPathAry: string[]): MotorCore.DirTree | undefined;
     }
 }
@@ -47670,34 +47789,39 @@ declare module '@motor/core/Project' {
         queryElementByBimIds(bimids: string[]): Promise<Element[]>;
         queryElement(): Promise<string[]>;
         queryElement(id: string): Promise<Element | undefined>;
-        queryElement(ids: string[]): Promise<Element[]>;
-        queryElement(dirs: string[][]): Promise<Element[]>;
+        queryElement(ids: string[], maxGroupCount?: number, errCallback?: (data: any) => void): Promise<Element[]>;
+        queryElement(dirs: string[][], maxGroupCount?: number, errCallback?: (data: any) => void): Promise<Element[]>;
         queryElementsByCustomId(keyWord: string, likeQuery?: boolean): Promise<CustomIdObject[]>;
         getElmentBoundingBox(id: string): Promise<MotorCore.Box | undefined>;
         getObjCustomId(id: string): Promise<string>;
         select(): void;
         select(id: string): void;
         select(ids: string[]): void;
+        select(indexs: number[]): void;
         select(dirs: string[][]): void;
         select(comps: Element[]): void;
         deselect(): void;
         deselect(id: string): void;
         deselect(ids: string[]): void;
+        deselect(indexs: number[]): void;
         deselect(dirs: string[][]): void;
         deselect(comps: Element[]): void;
         setVisibility(show: boolean): void;
         setVisibility(show: boolean, id: string): void;
         setVisibility(show: boolean, ids: string[]): void;
+        setVisibility(show: boolean, indexs: number[]): void;
         setVisibility(show: boolean, dirs: string[][]): void;
         setVisibility(show: boolean, comps: Element[]): void;
         setColor(color: MotorCore.Color): void;
         setColor(color: MotorCore.Color, id: string): void;
         setColor(color: MotorCore.Color, ids: string[]): void;
+        setColor(color: MotorCore.Color, indexs: number[]): void;
         setColor(color: MotorCore.Color, dirs: string[][]): void;
         setColor(color: MotorCore.Color, comps: Element[]): void;
         resetColor(): void;
         resetColor(id: string): void;
         resetColor(ids: string[]): void;
+        resetColor(indexs: number[]): void;
         resetColor(dirs: string[][]): void;
         resetColor(comps: Element[]): void;
         get extraProperties(): object | undefined;
@@ -47705,6 +47829,7 @@ declare module '@motor/core/Project' {
         getRoamPathList(): PathData[] | undefined;
         isolate(id: string): void;
         isolate(ids: string[]): void;
+        isolate(indexs: number[]): void;
         isolate(dirs: string[][]): void;
         isolate(comps: Element[]): void;
         clearIsolate(): void;
@@ -47804,16 +47929,80 @@ declare module '@motor/core/typedefine' {
     }
 }
 
+declare module '@motor/core/until/GroupRequest' {
+    type ReqStatus = 'Success' | 'Failed' | 'Pending' | 'Waiting';
+    interface QueueItem {
+        apiParams: {
+            [key: string]: any;
+            data: any[];
+        };
+        promiseFn: () => Promise<any>;
+        reqStatus: ReqStatus;
+        result: undefined | any;
+        err: undefined | any;
+    }
+    interface DataSchema {
+        [key: string]: any;
+        list: any[];
+    }
+    class GroupRequestQueue {
+        queue: QueueItem[];
+        waitingQueue: QueueItem[];
+        requestingQueue: QueueItem[];
+        failedQueue: QueueItem[];
+        successQueue: QueueItem[];
+        promise?: Promise<unknown>;
+        resolve?: (value?: unknown) => void;
+        reject?: (value?: unknown) => void;
+        originReqParams: {
+            [key: string]: any;
+            data: any[] | DataSchema;
+        };
+        reqAPI: (paramA: any, paramB?: any, paramC?: any, paramD?: any) => Promise<any>;
+        maxParallel: number;
+        maxFragNum: number;
+        reqEndCallback: (data: {
+            errData: {
+                data: any[];
+                err: any;
+            }[];
+            succData: any[];
+        }) => void;
+        stepSuccCallback: (data: any) => void;
+        constructor(reqParams: {
+            [key: string]: any;
+            data: any[] | DataSchema;
+        }, reqAPI: (paramA: any, paramB?: any, paramC?: any, paramD?: any) => Promise<any>, maxParallel?: number, maxFragNum?: number, reqEndCallback?: () => void, stepSuccCallback?: () => void);
+        setOriginReqParams(reqParams: {
+            [key: string]: any;
+            data: any[] | DataSchema;
+        }): void;
+        resetQueue(): void;
+        grouping(): any[];
+        initQueue(): void;
+        updateQueue(): void;
+        initRequest(): void;
+        checkIsFinalReq(): boolean;
+        reqNext(queueItem: QueueItem): void;
+        startRequesting(): Promise<unknown>;
+        destroy(): void;
+    }
+    export default GroupRequestQueue;
+}
+
 declare module '@motor/core/until/MotorContext' {
     import MotorCore from '@motor/core/Core';
     import Project from '@motor/core/Project';
+    import Model from '@motor/core/Model';
     const gHighLightColor: MotorCore.Color;
     const gIsolateColor: MotorCore.Color;
     const gBlockColor: MotorCore.Color;
     interface IsolateStatus {
         status: boolean;
         currentProject?: Project;
+        model?: Model;
         element?: any;
+        bimids?: any;
     }
     const gIsolateStatus: IsolateStatus;
     interface GlobalObject {
@@ -47826,6 +48015,14 @@ declare module '@motor/core/until/MotorContext' {
 declare module '@motor/core/until/UtilTool' {
     import { ModelType } from '@motor/core/typedefine';
     import MotorCore from '@motor/core/Core';
+    type NumberAry3 = [number, number, number];
+    type StringAry = string[];
+    type StringAryAry = string[][];
+    type NumberAry = number[];
+    export function isNumberAry(ary: any[]): ary is NumberAry;
+    export function isStringAry(ary: any[]): ary is StringAry;
+    export function isStringAryAry(ary: any[]): ary is StringAryAry;
+    export function isNumberAry3(ary: number[]): ary is NumberAry3;
     export function getType(object: any): string;
     export function getModelType(type: string | undefined): ModelType | undefined;
     function modType2ModType(modType: ModelType[]): string[];
@@ -47864,6 +48061,10 @@ declare module '@motor/core/Viewer' {
         enableSnap(): void;
         disableSnap(): void;
         getSnapPoint(): MotorCore.Vector3 | undefined;
+        enableNormalFace(): void;
+        getSnapPosition(movement: MotorCore.Vector2): Promise<void | MotorCore.Vector3 | undefined>;
+        disableNormalFace(): void;
+        getFaceNormal(): MotorCore.Vector3 | undefined;
         enableClampZoom(): void;
         disableClampZoom(): void;
         exportImage(name?: string): Promise<string>;
